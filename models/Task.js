@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const positionSchema = new Schema({
+// const positionSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -10,10 +11,14 @@ const positionSchema = new Schema({
     type: Number,
     required: true
   },
-  category: {
-    ref: 'categories',
+  client: {
+    ref: 'clients',
     type: Schema.Types.ObjectId
   },
+  // category: {
+  //   ref: 'categories',
+  //   type: Schema.Types.ObjectId
+  // },
   user: {
     ref: 'users',
     type: Schema.Types.ObjectId
@@ -21,3 +26,4 @@ const positionSchema = new Schema({
 })
 
 module.exports = mongoose.model('positions', positionSchema)
+// module.exports = mongoose.model('positions', positionSchema)
