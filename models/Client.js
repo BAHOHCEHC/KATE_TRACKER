@@ -15,6 +15,10 @@ const clientSchema = new Schema({
     type: Number,
     default: 10
   },
+  user: {
+    ref: 'users',
+    type: Schema.Types.ObjectId
+  },
   taskList: [
     {
       name: {
@@ -27,11 +31,7 @@ const clientSchema = new Schema({
         type: Number
       }
     }
-  ],
-  user: {
-    ref: 'users',
-    type: Schema.Types.ObjectId
-  }
+  ]
 })
 
 module.exports = mongoose.model('clients', clientSchema)

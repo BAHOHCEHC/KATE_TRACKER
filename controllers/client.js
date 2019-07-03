@@ -32,7 +32,8 @@ module.exports.remove = async function(req, res) {
     await Client.remove({_id: req.params.id})
     await Task.remove({client: req.params.id})
     res.status(200).json({
-      message: 'Категория удалена.'
+      message: 'Клиент удален.'
+      // message: 'Категория удалена.'
     })
   } catch (e) {
     errorHandler(res, e)
