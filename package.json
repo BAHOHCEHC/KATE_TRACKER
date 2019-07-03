@@ -1,0 +1,36 @@
+{
+  "name": "kate_tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "server": "nodemon index",
+    "client-install": "npm install --prefix client",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "moment": "^2.22.1",
+    "mongoose": "^5.0.17",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/BAHOHCEHC/KATE_TRACKER.git"
+  },
+  "author": "bahohcehc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BAHOHCEHC/KATE_TRACKER/issues"
+  },
+  "homepage": "https://github.com/BAHOHCEHC/KATE_TRACKER#readme"
+}
