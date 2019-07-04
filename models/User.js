@@ -16,5 +16,3 @@ const userSchema = new Schema({
     title: "admin"
   }
 })
-
-module.exports = mongoose.model('users', userSchema)
