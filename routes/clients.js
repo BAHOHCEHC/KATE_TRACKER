@@ -1,7 +1,7 @@
 const express = require('express')
 const passport = require('passport')
 const upload = require('../middleware/upload')
-const controller = require('../controllers/client')
+const controller = require('../controllers/clients')
 const router = express.Router()
 
 router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)

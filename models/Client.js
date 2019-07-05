@@ -7,6 +7,10 @@ const clientSchema = new Schema({
     type: String,
     required: true
   },
+  user: {
+    ref: 'users',
+    type: Schema.Types.ObjectId
+  },
   imageSrc: {
     type: String,
     default: ''
@@ -15,10 +19,9 @@ const clientSchema = new Schema({
     type: Number,
     default: 10
   },
-  user: {
-    ref: 'users',
-    type: Schema.Types.ObjectId
-  },
+  // curency: {
+  //   type: String,
+  // },
   taskList: [
     {
       name: {

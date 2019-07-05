@@ -1,0 +1,39 @@
+<form class="card" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="card-content">
+    <span class="card-title">Войти в систему</span>
+    <div class="input-field">
+      <input formControlName="email" id="email" type="email"
+        [ngClass]="{'invalid': form.get('email').invalid && form.get('email').touched}">
+      <label for="email">Email:</label>
+      <span class="helper-text red-text" *ngIf="form.get('email').invalid && form.get('email').touched">
+        <span *ngIf="form.get('email').errors['required']">Email не должен быть пустым</span>
+        <span *ngIf="form.get('email').errors['email']">Введите корректный email адрес</span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input id="password" type="password" formControlName="password"
+        [ngClass]="{'invalid': form.get('password').invalid && form.get('password').touched}">
+      <label for="password">Пароль:</label>
+      <span class="helper-text red-text" *ngIf="form.get('password').invalid && form.get('password').touched">
+        <span *ngIf="form.get('password').errors['required']">Пароль не должен быть пустым</span>
+        <span
+          *ngIf="form.get('password').errors['minlength'] && form.get('password').errors['minlength']['requiredLength']">
+          Пароль должен быть больше {{form.get('password').errors['minlength']['requiredLength']}} символов.
+          Сейчас {{form.get('password').errors['minlength']['actualLength']}}
+        </span>
+      </span>
+    </div>
+  </div>
+  <div class="card-action">
+    <button type="submit" class="modal-action btn waves-effect" [disabled]="form.invalid || form.disabled">
+      Войти
+    </button>
+  </div>
+</form>
+
+
+
+<svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.7059 3.28734C25.6471 0.237553 20.6878 0.237553 17.629 3.28734L16 4.91153L14.371 3.28736C11.3122 0.237576 6.35287 0.237578 3.29409 3.28736C0.235304 6.33715 0.235304 11.2818 3.29409 14.3316L11.3735 22.3871L15.2939 26.296C15.6842 26.6851 16.3158 26.6852 16.7061 26.296L20.6265 22.3871L28.7059 14.3316C31.7647 11.2818 31.7647 6.33713 28.7059 3.28734Z" fill="#00BCD4" stroke="#1F2B39" stroke-width="2"/>
+<circle cx="8" cy="8" r="2" fill="white"/>
+</svg>

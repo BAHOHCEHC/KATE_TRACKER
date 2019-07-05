@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   email: {
@@ -11,8 +11,13 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  imageSrc: {
+    type: String,
+  },
   role: {
     type: String,
-    title: "admin"
+// title: "admin"
   }
-})
+});
+
+module.exports = mongoose.model("users", userSchema);

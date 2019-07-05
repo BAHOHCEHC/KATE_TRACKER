@@ -32,5 +32,9 @@
   "bugs": {
     "url": "https://github.com/BAHOHCEHC/KATE_TRACKER/issues"
   },
-  "homepage": "https://github.com/BAHOHCEHC/KATE_TRACKER#readme"
+  "homepage": "https://github.com/BAHOHCEHC/KATE_TRACKER#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1"
+  }
 }

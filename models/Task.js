@@ -7,32 +7,35 @@ const taskSchema = new Schema({
     type: String,
     required: true
   },
-  start: {
-    type: Date,
-    default: Date.now
-  },
-  end: {
-    type: Date,
-    required: true
-  },
   cost: {
     type: Number,
     required: true,
     default: 10
   },
-  client: {
-    ref: "clients",
-    type: Schema.Types.ObjectId
+  client: {  //по этому полю удаляется таски у клиента при удалении клиента
+    type: String,
   },
   // category: {
   //   ref: 'categories',
   //   type: Schema.Types.ObjectId
   // },
+  start: {
+    type: String,
+  },
+  end: {
+    type: String,
+  },
+  wastedTime: {
+    type: Number
+  },
+  totalMoney: {
+    type: Number
+  },
   user: {
     ref: "users",
     type: Schema.Types.ObjectId
   }
 });
 
-module.exports = mongoose.model("positions", taskSchema);
+module.exports = mongoose.model("tasks", taskSchema);
 // module.exports = mongoose.model('positions', positionSchema)

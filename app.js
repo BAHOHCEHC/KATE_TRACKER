@@ -22,7 +22,8 @@ mongoose
   })
   .then(() => console.log("MongoDB connected."))
   .catch(error => console.log(error));
-
+	
+// использование стратегий доступа
 app.use(passport.initialize());
 require("./middleware/passport")(passport);
 
@@ -34,7 +35,7 @@ app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/clients", clientsRoutes);
-app.use("/api/position", taskRoutes);
+app.use("/api/task", taskRoutes);
 // app.use("/api/position", positionRoutes);
 // app.use('/api/analytics', analyticsRoutes)
 // app.use('/api/order', orderRoutes)
