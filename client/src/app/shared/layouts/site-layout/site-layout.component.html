@@ -100,6 +100,16 @@
             <span *ngIf="form.get('name').errors['required']">Project Name не может быть пустым</span>
           </span>
         </div>
+
+        <div class="input-field">
+          <input formControlName="cost" type="number" min="10"
+            [ngClass]="{'invalid': form.get('cost').invalid && form.get('cost').touched}">
+          <label for="pos-cost">Hourly Rate</label>
+          <span class="helper-text red-text" *ngIf="form.get('cost').invalid && form.get('cost').touched">
+            <span *ngIf="form.get('cost').errors['min']">Введите корректную Hourly Rate</span>
+          </span>
+        </div>
+
         <div class="input-field">
           <input formControlName="cost" type="number" min="10"
             [ngClass]="{'invalid': form.get('cost').invalid && form.get('cost').touched}">
