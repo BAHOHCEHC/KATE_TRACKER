@@ -6,7 +6,7 @@ import {
   OnInit,
   OnDestroy
 } from "@angular/core";
-import { AuthService } from "./../../services/auth.service";
+// import { AuthService } from "./../../services/auth.service";
 import { Router } from "@angular/router";
 import { Clients, User } from "../../interfaces";
 import { ClientsService } from "../../services/clients-service.service";
@@ -23,6 +23,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 })
 export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("modal") modalRef: ElementRef;
+  @ViewChild("select") selectRef: ElementRef;
 
   clients: Clients[];
   loading = false;
@@ -32,35 +33,35 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   form: FormGroup;
   clientsNone = true;
   modal: MaterialInstance;
+  select: MaterialInstance;
+  clientsId = [];
+  clientExist = false;
 
-  // private sidenav = [
-  //   { url: "/overview", name: "Обзор" },
-  //   { url: "/analitic", name: "Аналитика" },
-  //   { url: "/history", name: "История" },
-  //   { url: "/order", name: "Добавить заказ" },
-  //   { url: "/categories", name: "Ассортимент" }
-  // ];
   constructor(
     private clientsService: ClientsService,
-    private auth: AuthService,
+    // private auth: AuthService,
     private router: Router,
     private userService: UserService
   ) {}
 
   ngOnInit() {
     this.form = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
+      name: new FormControl("Project Name", [Validators.required]),
+      currency: new FormControl(null, [Validators.required]),
       cost: new FormControl(10, [Validators.required, Validators.min(10)])
     });
 
     this.loading = true;
+
     this.clientsService.fetchAll().subscribe(clients => {
       this.clients = clients;
       this.clientsNone = false;
-      console.log(this.clients);
+      this.clients.forEach(e => {
+        this.clientsId.push(e.name.toLowerCase().replace(/\s/g, ""));
+      });
+      console.log("****CLIENTS********", this.clients);
     });
 
-    // const userId = localStorage.getItem("userId");
     this.aSub = this.userService
       .getUserData(localStorage.getItem("userId"))
       .subscribe((e: User) => {
@@ -71,21 +72,39 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.user);
       });
   }
-  addNewProject(e) {
+  addNewProject() {
     // this.positionId = null;
     this.form.reset({
-      name: null,
+      name: "Project Name",
+      currency: null,
       cost: 10
     });
     this.modal.open();
     MaterialService.updateTextInputs();
   }
-  closeModal(){
-    this.modal.close();
+  chekClientExist(name) {
+    let mutch = this.clientsId.some(item => {
+      return name.toLowerCase().replace(/\s/g, "") == item;
+    });
+    if (mutch) {
+      this.clientExist = true;
+      return true;
+    } else {
+      this.clientExist = false;
+      return false;
+    }
   }
-
+  closeModal() {
+    this.modal.close();
+    this.form.reset({
+      name: "Project Name",
+      currency: "U.S. Dollar",
+      cost: 10
+    });
+  }
   ngAfterViewInit() {
     this.modal = MaterialService.initModal(this.modalRef);
+    this.select = MaterialService.initSelect(this.selectRef);
   }
   ngOnDestroy() {
     this.modal.destroy();
@@ -93,9 +112,23 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.aSub.unsubscribe();
     }
   }
+
   onSubmit() {
-    console.log("asdasdas");
+    // this.form.disable();
+    if (this.chekClientExist(this.form.value.name)) {
+      this.form.enable();
+      return;
+    }
+    this.form.value.currency = this.selectRef.nativeElement.value,
+
+    console.log(this.form.value);
+
+    this.closeModal();
+    // this.router.navigate(["/reports"]);
+
+    MaterialService.updateTextInputs();
   }
+
   // logOut(event) {
   // event.preventDefault();
   // this.auth.logout();

@@ -17,7 +17,7 @@
     </div>
     <h3 class="userName center">{{user.nickName}}</h3>
     <h4 class="userPosition">UX/UI designer</h4>
-    <button class="cw waves-effect waves-light newProjectBtn dibl" (click)="addNewProject($event)">New Project</button>
+    <button class="cw waves-effect waves-light newProjectBtn dibl" (click)="addNewProject()">New Project</button>
     <div class="dfl ai jc">
       <svg class="reportsImg" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -82,8 +82,8 @@
 
 
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div #modal class="modal">
+  <div #modal class="modal">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <svg class="closeBtn" (click)="closeModal()" width="20" height="20" viewBox="0 0 20 20" fill="none"
         xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -92,39 +92,48 @@
       </svg>
       <div class="modal-content">
         <h4 class="mb1">Create new Project</h4>
+
+
         <div class="input-field">
           <input formControlName="name" type="text"
             [ngClass]="{'invalid': form.get('name').invalid && form.get('name').touched}">
-          <label for="pos-name">Project Name</label>
           <span class="helper-text red-text" *ngIf="form.get('name').invalid && form.get('name').touched">
             <span *ngIf="form.get('name').errors['required']">Project Name не может быть пустым</span>
+
           </span>
+          <span *ngIf="clientExist">ТАКОЙ КЛИЕНТ СУЩЕСТВУЕТ</span>
         </div>
+
+        <!-- <option value="" disabled="" selected="">Choose your curency</option> -->
+
+        <div class="input-field">
+          <div class="select-wrapper">
+            <input formControlName="currency" class="dn " type="text" readonly="true">
+            <select #select tabindex="-1">
+              <option value="dollar">US Dollar</option>
+              <option value="uah">UA hrn</option>
+              <option value="rub">RU rub</option>
+            </select>
+          </div>
+
+        </div>
+
+
 
         <div class="input-field">
           <input formControlName="cost" type="number" min="10"
             [ngClass]="{'invalid': form.get('cost').invalid && form.get('cost').touched}">
-          <label for="pos-cost">Hourly Rate</label>
-          <span class="helper-text red-text" *ngIf="form.get('cost').invalid && form.get('cost').touched">
-            <span *ngIf="form.get('cost').errors['min']">Введите корректную Hourly Rate</span>
-          </span>
-        </div>
-
-        <div class="input-field">
-          <input formControlName="cost" type="number" min="10"
-            [ngClass]="{'invalid': form.get('cost').invalid && form.get('cost').touched}">
-          <label for="pos-cost">Hourly Rate</label>
           <span class="helper-text red-text" *ngIf="form.get('cost').invalid && form.get('cost').touched">
             <span *ngIf="form.get('cost').errors['min']">Введите корректную Hourly Rate</span>
           </span>
         </div>
       </div>
       <div class="modal-footer dfl ai jc">
-        <button [disabled]="form.disabled || form.invalid" type="submit"
+        <button type="submit"
           class="modal-action btn waves-effect">Create</button>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 
 
 
