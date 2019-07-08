@@ -3,10 +3,9 @@ const Client = require("../models/Client");
 const Task = require("../models/Task");
 const errorHandler = require("../utils/errorHandler");
 
+
 module.exports.getAll = async function(req, res) {
   try {
-    // const categories = await Category.find({user: req.user.id})
-    // res.status(200).json(categories)
     const clients = await Client.find({ user: req.user.id });
     res.status(200).json(clients);
   } catch (e) {

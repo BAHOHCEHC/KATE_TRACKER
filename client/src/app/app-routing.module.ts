@@ -5,14 +5,12 @@ import { AuthLayoutComponent } from "./shared/layouts/auth-layout/auth-layout.co
 import { SiteLayoutComponent } from "./shared/layouts/site-layout/site-layout.component";
 import { RegisterPageComponent } from "./register-page/register-page.component";
 import { AuthGuard } from "./shared/classes/auth.guard";
-import { OverviewComponent } from "./overview-page/overview.component";
-// import { AnaliticPageComponent } from "./analitic-page/analitic-page.component";
-import { HistoryPageComponent } from "./history-page/history-page.component";
-import { OrderPageComponent } from "./order-page/order-page.component";
-import { CategoriesPageComponent } from "./categories-page/categories-page.component";
-import { CategoriesFormComponent } from "./categories-page/categories-form/categories-form.component";
-import { OrderCategoriesComponent } from "./order-page/order-categories/order-categories.component";
-import { OrderPositionsComponent } from "./order-page/order-positions/order-positions.component";
+// ******************************
+// ******************************
+import { ClientsPageComponent } from "./clients-page/clients-page.component";
+import { TasksComponent } from "./clients-page/tasks/tasks.component";
+import { ClientComponent } from './clients-page/client/client.component';
+import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 
 const routes: Routes = [
   {
@@ -29,20 +27,18 @@ const routes: Routes = [
     component: SiteLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: "overview", component: OverviewComponent },
-      // { path: "analitic", component: AnaliticPageComponent },
-      { path: "history", component: HistoryPageComponent },
       {
-        path: "order",
-        component: OrderPageComponent,
+        path: "clients",
+        component: ClientsPageComponent,
         children: [
-          { path: "", component: OrderCategoriesComponent },
-          { path: ":id", component: OrderPositionsComponent }
+          { path: ":id", component: ClientComponent },
+          { path: "clients/tasks", component: TasksComponent }
         ]
       },
-      { path: "categories", component: CategoriesPageComponent },
-      { path: "categories/new", component: CategoriesFormComponent },
-      { path: "categories/:id", component: CategoriesFormComponent }
+      {
+        path:"reports",
+        component: MonthlyReportsComponent,
+      }
     ]
   }
 ];

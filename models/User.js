@@ -13,10 +13,16 @@ const userSchema = new Schema({
   },
   imageSrc: {
     type: String,
+    default: ""
   },
   role: {
     type: String,
-// title: "admin"
+    default: "spectator"
+    // title: "admin"
+  },
+  nickName: {
+    type: String,
+    default: "Guest"
   }
 });
 

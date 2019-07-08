@@ -1,15 +1,39 @@
 export interface User {
   email: string;
   password: string;
+  imageSrc?: string;
+  role: string;
+  nickName: string;
+  token?: string;
+  _id?: string;
 }
 
 export interface Category {
   name: string;
+  user?: string;
+  imageSrc?: string;
+  _id?: string;
+}
+export interface Clients {
+  name: string;
   imageSrc?: string;
   user?: string;
+  tarif?: number;
+  taskList?: Task[];
   _id?: string;
 }
 
+export interface Task {
+  name: string;
+  cost: number;
+  client: string;
+  start?: Date;
+  end?: Date;
+  wastedTime?: number;
+  totalMoney?: number;
+  user?: string;
+  _id?: string;
+}
 export interface Message {
   message: string;
 }

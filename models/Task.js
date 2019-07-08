@@ -15,10 +15,6 @@ const taskSchema = new Schema({
   client: {  //по этому полю удаляется таски у клиента при удалении клиента
     type: String,
   },
-  // category: {
-  //   ref: 'categories',
-  //   type: Schema.Types.ObjectId
-  // },
   start: {
     type: String,
   },

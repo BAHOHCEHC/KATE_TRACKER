@@ -1,49 +1,55 @@
-import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
-import {Observable} from 'rxjs'
-import {User} from '../interfaces'
-import {tap} from 'rxjs/operators'
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { User } from "../interfaces";
+import { tap } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthService {
+  private token = null;
 
-  private token = null
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
+  register(user: User, image?: File): Observable<User> {
+    const formData = new FormData();
+    if (image) {
+      formData.append("image", image, image.name);
+    }
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("role", user.role);
+    formData.append("nickName", user.nickName);
+
+    return this.http.post<User>("/api/auth/register", formData);
   }
 
-  register(user: User): Observable<User> {
-    return this.http.post<User>('/api/auth/register', user)
-  }
 
-  login(user: User): Observable<{token: string}> {
-    return this.http.post<{token: string}>('/api/auth/login', user)
-      .pipe(
-        tap(
-          ({token}) => {
-            localStorage.setItem('auth-token', token)
-            this.setToken(token)
-          }
-        )
-      )
+  login(user: User): Observable<User> {
+    return this.http.post<User>("/api/auth/login", user).pipe(
+      tap(e => {
+        localStorage.setItem("auth-token", e.token);
+        localStorage.setItem("userId", e._id);
+        this.setToken(e.token);
+      })
+    );
   }
 
   setToken(token: string) {
-    this.token = token
+    this.token = token;
   }
 
   getToken(): string {
-    return this.token
+    return this.token;
   }
 
   isAuthenticated(): boolean {
-    return !!this.token
+    return !!this.token;
   }
 
-  logout() {
-    this.setToken(null)
-    localStorage.clear()
-  }
+  // logout() {
+  //   this.setToken(null);
+  //   localStorage.clear();
+  // }
 }

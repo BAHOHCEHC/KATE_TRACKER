@@ -1,29 +1,20 @@
-import {BrowserModule} from '@angular/platform-browser'
-import {NgModule} from '@angular/core'
-import {FormsModule, ReactiveFormsModule} from '@angular/forms'
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
-import {AppComponent} from './app.component'
-import {LoginPageComponent} from './login-page/login-page.component'
-import {AppRoutingModule} from './app-routing.module'
-import {AuthLayoutComponent} from './shared/layouts/auth-layout/auth-layout.component'
-import {SiteLayoutComponent} from './shared/layouts/site-layout/site-layout.component'
-import {RegisterPageComponent} from './register-page/register-page.component'
-import {TokenInterceptor} from './shared/classes/token.interceptor'
-import { OverviewComponent } from './overview-page/overview.component';
-// import { AnaliticPageComponent } from './analitic-page/analitic-page.component';
-import { HistoryPageComponent } from './history-page/history-page.component';
-import { OrderPageComponent } from './order-page/order-page.component';
-import { CategoriesPageComponent } from './categories-page/categories-page.component';
-import { LoaderComponent } from './shared/components/loader/loader.component';
-import { CategoriesFormComponent } from './categories-page/categories-form/categories-form.component';
-import { PositionsFormComponent } from './categories-page/categories-form/positions-form/positions-form.component';
-import { OrderCategoriesComponent } from './order-page/order-categories/order-categories.component';
-import { OrderPositionsComponent } from './order-page/order-positions/order-positions.component';
-import { HistoryListComponent } from './history-page/history-list/history-list.component';
-import { HistoryFilterComponent } from './history-page/history-filter/history-filter.component';
-
-
+import { AppComponent } from "./app.component";
+import { LoginPageComponent } from "./login-page/login-page.component";
+import { AuthLayoutComponent } from "./shared/layouts/auth-layout/auth-layout.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { SiteLayoutComponent } from "./shared/layouts/site-layout/site-layout.component";
+import { RegisterPageComponent } from "./register-page/register-page.component";
+import { TokenInterceptor } from "./shared/classes/token.interceptor";
+import { LoaderComponent } from "./shared/components/loader/loader.component";
+import { ClientsPageComponent } from "./clients-page/clients-page.component";
+import { TasksComponent } from "./clients-page/tasks/tasks.component";
+import { ClientComponent } from './clients-page/client/client.component';
+import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 
 @NgModule({
   declarations: [
@@ -32,18 +23,11 @@ import { HistoryFilterComponent } from './history-page/history-filter/history-fi
     AuthLayoutComponent,
     SiteLayoutComponent,
     RegisterPageComponent,
-    OverviewComponent,
-    // AnaliticPageComponent,
-    HistoryPageComponent,
-    OrderPageComponent,
-    CategoriesPageComponent,
     LoaderComponent,
-    CategoriesFormComponent,
-    PositionsFormComponent,
-    OrderCategoriesComponent,
-    OrderPositionsComponent,
-    HistoryListComponent,
-    HistoryFilterComponent,
+    ClientsPageComponent,
+    TasksComponent,
+    ClientComponent,
+    MonthlyReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -61,5 +45,4 @@ import { HistoryFilterComponent } from './history-page/history-filter/history-fi
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

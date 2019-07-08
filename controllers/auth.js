@@ -4,6 +4,15 @@ const User = require("../models/User");
 const keys = require("../config/keys");
 const errorHandler = require("../utils/errorHandler");
 
+module.exports.getUser = async function(req, res) {
+  const candidate = await User.findOne({ _id: req.params.id });
+  if (candidate) {
+    res.status(200).json(candidate);
+  } else {
+    errorHandler(res, e);
+  }
+};
+
 module.exports.login = async function(req, res) {
   // находим по емейлу пользователя
   const candidate = await User.findOne({ email: req.body.email });
@@ -25,10 +34,10 @@ module.exports.login = async function(req, res) {
         // время срока годности токена
         { expiresIn: 60 * 60 * 60 }
       );
-
       res.status(200).json({
         // используется в паспорте для стратегии доступа
-        token: `Bearer ${token}`
+        token: `Bearer ${token}`,
+        _id: candidate._id
       });
     } else {
       // Пароли не совпали
@@ -43,7 +52,6 @@ module.exports.login = async function(req, res) {
     });
   }
 };
-
 module.exports.register = async function(req, res) {
   // email password
   const candidate = await User.findOne({ email: req.body.email });
@@ -60,10 +68,9 @@ module.exports.register = async function(req, res) {
     const user = new User({
       email: req.body.email,
       password: bcrypt.hashSync(password, salt),
-      // imageSrc: req.body.imageSrc,
       imageSrc: req.file ? req.file.path : "",
-      role: "admin"
-      // role: req.body.role
+      role: req.body.role,
+      nickName: req.body.nickName
     });
 
     try {
