@@ -44,14 +44,14 @@ export interface Order {
   list: any[];
   _id?: string;
 }
-export interface Position {
-  name: string;
-  cost: number;
-  quantity?: number;
-  user?: string;
-  category: string;
-  _id?: string;
-}
+// export interface Position {
+//   name: string;
+//   cost: number;
+//   quantity?: number;
+//   user?: string;
+//   category: string;
+//   _id?: string;
+// }
 export interface OrderPosition {
   name: string;
   cost: number;

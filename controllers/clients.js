@@ -7,6 +7,7 @@ const errorHandler = require("../utils/errorHandler");
 module.exports.getAll = async function(req, res) {
   try {
     const clients = await Client.find({ user: req.user.id });
+    // const clients = [];
     res.status(200).json(clients);
   } catch (e) {
     errorHandler(res, e);

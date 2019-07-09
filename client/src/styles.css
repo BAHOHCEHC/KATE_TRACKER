@@ -15,6 +15,10 @@
   display: flex;
 }
 
+.fdc {
+  flex-direction: column;
+}
+
 .ai {
   align-items: center
 }
@@ -33,6 +37,14 @@
 
 .tac {
   text-align: center;
+}
+
+.w3_4 {
+  width: 75%;
+}
+
+.w1_4 {
+  width: 25%;
 }
 
 .auth_top {
@@ -109,7 +121,7 @@
 }
 
 .input-field {
-  margin-top: 25px;
+  margin-top: 15px;
   margin-bottom: 0;
 }
 
@@ -141,6 +153,7 @@ input.invalid:not(.browser-default) {
 
 .input-field .helper-text {
   position: absolute;
+  bottom: -10px;
 }
 
 .form select {
@@ -190,13 +203,14 @@ a.registraton_link {
   color: #fff;
   max-width: 300px;
   min-height: 100vh;
+  font-family: Muli;
   background: #1F2B39;
 }
 
 .content {
   width: 80%;
   min-width: 80%;
-  padding: 15px 40px;
+  padding: 0 40px;
 }
 
 .task_inputs {
@@ -207,11 +221,32 @@ a.registraton_link {
   color: #fff;
 }
 
+.userPosition {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+}
+
+.userName {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+}
+
 .reportsLink {
   line-height: 16px;
   color: #fff;
   padding: 0 0 0 10px;
   font-size: 16px;
+}
+
+.myProjTitile {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+  font-family: Muli;
 }
 
 .clients_section {
@@ -228,7 +263,8 @@ a.registraton_link {
 .newProjectBtn {
   background: #00BCD4;
   border-radius: 5px;
-  min-width: 240px;
+  width: 90%;
+  max-width: 240px;
   height: 40px;
   padding: 0 15px;
   margin-bottom: 20px;
@@ -240,4 +276,66 @@ svg.closeBtn {
   right: 10px;
   top: 10px;
   cursor: pointer;
+}
+
+.createProj {
+  width: 400px;
+  min-height: 270px;
+  top: 30% !important;
+}
+
+.titleCreateProj {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.createProj .input-field input {
+  border: 1px solid rgba(33, 33, 33, 0.3);
+  border-radius: 5px !important;
+  padding: 0 5% !important;
+  width: 90% !important;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  box-shadow: none!important;
+}
+
+.select-wrapper input.select-dropdown:focus, .createProj input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border: 1px solid #26a69a !important;
+}
+
+.input-field.left {
+  width: 70%;
+  margin-right: 5%;
+}
+
+.input-field.right {
+  width: 25%;
+}
+
+.right input {
+  text-align: center !important;
+}
+
+.createBtn {
+  width: 90%;
+  height: 40px;
+  background: #00BCD4 !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+  text-transform: capitalize !important;
+  font-size: 16px !important;
+}
+
+.dropdown-content li>span {
+  color: #000 !important;
+}
+
+.fireworks {
+  margin-bottom: 30px;
+}
+
+.emptyContainer {
+  height: 100Vh;
+  min-height: 100vh;
 }

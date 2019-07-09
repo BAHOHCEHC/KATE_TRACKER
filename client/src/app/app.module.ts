@@ -13,7 +13,6 @@ import { TokenInterceptor } from "./shared/classes/token.interceptor";
 import { LoaderComponent } from "./shared/components/loader/loader.component";
 import { ClientsPageComponent } from "./clients-page/clients-page.component";
 import { TasksComponent } from "./clients-page/tasks/tasks.component";
-import { ClientComponent } from './clients-page/client/client.component';
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 
 @NgModule({
@@ -26,7 +25,6 @@ import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.compo
     LoaderComponent,
     ClientsPageComponent,
     TasksComponent,
-    ClientComponent,
     MonthlyReportsComponent
   ],
   imports: [

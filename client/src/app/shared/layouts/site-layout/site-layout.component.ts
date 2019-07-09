@@ -10,7 +10,7 @@ import {
 import { Router } from "@angular/router";
 import { Clients, User } from "../../interfaces";
 import { ClientsService } from "../../services/clients-service.service";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { UserService } from "../../services/user.service";
 import { MaterialInstance } from "../../classes/material.service";
 import { MaterialService } from "./../../classes/material.service";
@@ -25,17 +25,18 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("modal") modalRef: ElementRef;
   @ViewChild("select") selectRef: ElementRef;
 
-  clients: Clients[];
+  // clients: Clients[];
   loading = false;
   user: User;
   aSub: Subscription;
+  aSub2: Subscription;
   show: boolean;
   form: FormGroup;
-  clientsNone = true;
   modal: MaterialInstance;
   select: MaterialInstance;
   clientsId = [];
-  clientExist = false;
+  message = "";
+  clients$: Observable<Clients[]>;
 
   constructor(
     private clientsService: ClientsService,
@@ -45,21 +46,22 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    //
     this.form = new FormGroup({
-      name: new FormControl("Project Name", [Validators.required]),
+      name: new FormControl("", [Validators.required]),
       currency: new FormControl(null, [Validators.required]),
       cost: new FormControl(10, [Validators.required, Validators.min(10)])
     });
 
     this.loading = true;
 
-    this.clientsService.fetchAll().subscribe(clients => {
-      this.clients = clients;
-      this.clientsNone = false;
-      this.clients.forEach(e => {
+    this.clients$ = this.clientsService.fetchAll();
+
+    this.aSub2 = this.clientsService.fetchAll().subscribe(clients => {
+      clients.forEach(e => {
         this.clientsId.push(e.name.toLowerCase().replace(/\s/g, ""));
       });
-      console.log("****CLIENTS********", this.clients);
+      console.log("****CLIENTS********", this.clientsId);
     });
 
     this.aSub = this.userService
@@ -75,8 +77,8 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   addNewProject() {
     // this.positionId = null;
     this.form.reset({
-      name: "Project Name",
-      currency: null,
+      name: "",
+      currency: "dollar",
       cost: 10
     });
     this.modal.open();
@@ -87,18 +89,24 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       return name.toLowerCase().replace(/\s/g, "") == item;
     });
     if (mutch) {
-      this.clientExist = true;
+      this.message = "Такой клиент существует";
+      this.showMessage();
       return true;
     } else {
-      this.clientExist = false;
+      this.form.enable();
+      this.message = "";
       return false;
     }
   }
-  closeModal() {
-    this.modal.close();
+  showMessage() {
+    window.setTimeout(() => {
+      this.message = "";
+    }, 2000);
+  }
+  resetForm() {
     this.form.reset({
-      name: "Project Name",
-      currency: "U.S. Dollar",
+      name: "",
+      currency: "dollar",
       cost: 10
     });
   }
@@ -111,21 +119,31 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.aSub) {
       this.aSub.unsubscribe();
     }
+    if (this.aSub2) {
+      this.aSub2.unsubscribe();
+    }
   }
 
+  closeModal() {
+    this.modal.close();
+    this.resetForm();
+    // this.router.navigate(["/reports"]);
+  }
   onSubmit() {
-    // this.form.disable();
-    if (this.chekClientExist(this.form.value.name)) {
-      this.form.enable();
+    if (!this.form.value.name) {
       return;
     }
-    this.form.value.currency = this.selectRef.nativeElement.value,
+    if (this.form.value.name) {
+      if (this.chekClientExist(this.form.value.name)) {
+        return;
+      } else {
+        this.form.valid;
+      }
+    }
 
+    this.form.value.currency = this.selectRef.nativeElement.value;
     console.log(this.form.value);
-
     this.closeModal();
-    // this.router.navigate(["/reports"]);
-
     MaterialService.updateTextInputs();
   }
 
