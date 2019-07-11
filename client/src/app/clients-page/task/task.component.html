@@ -1,0 +1,28 @@
+<div class="page-title">
+  <form [formGroup]="form" class="formNewTask_top" (ngSubmit)="onSubmit()">
+    <div class="dfl">
+      <input id="name" class="dibl task_inputs"  formControlName="name" type="text" placeholder="Task name">
+
+      <div class="groupInptWaraper dfl" formGroupName="startTask">
+        <input id="timeDateStart" class="dibl task_inputs" formControlName="timeDateStart" type="text" #timeDateStart placeholder="21:20">
+        <input id="dayDateStart" class="dibl task_inputs" formControlName="dayDateStart" type="text" #dayDateStart placeholder="Today">
+      </div>
+
+      <div class="groupInptWaraper dfl" formGroupName="endTask">
+        <input id="timeDateEnd" class="dibl task_inputs" formControlName="timeDateEnd" type="text" #timeDateEnd placeholder="22:22">
+        <input id="dayDateEnd" class="dibl task_inputs" formControlName="dayDateEnd" type="text" #dayDateEnd placeholder="date end">
+      </div>
+
+
+
+      <button class=" modal-action dibl newTaskBtn" type="submit">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="20" fill="#00BCD4" />
+          <path
+            d="M16.818 26L16.2886 26.5313C16.5815 26.8231 17.0552 26.8229 17.3478 26.5308L16.818 26ZM11.6905 19.8327C11.3971 19.5403 10.9222 19.5412 10.6298 19.8346C10.3375 20.128 10.3383 20.6029 10.6318 20.8953L11.6905 19.8327ZM29.3687 14.5308C29.6618 14.2382 29.6622 13.7633 29.3696 13.4701C29.077 13.177 28.6021 13.1766 28.3089 13.4692L29.3687 14.5308ZM17.3473 25.4687L11.6905 19.8327L10.6318 20.8953L16.2886 26.5313L17.3473 25.4687ZM17.3478 26.5308L29.3687 14.5308L28.3089 13.4692L16.2881 25.4692L17.3478 26.5308Z"
+            fill="white" />
+        </svg>
+      </button>
+    </div>
+  </form>
+</div>

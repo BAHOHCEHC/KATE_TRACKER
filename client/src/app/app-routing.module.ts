@@ -8,9 +8,10 @@ import { AuthGuard } from "./shared/classes/auth.guard";
 // ******************************
 // ******************************
 import { ClientsPageComponent } from "./clients-page/clients-page.component";
-import { TasksComponent } from "./clients-page/tasks/tasks.component";
+// import { TasksComponent } from "./clients-page/tasks/tasks.component";
 // import { ClientComponent } from './clients-page/client/client.component';
-import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
+import { MonthlyReportsComponent } from "./monthly-reports/monthly-reports.component";
+import { TasksComponent } from './clients-page/tasks/tasks.component';
 
 const routes: Routes = [
   {
@@ -32,12 +33,16 @@ const routes: Routes = [
         component: ClientsPageComponent,
         children: [
           // { path: ":id", component: ClientComponent },
-          { path: "clients/tasks", component: TasksComponent }
+          // { path: "clients/tasks", component: TasksComponent }
+          {
+            path: ":id",
+            component: TasksComponent
+          }
         ]
       },
       {
-        path:"reports",
-        component: MonthlyReportsComponent,
+        path: "reports",
+        component: MonthlyReportsComponent
       }
     ]
   }

@@ -200,6 +200,7 @@ a.registraton_link {
 
 .left-sidebar {
   width: 20%;
+  min-width: 20%;
   color: #fff;
   max-width: 300px;
   min-height: 100vh;
@@ -210,7 +211,7 @@ a.registraton_link {
 .content {
   width: 80%;
   min-width: 80%;
-  padding: 0 40px;
+  padding: 0;
 }
 
 .task_inputs {
@@ -338,4 +339,46 @@ svg.closeBtn {
 .emptyContainer {
   height: 100Vh;
   min-height: 100vh;
+}
+
+.newTaskBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.newTaskBtn:focus {
+  outline: none;
+  border-radius: 50%;
+  background-color: green;
+}
+
+.page-title {
+  padding: 15px 40px;
+  height: 70px;
+  box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
+}
+
+.formNewTask_top input {
+  border: none !important;
+}
+
+.newTaskBtn:focus svg rect {
+  fill: green;
+}
+
+.groupInptWaraper input {
+  box-shadow: none !important;
+}
+
+.groupInptWaraper {
+  border-radius: 5px;
+  margin: 0 10px;
+  border: 1px solid rgba(33, 33, 33, 0.15);
+}
+
+form#formId {
+    padding: 0 40px;
 }

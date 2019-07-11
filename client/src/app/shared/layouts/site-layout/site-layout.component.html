@@ -39,7 +39,7 @@
 
       <div class="clients" *ngIf="clients$ | async as clients; else loader">
         <ul *ngIf="clients.length !== 0; else empty">
-          <li class="clients_list" *ngFor="let client of clients">
+          <li  routerLinkActive ="active" class="clients_list" *ngFor="let client of clients">
             <a [routerLink]="['/clients', client._id]" class="clients_list-item">{{client.name}}</a>
           </li>
         </ul>
@@ -66,7 +66,8 @@
 <main class="dibl content" [ngClass]="{'empty':!clientsId.length,'notEmpty':clientsId.length}">
 
   <div *ngIf="clientsId.length">
-    <router-outlet></router-outlet>
+    <!-- <router-outlet></router-outlet> -->
+    <app-clients-page></app-clients-page>
   </div>
 
 
@@ -232,6 +233,8 @@
     </div>
   </form>
 </div>
+
+
 </main>
 
 

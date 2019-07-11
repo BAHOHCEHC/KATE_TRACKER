@@ -14,7 +14,7 @@ import {
 } from "src/app/shared/classes/material.service";
 import { TasksService } from "src/app/shared/services/tasks.service";
 import { Task, User } from "src/app/shared/interfaces";
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from "src/app/shared/services/auth.service";
 
 @Component({
   selector: "app-tasks",
@@ -35,6 +35,8 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   user: any;
   tokenId: string;
 
+  id: string;
+
   constructor(
     private taskService: TasksService,
     private authService: AuthService
@@ -44,7 +46,6 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tokenId = localStorage.getItem("auth-token");
     // this.tokenId = this.authService.getToken();
     const userId = localStorage.getItem("userId");
-
 
     this.form = new FormGroup({
       name: new FormControl(null),

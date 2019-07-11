@@ -14,6 +14,7 @@ import { LoaderComponent } from "./shared/components/loader/loader.component";
 import { ClientsPageComponent } from "./clients-page/clients-page.component";
 import { TasksComponent } from "./clients-page/tasks/tasks.component";
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
+import { TaskComponent } from './clients-page/task/task.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.compo
     LoaderComponent,
     ClientsPageComponent,
     TasksComponent,
-    MonthlyReportsComponent
+    MonthlyReportsComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
