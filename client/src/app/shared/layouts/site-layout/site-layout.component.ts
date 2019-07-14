@@ -41,7 +41,6 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private clientsService: ClientsService,
     // private auth: AuthService,
-    private router: Router,
     private userService: UserService
   ) {}
 

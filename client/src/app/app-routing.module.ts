@@ -6,10 +6,7 @@ import { SiteLayoutComponent } from "./shared/layouts/site-layout/site-layout.co
 import { RegisterPageComponent } from "./register-page/register-page.component";
 import { AuthGuard } from "./shared/classes/auth.guard";
 // ******************************
-// ******************************
 import { ClientsPageComponent } from "./clients-page/clients-page.component";
-// import { TasksComponent } from "./clients-page/tasks/tasks.component";
-// import { ClientComponent } from './clients-page/client/client.component';
 import { MonthlyReportsComponent } from "./monthly-reports/monthly-reports.component";
 import { TasksComponent } from './clients-page/tasks/tasks.component';
 
@@ -32,8 +29,6 @@ const routes: Routes = [
         path: "clients",
         component: ClientsPageComponent,
         children: [
-          // { path: ":id", component: ClientComponent },
-          // { path: "clients/tasks", component: TasksComponent }
           {
             path: ":id",
             component: TasksComponent

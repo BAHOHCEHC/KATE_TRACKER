@@ -7,7 +7,7 @@ import {
   AfterViewInit
 } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import {
   MaterialService,
   MaterialDatepicker
@@ -15,6 +15,7 @@ import {
 import { TasksService } from "src/app/shared/services/tasks.service";
 import { Task, User } from "src/app/shared/interfaces";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-tasks",
@@ -26,6 +27,7 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("end") endRef: ElementRef;
 
   aSub: Subscription;
+  aSub2: Subscription;
   start: MaterialDatepicker;
   end: MaterialDatepicker;
 
@@ -35,11 +37,13 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   user: any;
   tokenId: string;
 
-  id: string;
+  idClients: string;
+  allTasks: Task[];
 
   constructor(
     private taskService: TasksService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -54,6 +58,14 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
       end: new FormControl(null),
       wastedTime: new FormControl(null),
       totalMoney: new FormControl(null)
+    });
+
+    this.idClients = this.route.snapshot.paramMap.get("id");
+    console.log(this.idClients);
+
+    this.aSub2 = this.taskService.fetch(this.idClients).subscribe(response => {
+      this.allTasks = response;
+      console.log(this.allTasks);
     });
   }
   ngAfterViewInit() {
@@ -79,6 +91,9 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.start.destroy();
     this.end.destroy();
+    if (this.aSub2) {
+      this.aSub2.unsubscribe();
+    }
   }
   onSubmit() {
     // this.form.disable();

@@ -4,16 +4,13 @@ const errorHandler = require("../utils/errorHandler");
 const moment = require("moment");
 
 // module.exports.getByCategoryId = async function(req, res) {
-module.exports.getByClientId = async function(req, res) {
+module.exports.getByClientName = async function(req, res) {
   try {
-    // const positions = await Position.find({
     const tasks = await Task.find({
-      // category: req.params.categoryId,
-      client: req.params.clientId, // clientId в роутах /:clientId'
+      client: req.params.clientName, // clientId в роутах /:clientName'
       user: req.user.id //из passporta тянем юзера id
     });
     res.status(200).json(tasks);
-    // res.status(200).json(positions)
   } catch (e) {
     errorHandler(res, e);
   }
@@ -36,7 +33,7 @@ module.exports.create = async function(req, res) {
       end: moment(req.body.end).format("DD.MM.YYYY HH:mm"), //end
       user: req.user.id,
       wastedTime: wasteTime,
-      totalMoney: Math.ceil(wasteTime*req.body.cost)
+      totalMoney: Math.ceil(wasteTime * req.body.cost)
     }).save();
     // res.status(201).json(position);
     res.status(201).json(task);

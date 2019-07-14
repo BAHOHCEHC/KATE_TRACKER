@@ -380,5 +380,36 @@ svg.closeBtn {
 }
 
 form#formId {
-    padding: 0 40px;
+  padding: 0 40px;
+}
+
+.statusBar {
+  font-size: 18px;
+  line-height: 23px;
+}
+
+.wrap {
+  margin: 10px 30px 10px 0;
+}
+
+.copylink {
+  height: 40px;
+  position: absolute;
+  right: 40px;
+}
+.clients_list{
+  height: 40px;
+  padding: 10px 20px;
+}
+.clients_list.active {
+  border-radius: 5px;
+  background: #35404D;
+}
+
+.clients_list.active a {
+  color: #FFFFFF !important;
+}
+
+.clients_list a {
+  color: #cecece;
 }

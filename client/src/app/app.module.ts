@@ -27,7 +27,7 @@ import { TaskComponent } from './clients-page/task/task.component';
     ClientsPageComponent,
     TasksComponent,
     MonthlyReportsComponent,
-    TaskComponent
+    TaskComponent,
   ],
   imports: [
     BrowserModule,
