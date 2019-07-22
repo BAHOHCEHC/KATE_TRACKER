@@ -19,6 +19,12 @@ const clientSchema = new Schema({
     type: Number,
     default: 10
   },
+  totalHours: {
+    type: Number,
+  },
+  totalPayment: {
+    type: Number,
+  },
   // curency: {
   //   type: String,
   // },

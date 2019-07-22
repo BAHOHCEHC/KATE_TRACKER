@@ -1,9 +1,9 @@
 <div class="statusBar ">
-  <h1 class="projectName">Project name #1</h1>
+  <h1 class="projectName">{{nameClients}}</h1>
   <div class="dfl ai">
-    <div class="wrap">15 $ / hour</div>
-    <div class="wrap">Total hours:28:00</div>
-    <div class="wrap">Total payment: $420</div>
+    <div *ngIf="tarif" class="wrap">{{tarif}} $ / hour</div>
+    <div *ngIf="totalHours" class="wrap">Total hours:{{totalHours}}</div>
+    <div *ngIf="totalPayment" class="wrap">Total payment: ${{totalPayment}}</div>
 
     <div class="copylink" (click)="copyLink()"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"
         xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +21,49 @@
 
 
 
-<form [formGroup]="form" id=formId (ngSubmit)="onSubmit()">
+<div *ngIf="allTasks$" class="row">
+
+  <div class="dfl ai " *ngFor="let task of allTasks$">
+    <div class="taskName ">{{task.name}}</div>
+    <div class="taskTime pr dfl">
+      <div>{{task.start}}</div>
+      <span>-</span>
+      <div>{{task.end}}</div>
+      <div class="formTask">
+        <form id=formId (ngSubmit)="changeTask(refForm)" #refForm="ngForm">
+          <div class="inpWrap">
+            <label for="start">start</label>
+            <input id="start" class="dibl task_inputs" NgModel name="start" type="text" #start>
+            <div class="arrowtime"><svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4H13M13 4L10 1M13 4L10 7" stroke="#212121" stroke-opacity="0.15" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <label for="end">end</label>
+            <input id="end" class="dibl task_inputs" NgModel name="end" type="text" #end>
+          </div>
+          <button class="btn" (click)="cancel()">cancel</button>
+          <button class="btn" type="submit">save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <form [formGroup]="form" id=formId (ngSubmit)="onSubmit()">
   <div class="dfl">
 
     <label for="name">name</label>
@@ -40,4 +82,4 @@
       Save
     </button>
   </div>
-</form>
+</!-->

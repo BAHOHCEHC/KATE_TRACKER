@@ -13,11 +13,11 @@ export class ClientsService {
     return this.http.get<Clients[]>("/api/clients");
   }
 
-  getById(id: string): Observable<Clients> {
-    return this.http.get<Clients>(`/api/clients/${id}`);
+  getByName(name: string): Observable<Clients> {
+    return this.http.get<Clients>(`/api/clients/${name}`);
   }
 
-  create( catName: string, image?: File ):Observable<Clients> {
+  create(catName: string, image?: File): Observable<Clients> {
     const formData = new FormData();
     if (image) {
       formData.append("image", image, image.name);
@@ -26,7 +26,7 @@ export class ClientsService {
     return this.http.post<Clients>("/api/clients", formData);
   }
 
-  update(id: string, catName:string, image?: File):Observable<Clients> {
+  update(id: string, catName: string, image?: File): Observable<Clients> {
     const formData = new FormData();
     if (image) {
       formData.append("image", image, image.name);
@@ -35,7 +35,7 @@ export class ClientsService {
     return this.http.patch<Clients>(`/api/clients/${id}`, formData);
   }
 
-  delete(id:string):Observable<Message>{
+  delete(id: string): Observable<Message> {
     return this.http.delete<Message>(`/api/clients/${id}`);
   }
 }

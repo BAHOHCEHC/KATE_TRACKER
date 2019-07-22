@@ -19,6 +19,8 @@ export interface Clients {
   imageSrc?: string;
   user?: string;
   tarif?: number;
+  totalHours?: number;
+  totalPayment?: number;
   taskList?: Task[];
   _id?: string;
 }

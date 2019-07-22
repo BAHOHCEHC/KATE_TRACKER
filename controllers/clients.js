@@ -3,7 +3,6 @@ const Client = require("../models/Client");
 const Task = require("../models/Task");
 const errorHandler = require("../utils/errorHandler");
 
-
 module.exports.getAll = async function(req, res) {
   try {
     const clients = await Client.find({ user: req.user.id });
@@ -14,11 +13,9 @@ module.exports.getAll = async function(req, res) {
   }
 };
 
-module.exports.getById = async function(req, res) {
+module.exports.getByName = async function(req, res) {
   try {
-    // const category = await Category.findById(req.params.id)
-    // res.status(200).json(category)
-    const client = await Client.findById(req.params.id);
+    const client = await Client.find({ name: req.params.name });
     res.status(200).json(client);
   } catch (e) {
     errorHandler(res, e);
