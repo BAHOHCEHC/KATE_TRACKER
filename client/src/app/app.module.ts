@@ -15,6 +15,7 @@ import { ClientsPageComponent } from "./clients-page/clients-page.component";
 import { TasksComponent } from "./clients-page/tasks/tasks.component";
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 import { TaskComponent } from './clients-page/task/task.component';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { TaskComponent } from './clients-page/task/task.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    TimepickerModule.forRoot(),
   ],
   providers: [
     {

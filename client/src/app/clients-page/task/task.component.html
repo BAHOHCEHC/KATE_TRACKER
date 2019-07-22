@@ -1,16 +1,27 @@
 <div class="page-title">
-  <form [formGroup]="form" class="formNewTask_top" (ngSubmit)="onSubmit()">
-    <div class="dfl">
-      <input id="name" class="dibl task_inputs"  formControlName="name" type="text" placeholder="Task name">
+  <form [formGroup]="formTask" class="formNewTask_top" (ngSubmit)="onSubmit()">
+    <div class="dfl ai">
+      <input id="name" class="dibl task_inputs" formControlName="name" type="text" placeholder="Task name">
 
-      <div class="groupInptWaraper dfl" formGroupName="startTask">
-        <input id="timeDateStart" class="dibl task_inputs" formControlName="timeDateStart" type="text" #timeDateStart placeholder="21:20">
-        <input id="dayDateStart" class="dibl task_inputs" formControlName="dayDateStart" type="text" #dayDateStart placeholder="Today">
+      <div class="groupInptWaraper dfl ai">
+        <timepicker [minuteStep]='1' class='timepicker' formControlName="timeStart" [showMeridian]="false" [showSpinners]="false"
+          [(ngModel)]="startTime" [max]="end" #timepikerStart></timepicker>
+
+        <input id="dayStart" class="dibl task_inputs dayStart" formControlName="dayStart" type="text" #dayStart
+          placeholder="Today">
       </div>
 
-      <div class="groupInptWaraper dfl" formGroupName="endTask">
-        <input id="timeDateEnd" class="dibl task_inputs" formControlName="timeDateEnd" type="text" #timeDateEnd placeholder="22:22">
-        <input id="dayDateEnd" class="dibl task_inputs" formControlName="dayDateEnd" type="text" #dayDateEnd placeholder="date end">
+      <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 4H13M13 4L10 1M13 4L10 7" stroke="#212121" stroke-opacity="0.15" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+
+
+
+      <div class="groupInptWaraper dfl ai">
+        <timepicker [minuteStep]='1' class='timepicker' formControlName="timeEnd" [showMeridian]="false" [showSpinners]="false"
+          [(ngModel)]="end" [min]="currentTime" #timepikerEnd>
+        </timepicker>
       </div>
 
 
@@ -25,4 +36,5 @@
       </button>
     </div>
   </form>
+
 </div>

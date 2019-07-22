@@ -12,7 +12,7 @@ export interface MaterialDatepicker extends MaterialInstance {
 }
 export class MaterialService {
   static toast(message: string) {
-    M.toast({ html: message });
+    M.toast({ html: message, displayLength:1000 });
   }
 
   static initializeFloatingButton(ref: ElementRef) {

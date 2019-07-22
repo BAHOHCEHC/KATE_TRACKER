@@ -18,24 +18,27 @@ module.exports.getByClientName = async function(req, res) {
 
 module.exports.create = async function(req, res) {
   try {
-    // const position = await new Position({
-    const startus = moment(req.body.start, "DD.MM.YYYY HH:mm");
-    const endus = moment(req.body.end, "DD.MM.YYYY HH:mm");
-    const betweenDifferenceM = startus.diff(endus, "minutes");
-    const wasteTime = Math.abs(+betweenDifferenceM) / 60;
-
     const task = await new Task({
+      // name: req.body.name,
+      // cost: req.body.cost,
+      // client: req.body.client,
+      // startTime: req.body.startTime, //start
+      // endTime: req.body.endTime, //end
+      // user: req.user.id,
+      // wastedTime: wasteTime,
+      // totalMoney: Math.ceil(wasteTime * req.body.cost),
+      // formatTime: req.body.formatTime
       name: req.body.name,
       cost: req.body.cost,
       client: req.body.client,
-      // category: req.body.category,
-      start: moment(req.body.start).format("DD.MM.YYYY HH:mm"), //start
-      end: moment(req.body.end).format("DD.MM.YYYY HH:mm"), //end
-      user: req.user.id,
-      wastedTime: wasteTime,
-      totalMoney: Math.ceil(wasteTime * req.body.cost)
+      user: req.body.user,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      wastedTime: req.body.wastedTime,
+      totalMoney: req.body.totalMoney,
+      startDay: req.body.startDay,
+      formatTime: req.body.formatTime
     }).save();
-    // res.status(201).json(position);
     res.status(201).json(task);
   } catch (e) {
     errorHandler(res, e);

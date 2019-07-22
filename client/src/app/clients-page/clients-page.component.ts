@@ -15,6 +15,7 @@ export class ClientsPageComponent implements OnInit, OnDestroy {
     console.log(this);
 
   }
+
   copyLink() {
     // console.log(this.id);
   }

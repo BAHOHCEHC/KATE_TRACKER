@@ -4,7 +4,9 @@ import {
   ElementRef,
   ViewChild,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
+  EventEmitter,
+  Output
 } from "@angular/core";
 import { FormGroup, FormControl, NgForm } from "@angular/forms";
 import { Subscription, Subject } from "rxjs";
@@ -17,6 +19,7 @@ import { Task, User, Clients } from "src/app/shared/interfaces";
 import { ActivatedRoute, Params } from "@angular/router";
 import { takeUntil } from "rxjs/operators";
 import { ClientsService } from "src/app/shared/services/clients-service.service";
+import { SharedService } from "src/app/shared/services/shared-service";
 
 @Component({
   selector: "app-tasks",
@@ -27,6 +30,7 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("refForm") form: NgForm;
   @ViewChild("start") startRef: ElementRef;
   @ViewChild("end") endRef: ElementRef;
+  @ViewChild("modal") modalRef: ElementRef[];
 
   // start: MaterialDatepicker;
   // end: MaterialDatepicker;
@@ -50,6 +54,7 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   visible = false;
 
   constructor(
+    private _sharedService: SharedService,
     private taskService: TasksService,
     private route: ActivatedRoute,
     private clientService: ClientsService
@@ -68,13 +73,12 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
     //   totalMoney: new FormControl(null)
     // });
 
-    this.clientService.getByName(this.nameClients);
+    // this.clientService.getByName(this.nameClients);
 
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: Params) => {
         this.nameClients = params.id;
-
         this.aSub = this.taskService
           .fetch(this.nameClients)
           .subscribe(response => {
@@ -89,19 +93,11 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
             this.totalHours = this.client.totalHours;
             this.totalPayment = this.client.totalPayment;
             console.log("///////client///////", this.client);
+            this._sharedService.emitChange(this.client);
           });
       });
   }
-  ngAfterViewInit() {
-    // this.start = MaterialService.initDatepicker(
-    //   this.startRef,
-    //   this.validate.bind(this)
-    // );
-    // this.end = MaterialService.initDatepicker(
-    //   this.endRef,
-    //   this.validate.bind(this)
-    // );
-  }
+  ngAfterViewInit() {}
   changeTask(form: NgForm) {
     console.log(form);
   }
@@ -110,6 +106,18 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   changeVisibility() {}
 
+  copyLink() {
+    console.log(this.client);
+
+    let url = document.location.href;
+    document.addEventListener("copy", (e: ClipboardEvent) => {
+      e.clipboardData.setData("text/plain", url);
+      e.preventDefault();
+      document.removeEventListener("copy", null);
+    });
+    document.execCommand("copy");
+    MaterialService.toast("Скопированно в буфер");
+  }
   validate() {
     // this.form.controls.start.setValue(this.startRef.nativeElement.value);
     // this.form.controls.end.setValue(this.endRef.nativeElement.value);
@@ -121,8 +129,6 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.isValid = this.start.date < this.end.date;
   }
   ngOnDestroy() {
-    // this.start.destroy();
-    // this.end.destroy();
     if (this.aSub) {
       this.aSub.unsubscribe();
       this.allTasks$ = [];
@@ -142,13 +148,5 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
     //   cost: this.form.value.cost,
     //   user: this.user._id
     // };
-
-    // this.aSub = this.auth.login(this.form.value).subscribe(
-    //   () => this.router.navigate(["/clients"]),
-    //   error => {
-    //     MaterialService.toast(error.error.message);
-    //     this.form.enable();
-    //   }
-    // );
   }
 }

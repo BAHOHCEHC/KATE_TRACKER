@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import {  Message, Task } from "../interfaces";
+import { Message, Task } from "../interfaces";
 
 @Injectable({
   providedIn: "root"
@@ -9,8 +9,8 @@ import {  Message, Task } from "../interfaces";
 export class TasksService {
   constructor(private http: HttpClient) {}
 
-  fetch(clientsNmae: string): Observable<Task[]> {
-    return this.http.get<Task[]>(`/api/task/${clientsNmae}`);
+  fetch(clientsName: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`/api/task/${clientsName}`);
   }
 
   create(task: Task): Observable<Task> {

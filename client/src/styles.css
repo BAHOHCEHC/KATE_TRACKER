@@ -378,18 +378,21 @@ svg.closeBtn {
 }
 
 .groupInptWaraper {
+  height: 40px;
   border-radius: 5px;
   margin: 0 10px;
   border: 1px solid rgba(33, 33, 33, 0.15);
 }
 
 form#formId {
-  padding: 0 40px;
+  /* padding: 0 40px; */
+  width: 100%;
 }
 
 .statusBar {
   font-size: 18px;
   line-height: 23px;
+  padding: 0 40px;
 }
 
 .wrap {
@@ -430,29 +433,145 @@ form#formId {
   box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
   border-radius: 5px;
   right: 0;
+  padding: 0 20px;
+  display: none;
 }
 
-.taskTime.hiden .formTask{
+.btnTaskDate {
+  width: 106px;
+  display: inline-block;
+  height: 40px;
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+}
+
+.btnTaskDateRight {
+  right: 20px;
+}
+
+.taskTime.hiden .formTask {
   display: none;
 }
 
 .taskName {
-  width: 50%;
+  width: 60%;
 }
 
 .taskTime {
   width: 30%;
 }
 
+.allTasks {
+  padding: 0 40px;
+}
+
+.labelTaksDate {
+  position: absolute;
+  left: 0;
+  top: -30px;
+  color: #dedede;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  text-transform: capitalize;
+}
+
+.wrapDateTask {
+  position: relative;
+  width: 35%;
+}
+
 .inpWrap {
+  position: relative;
   width: 100%;
+  padding: 50px 0px 0;
 }
 
 .taskTime span, .arrowtime {
   margin: 0 20px;
+  width: 10%;
+  margin: 0 10%;
 }
 
 .formTask input {
-  width: 20% !important;
+  border: 1px solid #dedede !important;
+  box-shadow: none!important;
+  padding: 0px 30px!important;
+  height: 40px!important;
+  border-radius: 5px!important;
+  box-sizing: border-box!important;
+  margin: 0!important;
+}
 
+/* **************************************** */
+
+/* **************************************** */
+
+/* **************************************** */
+
+/* **************************************** */
+
+/* **************************************** */
+
+.timepicker tr, .timepicker td, .timepicker input {
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: normal!important;
+}
+
+.text-center, .btn-link, .timepicker .bs-chevron {
+  display: none !important;
+}
+
+.timepicker td {
+  padding: 0 0;
+  display: flex;
+  line-height: 0;
+  align-items: center;
+}
+
+.timepicker tr {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.task_inputs {
+  height: 40px!important;
+}
+
+.timepicker {
+  vertical-align: middle;
+  display: flex;
+  margin: 0 5px;
+  align-items: center;
+}
+
+.dayStart {
+  width: 75px !important;
+  padding: 0 5px !important;
+  margin: 0 !important;
+}
+
+.bs-timepicker-field {
+  display: inline-block !important;
+}
+
+input.bs-timepicker-field {
+  margin: 0 !important;
+  width: 27px !important;
+  height: 25px !important;
+  font-style: normal !important;
+  text-align: center;
+  font-size: 16px !important;
+  text-transform: lowercase;
+}
+
+.form-group:nth-child(1) input.bs-timepicker-field {
+  margin-right: -7px !important;
+}
+
+.form-group:nth-child(3) input.bs-timepicker-field {
+  margin-left: -7px !important;
 }

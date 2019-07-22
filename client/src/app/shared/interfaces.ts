@@ -19,7 +19,7 @@ export interface Clients {
   imageSrc?: string;
   user?: string;
   tarif?: number;
-  totalHours?: number;
+  totalHours?: string;
   totalPayment?: number;
   taskList?: Task[];
   _id?: string;
@@ -29,12 +29,14 @@ export interface Task {
   name: string;
   cost: number;
   client: string;
-  start?: Date;
-  end?: Date;
+  startTime?: Date;
+  endTime?: Date;
   wastedTime?: number;
   totalMoney?: number;
   user?: string;
+  formatTime?: string;
   _id?: string;
+  startDay:string;
 }
 export interface Message {
   message: string;
@@ -46,14 +48,7 @@ export interface Order {
   list: any[];
   _id?: string;
 }
-// export interface Position {
-//   name: string;
-//   cost: number;
-//   quantity?: number;
-//   user?: string;
-//   category: string;
-//   _id?: string;
-// }
+
 export interface OrderPosition {
   name: string;
   cost: number;
@@ -75,12 +70,3 @@ export interface OverviewPageItem {
   yesterday: number;
   isHighter: boolean;
 }
-// export interface AnalyticsChartItem {
-//   label: string;
-//   order: number;
-//   gain: number;
-// }
-// export interface AnalyticsPage {
-//   average: number;
-//   chart: AnalyticsChartItem[];
-// }

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
-  // const positionSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -15,10 +14,13 @@ const taskSchema = new Schema({
   client: {  //по этому полю удаляется таски у клиента при удалении клиента
     type: String,
   },
-  start: {
-    type: String,
+  startTime: {
+    type: Date,
   },
-  end: {
+  endTime: {
+    type: Date,
+  },
+  startDay: {
     type: String,
   },
   wastedTime: {
@@ -30,6 +32,9 @@ const taskSchema = new Schema({
   user: {
     ref: "users",
     type: Schema.Types.ObjectId
+  },
+  formatTime:{
+    type: String
   }
 });
 

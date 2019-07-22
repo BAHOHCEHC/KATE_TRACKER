@@ -21,38 +21,94 @@
 
 
 
-<div *ngIf="allTasks$" class="row">
+
+
+<!-- <div *ngIf="allTasks$" class="row allTasks">
 
   <div class="dfl ai " *ngFor="let task of allTasks$">
-    <div class="taskName ">{{task.name}}</div>
+    <div class="taskName ">
+      // {{task.name}}
+      <input type="text" class="form-control" [(ngModel)] ="task.name">
+      </div>
     <div class="taskTime pr dfl">
-      <div>{{task.start}}</div>
+      <div>
+        // {{task.start}}
+        <input type="text" class="form-control" [(ngModel)] ="task.start">
+      </div>
       <span>-</span>
-      <div>{{task.end}}</div>
-      <div class="formTask">
+      <div>
+        // {{task.end}}
+        <input type="text" class="form-control" [(ngModel)] ="task.end">
+        </div>
+      <div class="formTask" #modal>
         <form id=formId (ngSubmit)="changeTask(refForm)" #refForm="ngForm">
-          <div class="inpWrap">
-            <label for="start">start</label>
-            <input id="start" class="dibl task_inputs" NgModel name="start" type="text" #start>
-            <div class="arrowtime"><svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+          <div class="inpWrap dfl">
+            <div class="wrapDateTask">
+              <label class="labelTaksDate" for="start">start</label>
+              <input id="start" class="dibl" NgModel name="start" type="text" #start>
+            </div>
+            <div class="arrowtime dfl ai jc"><svg width="14" height="8" viewBox="0 0 14 8" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 4H13M13 4L10 1M13 4L10 7" stroke="#212121" stroke-opacity="0.15" stroke-width="1.5"
                   stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
-            <label for="end">end</label>
-            <input id="end" class="dibl task_inputs" NgModel name="end" type="text" #end>
+            <div class="wrapDateTask">
+              <label class="labelTaksDate" for="end">end</label>
+              <input id="end" class="dibl" NgModel name="end" type="text" #end>
+            </div>
           </div>
-          <button class="btn" (click)="cancel()">cancel</button>
-          <button class="btn" type="submit">save</button>
+          <button class="btn tac btnTaskDate btnTaskDateLeft" (click)="cancel()">cancel</button>
+          <button class="btn tac btnTaskDate btnTaskDateRight" type="submit">save</button>
         </form>
       </div>
     </div>
   </div>
 
+</div> -->
+
+<div *ngIf="allTasks$" class="row allTasks">
+
+  <div *ngFor="let task of allTasks$">
+    <form id=formId (ngSubmit)="changeTask(refForm)" #refForm="ngForm" class="dfl dfl ai">
+      <div class="taskName ">
+        <input type="text" class="form-control" [(ngModel)]="task.name" name="name">
+      </div>
+      <div class="taskTime pr dfl">
+        <div>
+          <input type="text" class="form-control" [(ngModel)]="task.startTime" name="startTime">
+        </div>
+        <span>-</span>
+        <div>
+          <input type="text" class="form-control" [(ngModel)]="task.endTime" name="endTime">
+        </div>
+        <div class="formTask" #modal>
+          <div class="inpWrap dfl">
+            <div class="wrapDateTask">
+              <label class="labelTaksDate" for="start">start</label>
+              <input id="start" class="dibl" NgModel name="start" type="text" name="start" #start>
+            </div>
+            <div class="arrowtime dfl ai jc"><svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4H13M13 4L10 1M13 4L10 7" stroke="#212121" stroke-opacity="0.15" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="wrapDateTask">
+              <label class="labelTaksDate" for="end">end</label>
+              <input id="end" class="dibl" NgModel name="end" type="text" name="end" #end>
+            </div>
+          </div>
+          <button class="btn tac btnTaskDate btnTaskDateLeft" (click)="cancel()">cancel</button>
+          <button class="btn tac btnTaskDate btnTaskDateRight" type="submit">save</button>
+        </div>
+      </div>
+
+      <div class="taskSummary">{{task.wastedTime| number:'1.0-1'}}</div>
+    </form>
+  </div>
+
 </div>
-
-
 
 
 
