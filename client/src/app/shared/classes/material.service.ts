@@ -12,7 +12,7 @@ export interface MaterialDatepicker extends MaterialInstance {
 }
 export class MaterialService {
   static toast(message: string) {
-    M.toast({ html: message, displayLength:1000 });
+    M.toast({ html: message, displayLength: 1000 });
   }
 
   static initializeFloatingButton(ref: ElementRef) {
@@ -39,7 +39,11 @@ export class MaterialService {
   ): MaterialDatepicker {
     return M.Datepicker.init(ref.nativeElement, {
       format: "dd.mm.yyyy",
-      showClearBtn: true,
+      showClearBtn: false,
+      i18n: {
+        weekdaysAbbrev: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        done	: "Select"
+      },
       onClose
     });
   }

@@ -67,9 +67,9 @@
 
 </div> -->
 
-<div *ngIf="allTasks$" class="row allTasks">
+<div *ngIf="allTasks$" class="row allTasks dfl fd_col">
 
-  <div *ngFor="let task of allTasks$">
+  <div class="taskRow" *ngFor="let task of allTasks$">
     <form id=formId (ngSubmit)="changeTask(refForm)" #refForm="ngForm" class="dfl dfl ai">
       <div class="taskName ">
         <input type="text" class="form-control" [(ngModel)]="task.name" name="name">

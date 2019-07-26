@@ -56,23 +56,31 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.oSub$ = this._sharedService.changeEmitted$.subscribe(importClient => {
       this.client = importClient;
-      console.log("ssssssss", this.client);
+      console.log("CLIENT FROM TASK", this.client);
     });
     this.start = MaterialService.initDatepicker(
       this.dayDateStartRef,
       this.setDate.bind(this)
     );
   }
-  ngOnDestroy() {
-    if (this.oSub$) {
-      this.oSub$.unsubscribe();
-    }
-  }
   setDate() {
-    this.formTask.controls["dayStart"].setValue(
+    if (
+      moment(this.startTime).format("DD.MM.YYYY") ===
       moment(this.start.date).format("DD.MM.YYYY")
-    );
-    console.log(moment(this.start.date).format("DD.MM.YYYY"));
+    ) {
+      this.formTask.controls["dayStart"].setValue(
+        moment(this.startTime).format("DD.MM.YYYY")
+      );
+    } else {
+      this.formTask.controls["dayStart"].setValue(
+        moment(this.start.date).format("DD.MM.YYYY")
+      );
+    }
+    if (this.formTask.controls["name"].untouched) {
+      let newTaskName = moment(this.start.date).format("LL") + ` Task`;
+      this.formTask.controls["name"].setValue(newTaskName);
+    }
+
   }
   onSubmit() {
     console.log(this.formTask);
@@ -121,5 +129,10 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
     // ******************
     // ******************
     // ******************
+  }
+  ngOnDestroy() {
+    if (this.oSub$) {
+      this.oSub$.unsubscribe();
+    }
   }
 }

@@ -34,7 +34,9 @@
 .fl {
   float: left;
 }
-
+.fd_col{
+  flex-direction: column;
+}
 .tac {
   text-align: center;
 }
@@ -306,7 +308,7 @@ svg.closeBtn {
 }
 
 .select-wrapper input.select-dropdown:focus, .createProj input[type=text]:not(.browser-default):focus:not([readonly]) {
-  border: 1px solid #26a69a !important;
+  border: 1px solid #25a699 !important;
 }
 
 .input-field.left {
@@ -525,9 +527,8 @@ form#formId {
 }
 
 .timepicker td {
-  padding: 0 0;
+  padding: 0;
   display: flex;
-  line-height: 0;
   align-items: center;
 }
 
@@ -566,12 +567,103 @@ input.bs-timepicker-field {
   text-align: center;
   font-size: 16px !important;
   text-transform: lowercase;
+  position: relative;
+  top: 8px
+}
+
+.datepicker-modal {
+  max-width: 625px;
+  border-radius: 5px;
+  width: 380px;
+  height: 380px;
+}
+
+.datepicker-date-display {
+  display: none;
 }
 
 .form-group:nth-child(1) input.bs-timepicker-field {
-  margin-right: -7px !important;
+  margin-right: -5px !important;
 }
 
 .form-group:nth-child(3) input.bs-timepicker-field {
-  margin-left: -7px !important;
+  margin-left: -5px !important;
+}
+
+.month-prev svg, .month-next svg {
+  fill: #dedede;
+}
+
+.month-prev, .month-next {
+  margin-top: 0px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  top: 6px;
+  position: relative;
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  color: #dedede;
+}
+
+.is-selected button.datepicker-day-button {
+  background-color: #00BCD4;
+}
+
+.datepicker-clear {
+  display: none;
+}
+
+.confirmation-btns {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.datepicker-day-button {
+  padding: 0 !important;
+  height: 44px;
+  width: 44px;
+}
+
+.datepicker-table td.is-today {
+  color: #26a69a;
+}
+
+.is-today .datepicker-day-button {
+  font-weight: 600 !important;
+}
+
+.datepicker-footer .btn-flat {
+  width: 106px;
+  height: 40px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.datepicker-cancel {
+  background: #DEDEDE;
+}
+
+.datepicker-footer {
+  margin-bottom: 16px;
+  margin-top: 15px;
+  padding: 0 !important;
+}
+
+.datepicker-done {
+  background-color: #00BCD4;
+}
+
+.datepicker-controls .select-year input, .datepicker-controls .select-month input {
+  font-weight: 600;
+}
+
+.datepicker-table td.is-selected {
+  background-color: transparent !important;
 }

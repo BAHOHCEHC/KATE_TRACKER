@@ -49,7 +49,7 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   client: Clients;
 
   tarif: number;
-  totalHours: number;
+  totalHours: string;
   totalPayment: number;
   visible = false;
 
