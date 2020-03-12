@@ -3,7 +3,6 @@ const Task = require("../models/Task");
 const errorHandler = require("../utils/errorHandler");
 const moment = require("moment");
 
-// module.exports.getByCategoryId = async function(req, res) {
 module.exports.getByClientName = async function(req, res) {
   try {
     const tasks = await Task.find({

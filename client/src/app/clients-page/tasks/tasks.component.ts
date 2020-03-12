@@ -7,30 +7,29 @@ import {
   AfterViewInit,
   EventEmitter,
   Output
-} from "@angular/core";
-import { FormGroup, FormControl, NgForm } from "@angular/forms";
-import { Subscription, Subject } from "rxjs";
+} from '@angular/core';
+import { FormGroup, FormControl, NgForm } from '@angular/forms';
+import { Subscription, Subject } from 'rxjs';
 import {
   MaterialService,
   MaterialDatepicker
-} from "src/app/shared/classes/material.service";
-import { TasksService } from "src/app/shared/services/tasks.service";
-import { Task, User, Clients } from "src/app/shared/interfaces";
-import { ActivatedRoute, Params } from "@angular/router";
-import { takeUntil } from "rxjs/operators";
-import { ClientsService } from "src/app/shared/services/clients-service.service";
-import { SharedService } from "src/app/shared/services/shared-service";
+} from 'src/app/shared/classes/material.service';
+import { TasksService } from 'src/app/shared/services/tasks.service';
+import { Task, User, Clients } from 'src/app/shared/interfaces';
+import { ActivatedRoute, Params } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { ClientsService } from 'src/app/shared/services/clients-service.service';
+import { SharedService } from 'src/app/shared/services/shared-service';
 
 @Component({
-  selector: "app-tasks",
-  templateUrl: "./tasks.component.html",
-  styleUrls: ["./tasks.component.css"]
+  selector: 'app-tasks',
+  templateUrl: './tasks.component.html',
 })
 export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild("refForm") form: NgForm;
-  @ViewChild("start") startRef: ElementRef;
-  @ViewChild("end") endRef: ElementRef;
-  @ViewChild("modal") modalRef: ElementRef[];
+  @ViewChild('refForm') form: NgForm;
+  @ViewChild('start') startRef: ElementRef;
+  @ViewChild('end') endRef: ElementRef;
+  @ViewChild('modal') modalRef: ElementRef[];
 
   // start: MaterialDatepicker;
   // end: MaterialDatepicker;
@@ -61,8 +60,8 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.tokenId = localStorage.getItem("auth-token");
-    const userId = localStorage.getItem("userId");
+    this.tokenId = localStorage.getItem('auth-token');
+    const userId = localStorage.getItem('userId');
 
     // this.form = new FormGroup({
     //   name: new FormControl(null),
@@ -83,7 +82,7 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
           .fetch(this.nameClients)
           .subscribe(response => {
             this.allTasks$ = response;
-            console.log("*******ALTASKS*******", this.allTasks$);
+            console.log('*******ALTASKS*******', this.allTasks$);
           });
         this.aSub2 = this.clientService
           .getByName(this.nameClients)
@@ -92,7 +91,7 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
             this.tarif = this.client.tarif;
             this.totalHours = this.client.totalHours;
             this.totalPayment = this.client.totalPayment;
-            console.log("///////client///////", this.client);
+            console.log('///////client///////', this.client);
             this._sharedService.emitChange(this.client);
           });
       });
@@ -109,14 +108,14 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   copyLink() {
     console.log(this.client);
 
-    let url = document.location.href;
-    document.addEventListener("copy", (e: ClipboardEvent) => {
-      e.clipboardData.setData("text/plain", url);
+    const url = document.location.href;
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', url);
       e.preventDefault();
-      document.removeEventListener("copy", null);
+      document.removeEventListener('copy', null);
     });
-    document.execCommand("copy");
-    MaterialService.toast("Скопированно в буфер");
+    document.execCommand('copy');
+    MaterialService.toast('Скопированно в буфер');
   }
   validate() {
     // this.form.controls.start.setValue(this.startRef.nativeElement.value);

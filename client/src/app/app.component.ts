@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core'
-import {AuthService} from './shared/services/auth.service'
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const potentialToken = localStorage.getItem('auth-token')
+    const potentialToken = localStorage.getItem('auth-token');
     if (potentialToken !== null) {
-      this.auth.setToken(potentialToken)
+      this.auth.setToken(potentialToken);
     }
   }
 }

@@ -3,45 +3,44 @@ const Schema = mongoose.Schema
 
 // const categorySchema = new Schema({
 const clientSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  user: {
-    ref: 'users',
-    type: Schema.Types.ObjectId
-  },
-  imageSrc: {
-    type: String,
-    default: ''
-  },
-  tarif: {
-    type: Number,
-    default: 10
-  },
-  totalHours: {
-    type: Number,
-  },
-  totalPayment: {
-    type: Number,
-  },
-  // curency: {
-  //   type: String,
-  // },
-  taskList: [
-    {
-      name: {
-        type: String
-      },
-      wasteTime: {
-        type: Number
-      },
-      totalCost: {
-        type: Number
-      }
-    }
-  ]
-})
+	name: {
+		type: String,
+		required: true
+	},
+	user: {
+		ref: 'users',
+		type: Schema.Types.ObjectId
+	},
+	tarif: {
+		type: Number,
+		default: 10
+	},
+	currency: {
+		type: String
+	},
+	totalHours: {
+		type: Number,
+		default: 0
+	},
+	totalPayment: {
+		type: Number,
+		default: 0
+	},
+	taskList: [
+		{
+			name: {
+				type: String
+			},
+			wasteTime: {
+				type: Number
+			},
+			totalCost: {
+				type: Number
+			}
+		}
+	],
+	default: []
+});
 
 module.exports = mongoose.model('clients', clientSchema)
 // module.exports = mongoose.model('categories', categorySchema)

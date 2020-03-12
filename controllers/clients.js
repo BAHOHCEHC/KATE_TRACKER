@@ -24,8 +24,6 @@ module.exports.getByName = async function(req, res) {
 
 module.exports.remove = async function(req, res) {
   try {
-    // await Category.remove({_id: req.params.id})
-    // await Position.remove({category: req.params.id})
     await Client.remove({ _id: req.params.id });
     await Task.remove({ client: req.params.id }); //по полю клиентов в модели Task
     res.status(200).json({
@@ -39,17 +37,14 @@ module.exports.remove = async function(req, res) {
 
 module.exports.create = async function(req, res) {
   const client = new Client({
-    // const category = new Category({
     name: req.body.name,
-    user: req.user.id,
-    imageSrc: req.file ? req.file.path : "",
     tarif: req.body.tarif,
+    currency: req.body.currency,
+    user: req.user.id,
     taskList: req.body.taskList
   });
 
   try {
-    // await category.save()
-    // res.status(201).json(category)
     await client.save();
     res.status(201).json(client);
   } catch (e) {

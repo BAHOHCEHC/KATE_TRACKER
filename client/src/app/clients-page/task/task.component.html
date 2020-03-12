@@ -3,7 +3,7 @@
     <div class="dfl ai">
       <input id="name" class="dibl task_inputs" formControlName="name" type="text" placeholder="Task name">
 
-      <div class="groupInptWaraper dfl ai">
+      <div class="groupInptWaraper groupInptWaraper-left dfl ai">
         <timepicker [minuteStep]='1' class='timepicker' formControlName="timeStart" [showMeridian]="false" [showSpinners]="false"
           [(ngModel)]="startTime" [max]="end" #timepikerStart></timepicker>
 
@@ -17,8 +17,7 @@
       </svg>
 
 
-
-      <div class="groupInptWaraper dfl ai">
+      <div class="groupInptWaraper groupInptWaraper-right dfl ai">
         <timepicker [minuteStep]='1' class='timepicker' formControlName="timeEnd" [showMeridian]="false" [showSpinners]="false"
           [(ngModel)]="end" [min]="currentTime" #timepikerEnd>
         </timepicker>

@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { Message, Task } from "../interfaces";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Message, Task } from '../interfaces';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class TasksService {
   constructor(private http: HttpClient) {}
@@ -14,7 +14,7 @@ export class TasksService {
   }
 
   create(task: Task): Observable<Task> {
-    return this.http.post<Task>("/api/task", task);
+    return this.http.post<Task>('/api/task', task);
   }
 
   update(task: Task): Observable<Task> {

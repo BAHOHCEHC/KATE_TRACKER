@@ -42,6 +42,7 @@
           <li [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active" class="clients_list"
             *ngFor="let client of clients">
             <a [routerLink]="['/clients', client.name]" class="clients_list-item">{{client.name}}</a>
+            <i class="small material-icons" (click)=deleteClient(client._id)>delete</i>
           </li>
         </ul>
       </div>
@@ -64,15 +65,17 @@
 </div>
 
 
-<main class="dibl content" [ngClass]="{'empty':!clientsId.length,'notEmpty':clientsId.length}">
 
-  <div *ngIf="clientsId.length">
+
+<main class="dibl content" [ngClass]="{'empty':!clientsName.length,'notEmpty':clientsName.length}">
+
+  <div *ngIf="clientsName.length">
     <router-outlet></router-outlet>
   </div>
 
 
 
-  <div class="dfl tac jc ai fdc emptyContainer" *ngIf="!clientsId.length">
+  <div class="dfl tac jc ai fdc emptyContainer" *ngIf="!clientsName.length">
     <div class="fireworks">
       <svg width="199" height="200" viewBox="0 0 199 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -206,14 +209,13 @@
           </span>
         </div>
 
-        <!-- <option value="" disabled="" selected="">Choose your curency</option> -->
 
         <div class="input-field dibl left">
           <div class="select-wrapper">
             <input formControlName="currency" class="dn" type="text" readonly="true">
             <select #select tabindex="-1">
-              <option value="dollar">US Dollar</option>
-              <option value="uah">UA hrn</option>
+              <option value="dollar">US usd</option>
+              <option value="uah">UA uah</option>
               <option value="rub">RU rub</option>
             </select>
           </div>
@@ -221,15 +223,15 @@
         </div>
 
         <div class="input-field dibl right">
-          <input formControlName="cost" type="number" min="10"
-            [ngClass]="{'invalid': form.get('cost').invalid && form.get('cost').touched}">
-          <span class="helper-text red-text" *ngIf="form.get('cost').invalid && form.get('cost').touched">
-            <span *ngIf="form.get('cost').errors['min']">Введите корректную Hourly Rate</span>
+          <input formControlName="tarif" type="number" min="10"
+            [ngClass]="{'invalid': form.get('tarif').invalid && form.get('tarif').touched}">
+          <span class="helper-text red-text" *ngIf="form.get('tarif').invalid && form.get('tarif').touched">
+            <span *ngIf="form.get('tarif').errors['min']">Введите корректную Hourly Rate</span>
           </span>
         </div>
       </div>
       <div class="modal-footer dfl ai jc">
-        <button type="submit" class="modal-action btn waves-effect createBtn">Create</button>
+        <button type="submit" [disabled]="form.invalid || form.disabled" class="modal-action btn waves-effect createBtn">Create</button>
       </div>
     </form>
   </div>
@@ -238,16 +240,8 @@
 </main>
 
 
-
-<!--
-  <div class="fixed-action-btn" #floating>
-    <a class="btn-floating btn-large red">
-      <i class="large material-icons">add</i>
-    </a>
-    <ul>
-      <li><a [routerLink]="['/order']" class="btn-floating green"><i class="material-icons">assignment</i></a></li>
-      <li><a [routerLink]="['/categories/new']" class="btn-floating blue"><i class="material-icons">list</i></a></li>
-    </ul>
-  </div>
-
-  <a id="menu" class="waves-effect waves-light btn btn-floating"><i class="material-icons">info</i></a> -->
+<div #confirm class="modal createProj">
+<h3 class="tac">Удалить навсегда?</h3>
+<button class="cw waves-effect waves-light newProjectBtn dibl" (click)="confirmDelete()">confirm</button>
+<button class="cw waves-effect waves-light newProjectBtn dibl" (click)="cancelDelete()">cancel</button>
+</div>

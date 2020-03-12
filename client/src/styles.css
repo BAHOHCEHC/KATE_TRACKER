@@ -34,9 +34,11 @@
 .fl {
   float: left;
 }
-.fd_col{
+
+.fd_col {
   flex-direction: column;
 }
+
 .tac {
   text-align: center;
 }
@@ -205,8 +207,8 @@ a.registraton_link {
 }
 
 .left-sidebar {
+  min-width: 250px;
   width: 20%;
-  min-width: 20%;
   color: #fff;
   max-width: 300px;
   min-height: 100vh;
@@ -215,8 +217,7 @@ a.registraton_link {
 }
 
 .content {
-  width: 80%;
-  min-width: 80%;
+  width: calc(100% - 250px);
   padding: 0;
 }
 
@@ -386,6 +387,14 @@ svg.closeBtn {
   border: 1px solid rgba(33, 33, 33, 0.15);
 }
 
+.groupInptWaraper-left {
+  min-width: 170px;
+}
+
+.groupInptWaraper-right {
+  min-width: 70px;
+}
+
 form#formId {
   /* padding: 0 40px; */
   width: 100%;
@@ -409,6 +418,7 @@ form#formId {
 
 .clients_list {
   height: 40px;
+  display: flex;
   padding: 10px 20px;
 }
 
@@ -417,11 +427,23 @@ form#formId {
   background: #35404D;
 }
 
+.clients_list i {
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.clients_list i:hover {
+  color: red;
+  font-size: 25px;
+  transition: linear 0.1s;
+}
+
 .clients_list.active a {
   color: #FFFFFF !important;
 }
 
 .clients_list a {
+  flex-grow: 9;
   color: #cecece;
 }
 
@@ -550,7 +572,7 @@ form#formId {
 }
 
 .dayStart {
-  width: 75px !important;
+  width: 98px !important;
   padding: 0 5px !important;
   margin: 0 !important;
 }
@@ -571,11 +593,20 @@ input.bs-timepicker-field {
   top: 8px
 }
 
+.modal-content.datepicker-container ,
 .datepicker-modal {
   max-width: 625px;
   border-radius: 5px;
   width: 380px;
-  height: 380px;
+  height: 440px;
+}
+
+.datepicker-controls .select-month input {
+  width: 115px;
+}
+
+.selects-container {
+  width: 180px;
 }
 
 .datepicker-date-display {
@@ -604,7 +635,6 @@ input.bs-timepicker-field {
   padding: 0;
   top: 6px;
   position: relative;
-  border: 1px solid #dedede;
   border-radius: 5px;
   color: #dedede;
 }

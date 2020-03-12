@@ -22,51 +22,6 @@
 
 
 
-
-<!-- <div *ngIf="allTasks$" class="row allTasks">
-
-  <div class="dfl ai " *ngFor="let task of allTasks$">
-    <div class="taskName ">
-      // {{task.name}}
-      <input type="text" class="form-control" [(ngModel)] ="task.name">
-      </div>
-    <div class="taskTime pr dfl">
-      <div>
-        // {{task.start}}
-        <input type="text" class="form-control" [(ngModel)] ="task.start">
-      </div>
-      <span>-</span>
-      <div>
-        // {{task.end}}
-        <input type="text" class="form-control" [(ngModel)] ="task.end">
-        </div>
-      <div class="formTask" #modal>
-        <form id=formId (ngSubmit)="changeTask(refForm)" #refForm="ngForm">
-          <div class="inpWrap dfl">
-            <div class="wrapDateTask">
-              <label class="labelTaksDate" for="start">start</label>
-              <input id="start" class="dibl" NgModel name="start" type="text" #start>
-            </div>
-            <div class="arrowtime dfl ai jc"><svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 4H13M13 4L10 1M13 4L10 7" stroke="#212121" stroke-opacity="0.15" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-            <div class="wrapDateTask">
-              <label class="labelTaksDate" for="end">end</label>
-              <input id="end" class="dibl" NgModel name="end" type="text" #end>
-            </div>
-          </div>
-          <button class="btn tac btnTaskDate btnTaskDateLeft" (click)="cancel()">cancel</button>
-          <button class="btn tac btnTaskDate btnTaskDateRight" type="submit">save</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-</div> -->
-
 <div *ngIf="allTasks$" class="row allTasks dfl fd_col">
 
   <div class="taskRow" *ngFor="let task of allTasks$">

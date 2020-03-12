@@ -5,32 +5,31 @@ import {
   ViewChild,
   OnDestroy,
   AfterViewInit
-} from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { TasksService } from "src/app/shared/services/tasks.service";
-import * as moment from "moment";
+} from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { TasksService } from 'src/app/shared/services/tasks.service';
+import * as moment from 'moment';
 import {
   MaterialDatepicker,
   MaterialService
-} from "src/app/shared/classes/material.service";
-import { Task, Clients } from "src/app/shared/interfaces";
-import { SharedService } from "src/app/shared/services/shared-service";
-import { Subscription } from "rxjs";
-import { ClientsService } from "src/app/shared/services/clients-service.service";
+} from 'src/app/shared/classes/material.service';
+import { Task, Clients } from 'src/app/shared/interfaces';
+import { SharedService } from 'src/app/shared/services/shared-service';
+import { Subscription } from 'rxjs';
+// import { ClientsService } from "src/app/shared/services/clients-service.service";
 
 @Component({
-  selector: "app-task",
-  templateUrl: "./task.component.html",
-  styleUrls: ["./task.component.css"]
+  selector: 'app-task',
+  templateUrl: './task.component.html',
 })
 export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   formTask: FormGroup;
   startTime: Date = new Date();
   end: Date = new Date();
 
-  @ViewChild("timepikerStart") timepikerStartRef: ElementRef;
-  @ViewChild("timepikerEnd") timepikerEndRef: ElementRef;
-  @ViewChild("dayStart") dayDateStartRef: ElementRef;
+  @ViewChild('timepikerStart') timepikerStartRef: ElementRef;
+  @ViewChild('timepikerEnd') timepikerEndRef: ElementRef;
+  @ViewChild('dayStart') dayDateStartRef: ElementRef;
 
   start: MaterialDatepicker;
   currentTime = moment();
@@ -41,22 +40,22 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private taskService: TasksService,
     private _sharedService: SharedService,
-    private clientService: ClientsService
+    // private clientService: ClientsService
   ) {}
 
   ngOnInit() {
-    let now = moment();
+    const now = moment();
     this.formTask = new FormGroup({
-      name: new FormControl(now.format("LL") + ` Task`, [Validators.required]),
+      name: new FormControl(now.format('LL') + ` Task`, [Validators.required]),
       timeStart: new FormControl(null, Validators.required),
       timeEnd: new FormControl(null, Validators.required),
-      dayStart: new FormControl(now.format("DD.MM.YYYY"), Validators.required)
+      dayStart: new FormControl(now.format('DD.MM.YYYY'), Validators.required)
     });
   }
   ngAfterViewInit() {
     this.oSub$ = this._sharedService.changeEmitted$.subscribe(importClient => {
       this.client = importClient;
-      console.log("CLIENT FROM TASK", this.client);
+      console.log('CLIENT FROM TASK', this.client);
     });
     this.start = MaterialService.initDatepicker(
       this.dayDateStartRef,
@@ -65,39 +64,39 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setDate() {
     if (
-      moment(this.startTime).format("DD.MM.YYYY") ===
-      moment(this.start.date).format("DD.MM.YYYY")
+      moment(this.startTime).format('DD.MM.YYYY') ===
+      moment(this.start.date).format('DD.MM.YYYY')
     ) {
-      this.formTask.controls["dayStart"].setValue(
-        moment(this.startTime).format("DD.MM.YYYY")
+      this.formTask.controls.dayStart.setValue(
+        moment(this.startTime).format('DD.MM.YYYY')
       );
     } else {
-      this.formTask.controls["dayStart"].setValue(
-        moment(this.start.date).format("DD.MM.YYYY")
+      this.formTask.controls.dayStart.setValue(
+        moment(this.start.date).format('DD.MM.YYYY')
       );
     }
-    if (this.formTask.controls["name"].untouched) {
-      let newTaskName = moment(this.start.date).format("LL") + ` Task`;
-      this.formTask.controls["name"].setValue(newTaskName);
+    if (this.formTask.controls.name.untouched) {
+      const newTaskName = moment(this.start.date).format('LL') + ` Task`;
+      this.formTask.controls.name.setValue(newTaskName);
     }
 
   }
   onSubmit() {
     console.log(this.formTask);
-    let start = moment(this.formTask.value.timeStart);
-    let end = moment(this.formTask.value.timeEnd);
-    let betweenDifferenceM = end.diff(start, "minutes");
-    let betweenDifferenceH = end.diff(start, "hours");
-    let overMinutes = betweenDifferenceM - betweenDifferenceH * 60;
+    const start = moment(this.formTask.value.timeStart);
+    const end = moment(this.formTask.value.timeEnd);
+    const betweenDifferenceM = end.diff(start, 'minutes');
+    const betweenDifferenceH = end.diff(start, 'hours');
+    const overMinutes = betweenDifferenceM - betweenDifferenceH * 60;
     let formatMinute;
     if (overMinutes <= 9) {
-      formatMinute = "0" + overMinutes;
+      formatMinute = '0' + overMinutes;
     } else {
       formatMinute = +overMinutes;
     }
 
-    let wasteTime = Math.abs(+betweenDifferenceM) / 60;
-    let formatTime = betweenDifferenceH + ":" + formatMinute;
+    const wasteTime = Math.abs(+betweenDifferenceM) / 60;
+    const formatTime = betweenDifferenceH + ':' + formatMinute;
 
     const newTask: Task = {
       name: this.formTask.value.name,
@@ -108,26 +107,22 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
       wastedTime: betweenDifferenceM,
       totalMoney: wasteTime * this.client.tarif,
       user: this.client.user,
-      formatTime: formatTime,
+      formatTime,
       startDay: this.formTask.value.dayStart
     };
 
-    let wer = (this.client.totalPayment + newTask.wastedTime).toString();
 
     this.taskService.create(newTask).subscribe(() => {
       this.formTask.reset();
     });
 
     // ******************
-    // ******************
-    // ******************
-    this.clientService
-      .update(this.client._id, this.client.name, wer)
-      .subscribe(res => {
-        console.log(res);
-      });
-    // ******************
-    // ******************
+    // let wer = (this.client.totalPayment + newTask.wastedTime).toString();
+    // this.clientService
+    //   .update(this.client._id, this.client.name, wer)
+    //   .subscribe(res => {
+    //     console.log('clientService', res);
+    //   });
     // ******************
   }
   ngOnDestroy() {

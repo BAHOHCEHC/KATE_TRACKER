@@ -1,4 +1,4 @@
-import { ElementRef } from "@angular/core";
+import { ElementRef } from '@angular/core';
 
 declare var M;
 export interface MaterialInstance {
@@ -38,11 +38,11 @@ export class MaterialService {
     onClose: () => void
   ): MaterialDatepicker {
     return M.Datepicker.init(ref.nativeElement, {
-      format: "dd.mm.yyyy",
+      format: 'dd.mm.yyyy',
       showClearBtn: false,
       i18n: {
-        weekdaysAbbrev: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        done	: "Select"
+        weekdaysAbbrev: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        done	: 'Select'
       },
       onClose
     });
