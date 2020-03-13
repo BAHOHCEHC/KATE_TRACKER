@@ -31,11 +31,11 @@
       </div>
       <div class="taskTime pr dfl">
         <div>
-          <input type="text" class="form-control" [(ngModel)]="task.startTime" name="startTime">
+          <input type="text" class="form-control" [ngModel]="task.startTime | dayPipe" (ngModelChange)="task.startTime=$event" name="startTime">
         </div>
         <span>-</span>
         <div>
-          <input type="text" class="form-control" [(ngModel)]="task.endTime" name="endTime">
+          <input type="text" class="form-control" [ngModel]="task.endTime | hourPipe" (ngModelChange)="task.endTime=$event" name="endTime">
         </div>
         <div class="formTask" #modal>
           <div class="inpWrap dfl">
@@ -64,33 +64,3 @@
   </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-<!-- <form [formGroup]="form" id=formId (ngSubmit)="onSubmit()">
-  <div class="dfl">
-
-    <label for="name">name</label>
-    <input id="name" class="dibl task_inputs" formControlName="name" type="text">
-    <label for="cost">cost</label>
-    <input id="cost" class="dibl task_inputs" formControlName="cost" type="text">
-    <label for="start">start</label>
-    <input id="start" class="dibl task_inputs" formControlName="start" type="text" #start>
-    <label for="end">end</label>
-    <input id="end" class="dibl task_inputs" formControlName="end" type="text" #end>
-    <label for="wastedTime">wastedTime</label>
-    <input id="wastedTime" class="dibl task_inputs" formControlName="wastedTime" type="text">
-    <label for="totalMoney">totalMoney</label>
-    <input id="totalMoney" class="dibl task_inputs" formControlName="totalMoney" type="text">
-    <button class="modal-action btn dibl task_inputs " type="submit">
-      Save
-    </button>
-  </div>
-</!-->

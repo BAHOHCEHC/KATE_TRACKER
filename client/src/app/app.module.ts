@@ -16,6 +16,8 @@ import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 import { TaskComponent } from './clients-page/task/task.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { DayPipe } from './shared/pipes/day.pipe';
+import { HourPipe } from './shared/pipes/hour.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     TasksComponent,
     MonthlyReportsComponent,
     TaskComponent,
+    DayPipe,
+    HourPipe
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    TimepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
   providers: [
     {

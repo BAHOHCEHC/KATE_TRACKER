@@ -44,12 +44,11 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    const now = moment();
     this.formTask = new FormGroup({
-      name: new FormControl(now.format('LL') + ` Task`, [Validators.required]),
+      name: new FormControl(moment().format('LL') + ` Task`, [Validators.required]),
       timeStart: new FormControl(null, Validators.required),
       timeEnd: new FormControl(null, Validators.required),
-      dayStart: new FormControl(now.format('DD.MM.YYYY'), Validators.required)
+      dayStart: new FormControl(moment().format('DD.MM.YYYY'), Validators.required)
     });
   }
   ngAfterViewInit() {
