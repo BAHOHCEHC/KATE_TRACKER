@@ -5,7 +5,7 @@
 
       <div class="groupInptWaraper groupInptWaraper-left dfl ai">
         <timepicker [minuteStep]='1' class='timepicker' formControlName="timeStart" [showMeridian]="false" [showSpinners]="false"
-          [(ngModel)]="startTime" [max]="end" #timepikerStart></timepicker>
+          [(ngModel)]="startTime" #timepikerStart></timepicker>
 
         <input id="dayStart" class="dibl task_inputs dayStart" formControlName="dayStart" type="text" #dayStart
           placeholder="Today">
@@ -19,7 +19,7 @@
 
       <div class="groupInptWaraper groupInptWaraper-right dfl ai">
         <timepicker [minuteStep]='1' class='timepicker' formControlName="timeEnd" [showMeridian]="false" [showSpinners]="false"
-          [(ngModel)]="end" [min]="currentTime" #timepikerEnd>
+          [(ngModel)]="endTime" #timepikerEnd>
         </timepicker>
       </div>
 

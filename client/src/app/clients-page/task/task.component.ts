@@ -13,79 +13,59 @@ import {
   MaterialDatepicker,
   MaterialService
 } from 'src/app/shared/classes/material.service';
-import { Task, Clients } from 'src/app/shared/interfaces';
+import { Task, Client } from 'src/app/shared/interfaces';
 import { SharedService } from 'src/app/shared/services/shared-service';
 import { Subscription } from 'rxjs';
-// import { ClientsService } from "src/app/shared/services/clients-service.service";
+import { ClientsService } from 'src/app/shared/services/clients-service.service';
 
 @Component({
   selector: 'app-task',
-  templateUrl: './task.component.html',
+  templateUrl: './task.component.html'
 })
 export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   formTask: FormGroup;
   startTime: Date = new Date();
-  end: Date = new Date();
+  endTime: Date = new Date();
 
-  @ViewChild('timepikerStart') timepikerStartRef: ElementRef;
-  @ViewChild('timepikerEnd') timepikerEndRef: ElementRef;
+  // @ViewChild('timepikerStart') timepikerStartRef: ElementRef;
+  // @ViewChild('timepikerEnd') timepikerEndRef: ElementRef;
   @ViewChild('dayStart') dayDateStartRef: ElementRef;
 
   start: MaterialDatepicker;
   currentTime = moment();
   currentTime2 = moment();
-  client: Clients;
+  client: Client;
   oSub$: Subscription;
 
   constructor(
     private taskService: TasksService,
-    private _sharedService: SharedService,
-    // private clientService: ClientsService
+    private sharedService: SharedService,
+    private clientService: ClientsService
   ) {}
 
   ngOnInit() {
-    this.formTask = new FormGroup({
-      name: new FormControl(moment().format('LL') + ` Task`, [Validators.required]),
-      timeStart: new FormControl(null, Validators.required),
-      timeEnd: new FormControl(null, Validators.required),
-      dayStart: new FormControl(moment().format('DD.MM.YYYY'), Validators.required)
-    });
+    this.initForm();
   }
   ngAfterViewInit() {
-    this.oSub$ = this._sharedService.changeEmitted$.subscribe(importClient => {
+    this.oSub$ = this.sharedService.changeEmitted$.subscribe(importClient => {
       this.client = importClient;
       console.log('CLIENT FROM TASK', this.client);
     });
-    this.start = MaterialService.initDatepicker(
-      this.dayDateStartRef,
-      this.setDate.bind(this)
-    );
+
+    this.initDatepicker();
   }
   setDate() {
-    if (
-      moment(this.startTime).format('DD.MM.YYYY') ===
-      moment(this.start.date).format('DD.MM.YYYY')
-    ) {
-      this.formTask.controls.dayStart.setValue(
-        moment(this.startTime).format('DD.MM.YYYY')
-      );
-    } else {
-      this.formTask.controls.dayStart.setValue(
-        moment(this.start.date).format('DD.MM.YYYY')
-      );
-    }
     if (this.formTask.controls.name.untouched) {
       const newTaskName = moment(this.start.date).format('LL') + ` Task`;
       this.formTask.controls.name.setValue(newTaskName);
     }
-
   }
+
   onSubmit() {
-    console.log(this.formTask);
     const start = moment(this.formTask.value.timeStart);
-    const end = moment(this.formTask.value.timeEnd);
-    const betweenDifferenceM = end.diff(start, 'minutes');
-    const betweenDifferenceH = end.diff(start, 'hours');
+    const endTime = moment(this.formTask.value.timeEnd);
+    const betweenDifferenceM = endTime.diff(start, 'minutes');
+    const betweenDifferenceH = endTime.diff(start, 'hours');
     const overMinutes = betweenDifferenceM - betweenDifferenceH * 60;
     let formatMinute;
     if (overMinutes <= 9) {
@@ -100,7 +80,8 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
     const newTask: Task = {
       name: this.formTask.value.name,
       cost: this.client.tarif,
-      client: this.client.name,
+      clientName: this.client.name,
+      clientId: this.client._id,
       startTime: this.formTask.value.timeStart,
       endTime: this.formTask.value.timeEnd,
       wastedTime: betweenDifferenceM,
@@ -110,23 +91,44 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
       startDay: this.formTask.value.dayStart
     };
 
+    // ******************
+    const totalHours = this.client.totalHours + wasteTime;
+    const totalPayment = +totalHours * this.client.tarif;
+
+    this.clientService
+      .update(this.client._id, totalHours, totalPayment)
+      .subscribe(res => {
+        console.log('clientService', res);
+      });
+    // ******************
 
     this.taskService.create(newTask).subscribe(() => {
       this.formTask.reset();
+      this.initDatepicker();
     });
-
-    // ******************
-    // let wer = (this.client.totalPayment + newTask.wastedTime).toString();
-    // this.clientService
-    //   .update(this.client._id, this.client.name, wer)
-    //   .subscribe(res => {
-    //     console.log('clientService', res);
-    //   });
-    // ******************
   }
   ngOnDestroy() {
     if (this.oSub$) {
       this.oSub$.unsubscribe();
     }
+  }
+  initDatepicker() {
+    this.start = MaterialService.initDatepicker(
+      this.dayDateStartRef,
+      this.setDate.bind(this)
+    );
+  }
+  initForm() {
+    this.formTask = new FormGroup({
+      name: new FormControl(moment().format('LL') + ` Task`, [
+        Validators.required
+      ]),
+      timeStart: new FormControl(new Date(), Validators.required),
+      timeEnd: new FormControl(new Date(), Validators.required),
+      dayStart: new FormControl(
+        moment().format('DD.MM.YYYY'),
+        Validators.required
+      )
+    });
   }
 }

@@ -6,9 +6,9 @@ const moment = require("moment");
 module.exports.getByClientName = async function(req, res) {
   try {
     const tasks = await Task.find({
-      client: req.params.clientName, // clientId в роутах /:clientName'
-      user: req.user.id //из passporta тянем юзера id
-    });
+			clientName: req.params.clientName, // clientId в роутах /:clientName'
+			user: req.user.id //из passporta тянем юзера id
+		});
     res.status(200).json(tasks);
   } catch (e) {
     errorHandler(res, e);
@@ -18,26 +18,27 @@ module.exports.getByClientName = async function(req, res) {
 module.exports.create = async function(req, res) {
   try {
     const task = await new Task({
-      // name: req.body.name,
-      // cost: req.body.cost,
-      // client: req.body.client,
-      // startTime: req.body.startTime, //start
-      // endTime: req.body.endTime, //end
-      // user: req.user.id,
-      // wastedTime: wasteTime,
-      // totalMoney: Math.ceil(wasteTime * req.body.cost),
-      // formatTime: req.body.formatTime
-      name: req.body.name,
-      cost: req.body.cost,
-      client: req.body.client,
-      user: req.body.user,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
-      wastedTime: req.body.wastedTime,
-      totalMoney: req.body.totalMoney,
-      startDay: req.body.startDay,
-      formatTime: req.body.formatTime
-    }).save();
+			// name: req.body.name,
+			// cost: req.body.cost,
+			// client: req.body.client,
+			// startTime: req.body.startTime, //start
+			// endTime: req.body.endTime, //end
+			// user: req.user.id,
+			// wastedTime: wasteTime,
+			// totalMoney: Math.ceil(wasteTime * req.body.cost),
+			// formatTime: req.body.formatTime
+			name: req.body.name,
+			cost: req.body.cost,
+			clientName: req.body.clientName,
+			clientId: req.body.clientId,
+			user: req.body.user,
+			startTime: req.body.startTime,
+			endTime: req.body.endTime,
+			wastedTime: req.body.wastedTime,
+			totalMoney: req.body.totalMoney,
+			startDay: req.body.startDay,
+			formatTime: req.body.formatTime
+		}).save();
     res.status(201).json(task);
   } catch (e) {
     errorHandler(res, e);

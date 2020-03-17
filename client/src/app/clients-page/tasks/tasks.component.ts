@@ -15,7 +15,7 @@ import {
   MaterialDatepicker
 } from 'src/app/shared/classes/material.service';
 import { TasksService } from 'src/app/shared/services/tasks.service';
-import { Task, User, Clients } from 'src/app/shared/interfaces';
+import { Task, User, Client } from 'src/app/shared/interfaces';
 import { ActivatedRoute, Params } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { ClientsService } from 'src/app/shared/services/clients-service.service';
@@ -23,7 +23,7 @@ import { SharedService } from 'src/app/shared/services/shared-service';
 
 @Component({
   selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
+  templateUrl: './tasks.component.html'
 })
 export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('refForm') form: NgForm;
@@ -35,8 +35,6 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   // end: MaterialDatepicker;
   // user: User;
 
-  aSub: Subscription;
-  aSub2: Subscription;
   // form: FormGroup;
   isValid = true;
   user: any;
@@ -45,15 +43,15 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
   nameClients: string;
   allTasks$: Task[];
   destroy$ = new Subject<undefined>();
-  client: Clients;
+  client: Client;
 
   tarif: number;
-  totalHours: string;
+  totalHours: number;
   totalPayment: number;
   visible = false;
 
   constructor(
-    private _sharedService: SharedService,
+    private sharedService: SharedService,
     private taskService: TasksService,
     private route: ActivatedRoute,
     private clientService: ClientsService
@@ -78,22 +76,18 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: Params) => {
         this.nameClients = params.id;
-        this.aSub = this.taskService
-          .fetch(this.nameClients)
-          .subscribe(response => {
-            this.allTasks$ = response;
-            console.log('*******ALTASKS*******', this.allTasks$);
-          });
-        this.aSub2 = this.clientService
-          .getByName(this.nameClients)
-          .subscribe(response => {
-            this.client = response[0];
-            this.tarif = this.client.tarif;
-            this.totalHours = this.client.totalHours;
-            this.totalPayment = this.client.totalPayment;
-            console.log('///////client///////', this.client);
-            this._sharedService.emitChange(this.client);
-          });
+        this.taskService.fetch(this.nameClients).subscribe(response => {
+          this.allTasks$ = response;
+          console.log('*******ALTASKS*******', this.allTasks$);
+        });
+        this.clientService.getByName(this.nameClients).subscribe(response => {
+          this.client = response[0];
+          this.tarif = this.client.tarif;
+          this.totalHours = this.client.totalHours;
+          this.totalPayment = this.client.totalPayment;
+          console.log('///////client///////', this.client);
+          this.sharedService.emitChange(this.client);
+        });
       });
   }
   ngAfterViewInit() {}
@@ -117,35 +111,22 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
     document.execCommand('copy');
     MaterialService.toast('Скопированно в буфер');
   }
-  validate() {
-    // this.form.controls.start.setValue(this.startRef.nativeElement.value);
-    // this.form.controls.end.setValue(this.endRef.nativeElement.value);
-    // console.log(this.form);
-    // if (!this.start.date || !this.end.date) {
-    //   this.isValid = true;
-    //   return;
-    // }
-    // this.isValid = this.start.date < this.end.date;
-  }
+  // validate() {
+  // this.form.controls.start.setValue(this.startRef.nativeElement.value);
+  // this.form.controls.end.setValue(this.endRef.nativeElement.value);
+  // console.log(this.form);
+  // if (!this.start.date || !this.end.date) {
+  //   this.isValid = true;
+  //   return;
+  // }
+  // this.isValid = this.start.date < this.end.date;
+  // }
   ngOnDestroy() {
-    if (this.aSub) {
-      this.aSub.unsubscribe();
-      this.allTasks$ = [];
-    }
-    if (this.aSub2) {
-      this.aSub2.unsubscribe();
-    }
+    this.allTasks$ = [];
     this.destroy$.next();
     this.destroy$.complete();
   }
   onSubmit() {
-    // this.form.disable();
-    // this.form.disable();
     console.log(this.form);
-    // const newPos: Task = {
-    //   name: this.form.value.name,
-    //   cost: this.form.value.cost,
-    //   user: this.user._id
-    // };
   }
 }

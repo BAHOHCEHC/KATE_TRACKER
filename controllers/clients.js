@@ -54,21 +54,16 @@ module.exports.create = async function(req, res) {
 
 module.exports.update = async function(req, res) {
   const updated = {
-    name: req.body.name
+		totalHours: +req.body.totalHours,
+		totalPayment: +req.body.totalPayment
   };
-
-  if (req.file) {
-    updated.imageSrc = req.file.path;
-  }
-
+  console.log('************************************', updated);
   try {
-    // const category = await Category.findOneAndUpdate(
     const client = await Client.findOneAndUpdate(
       { _id: req.params.id },
       { $set: updated },
       { new: true }
     );
-    // res.status(200).json(category)
     res.status(200).json(client);
   } catch (e) {
     errorHandler(res, e);

@@ -6,7 +6,7 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { Clients, User } from '../../interfaces';
+import { Client, User } from '../../interfaces';
 import { ClientsService } from '../../services/clients-service.service';
 import { Subscription, Observable } from 'rxjs';
 import { UserService } from '../../services/user.service';
@@ -45,7 +45,7 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   confirm: MaterialInstance;
   clientsName = [];
   message = '';
-  clients$: Observable<Clients[]>;
+  clients$: Observable<Client[]>;
 
   constructor(
     private clientsService: ClientsService,

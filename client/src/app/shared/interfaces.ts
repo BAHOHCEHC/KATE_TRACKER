@@ -14,12 +14,12 @@ export interface Category {
   imageSrc?: string;
   _id?: string;
 }
-export interface Clients {
+export interface Client {
   name: string;
   imageSrc?: string;
   user?: string;
   tarif?: number;
-  totalHours?: string;
+  totalHours?: number;
   totalPayment?: number;
   taskList?: Task[];
   _id?: string;
@@ -28,7 +28,8 @@ export interface Clients {
 export interface Task {
   name: string;
   cost: number;
-  client: string;
+  clientName: string;
+  clientId: string;
   startTime?: Date;
   endTime?: Date;
   wastedTime?: number;
@@ -36,7 +37,7 @@ export interface Task {
   user?: string;
   formatTime?: string;
   _id?: string;
-  startDay:string;
+  startDay: string;
 }
 export interface Message {
   message: string;
