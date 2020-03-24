@@ -129,7 +129,7 @@
 }
 
 .input-field {
-  margin-top: 15px;
+  margin-top: 25px;
   margin-bottom: 0;
 }
 
@@ -161,7 +161,7 @@ input.invalid:not(.browser-default) {
 
 .input-field .helper-text {
   position: absolute;
-  bottom: -10px;
+  bottom: -15px;
 }
 
 .form select {
@@ -373,9 +373,17 @@ svg.closeBtn {
 }
 
 .newTaskBtn:focus svg rect {
-  fill: green;
+  fill: #0ec151;
 }
 
+.newTaskBtn:hover {
+  cursor: pointer;
+}
+
+.btnWrapper {
+  min-width: 35px;
+  text-align: center;
+}
 .groupInptWaraper input {
   box-shadow: none !important;
 }
@@ -429,10 +437,11 @@ form#formId {}
   cursor: pointer;
 }
 
-.clients_list i:hover {
+.deleteTask:hover, .clients_list i:hover {
   color: red;
   font-size: 25px;
   transition: linear 0.1s;
+  cursor: pointer;
 }
 
 .clients_list.active a {
@@ -485,6 +494,10 @@ form#formId {}
 
 .allTasks {
   padding: 0 40px;
+}
+
+.taskRow {
+  margin: 10px 0;
 }
 
 .labelTaksDate {

@@ -57,8 +57,11 @@ module.exports.update = async function(req, res) {
 		totalHours: +req.body.totalHours,
 		totalPayment: +req.body.totalPayment
 	};
+
+
 	try {
 		const client = await Client.findOneAndUpdate({ _id: req.params.id }, { $set: updated }, { new: true });
+		
 		res.status(200).json(client);
 	} catch (e) {
 		errorHandler(res, e);

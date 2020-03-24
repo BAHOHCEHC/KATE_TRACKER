@@ -1,11 +1,21 @@
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+  AfterViewInit,
+  Input
+} from '@angular/core';
 import { Task, Client } from '../../interfaces';
 import * as moment from 'moment';
 import { ClientsService } from '../../services/clients-service.service';
-import { SharedService } from '../../services/shared-service';
 import { TasksService } from '../../services/tasks.service';
 import { Subscription } from 'rxjs';
-import { MaterialDatepicker, MaterialService } from '../../classes/material.service';
+import {
+  MaterialDatepicker,
+  MaterialService
+} from '../../classes/material.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -14,35 +24,32 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styles: [``]
 })
 export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() taskData: Task;
+  @Input() client: Client;
+  @ViewChild('dayStart') dayDateStartRef: ElementRef;
+
   formTask: FormGroup;
   startTime: Date = new Date();
   endTime: Date = new Date();
 
-  // @ViewChild('timepikerStart') timepikerStartRef: ElementRef;
-  // @ViewChild('timepikerEnd') timepikerEndRef: ElementRef;
-  @ViewChild('dayStart') dayDateStartRef: ElementRef;
-
+  isNew = true;
   start: MaterialDatepicker;
   currentTime = moment();
   currentTime2 = moment();
-  client: Client;
   oSub$: Subscription;
 
   constructor(
     private taskService: TasksService,
-    private sharedService: SharedService,
     private clientService: ClientsService
   ) {}
 
   ngOnInit() {
+    if (this.taskData) {
+      this.isNew = false;
+    }
     this.initForm();
   }
   ngAfterViewInit() {
-    this.oSub$ = this.sharedService.changeEmitted$.subscribe(importClient => {
-      this.client = importClient;
-      console.log('CLIENT FROM TASK', this.client);
-    });
-
     this.initDatepicker();
   }
   setDate() {
@@ -51,7 +58,17 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
       this.formTask.controls.name.setValue(newTaskName);
     }
   }
+  deleteTask() {
+    const totalHours = this.client.totalHours - this.taskData.wastedTime / 60;
+    const totalPayment = +totalHours * this.client.tarif;
 
+    this.clientService
+      .update(this.client._id, totalHours, totalPayment)
+      .subscribe(res => {
+        console.log('clientService', res);
+      });
+    this.taskService.delete(this.taskData).subscribe(e => {});
+  }
   onSubmit() {
     const start = moment(this.formTask.value.timeStart);
     const endTime = moment(this.formTask.value.timeEnd);
@@ -64,11 +81,10 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       formatMinute = +overMinutes;
     }
-
     const wasteTime = Math.abs(+betweenDifferenceM) / 60;
     const formatTime = betweenDifferenceH + ':' + formatMinute;
 
-    const newTask: Task = {
+    const task: Task = {
       name: this.formTask.value.name,
       cost: this.client.tarif,
       clientName: this.client.name,
@@ -85,7 +101,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     // ******************
     const totalHours = this.client.totalHours + wasteTime;
     const totalPayment = +totalHours * this.client.tarif;
-
     this.clientService
       .update(this.client._id, totalHours, totalPayment)
       .subscribe(res => {
@@ -93,10 +108,18 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     // ******************
 
-    this.taskService.create(newTask).subscribe(() => {
-      this.formTask.reset();
-      this.initDatepicker();
-    });
+    if (this.isNew) {
+      this.taskService.create(task).subscribe(() => {
+        this.formTask.reset();
+        this.initDatepicker();
+      });
+    } else {
+      task._id = this.taskData._id;
+      this.taskService.update(task).subscribe(() => {
+        this.formTask.reset();
+        this.initDatepicker();
+      });
+    }
   }
   ngOnDestroy() {
     if (this.oSub$) {
@@ -110,16 +133,24 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
   initForm() {
+    let initName = moment().format('LL') + ` Task`;
+    let initTimetart = new Date();
+    let initTimend = new Date();
+    let initStartDay = moment().format('DD.MM.YYYY');
+    if (this.taskData) {
+      this.startTime = this.taskData.startTime;
+      this.endTime = this.taskData.endTime;
+      initName = this.taskData.name;
+      initTimetart = this.taskData.startTime;
+      initTimend = this.taskData.endTime;
+      initStartDay = this.taskData.startDay;
+    }
+
     this.formTask = new FormGroup({
-      name: new FormControl(moment().format('LL') + ` Task`, [
-        Validators.required
-      ]),
-      timeStart: new FormControl(new Date(), Validators.required),
-      timeEnd: new FormControl(new Date(), Validators.required),
-      dayStart: new FormControl(
-        moment().format('DD.MM.YYYY'),
-        Validators.required
-      )
+      name: new FormControl(initName, [Validators.required]),
+      timeStart: new FormControl(initTimetart, Validators.required),
+      timeEnd: new FormControl(initTimend, Validators.required),
+      dayStart: new FormControl(initStartDay, Validators.required)
     });
   }
 }
