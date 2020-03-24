@@ -5,9 +5,6 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 
-// const analyticsRoutes = require('./routes/analytics')
-// const orderRoutes = require('./routes/order')
-// const positionRoutes = require("./routes/position");
 const authRoutes = require("./routes/auth");
 const clientsRoutes = require("./routes/clients");
 const taskRoutes = require("./routes/task");
@@ -36,8 +33,5 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/clients", clientsRoutes);
 app.use("/api/task", taskRoutes);
-// app.use("/api/position", positionRoutes);
-// app.use('/api/analytics', analyticsRoutes)
-// app.use('/api/order', orderRoutes)
 
 module.exports = app;

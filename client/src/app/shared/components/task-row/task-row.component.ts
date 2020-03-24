@@ -1,28 +1,19 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  OnDestroy,
-  AfterViewInit
-} from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TasksService } from 'src/app/shared/services/tasks.service';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Task, Client } from '../../interfaces';
 import * as moment from 'moment';
-import {
-  MaterialDatepicker,
-  MaterialService
-} from 'src/app/shared/classes/material.service';
-import { Task, Client } from 'src/app/shared/interfaces';
-import { SharedService } from 'src/app/shared/services/shared-service';
+import { ClientsService } from '../../services/clients-service.service';
+import { SharedService } from '../../services/shared-service';
+import { TasksService } from '../../services/tasks.service';
 import { Subscription } from 'rxjs';
-import { ClientsService } from 'src/app/shared/services/clients-service.service';
+import { MaterialDatepicker, MaterialService } from '../../classes/material.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-task',
-  templateUrl: './task.component.html'
+  selector: 'app-task-row',
+  templateUrl: './task-row.component.html',
+  styles: [``]
 })
-export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
   formTask: FormGroup;
   startTime: Date = new Date();
   endTime: Date = new Date();
