@@ -32,7 +32,7 @@ import { HourPipe } from './shared/pipes/hour.pipe';
     MonthlyReportsComponent,
     TaskRowComponent,
     DayPipe,
-    HourPipe
+    HourPipe,
   ],
   imports: [
     BrowserModule,

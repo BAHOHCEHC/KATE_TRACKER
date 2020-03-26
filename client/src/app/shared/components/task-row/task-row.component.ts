@@ -36,7 +36,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
   start: MaterialDatepicker;
   currentTime = moment();
   currentTime2 = moment();
-  oSub$: Subscription;
 
   constructor(
     private taskService: TasksService,
@@ -67,7 +66,9 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(res => {
         console.log('clientService', res);
       });
-    this.taskService.delete(this.taskData).subscribe(e => {});
+    this.taskService.delete(this.taskData).subscribe(response => {
+      this.throwMessage(response.message);
+    });
   }
   onSubmit() {
     const start = moment(this.formTask.value.timeStart);
@@ -109,22 +110,25 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     // ******************
 
     if (this.isNew) {
-      this.taskService.create(task).subscribe(() => {
+      this.taskService.create(task).subscribe(response => {
+        this.throwMessage(response.message);
         this.formTask.reset();
         this.initDatepicker();
       });
     } else {
       task._id = this.taskData._id;
-      this.taskService.update(task).subscribe(() => {
+      this.taskService.update(task).subscribe(response => {
+        this.throwMessage(response.message);
         this.formTask.reset();
         this.initDatepicker();
       });
     }
   }
+  throwMessage(message) {
+    MaterialService.toast(message);
+  }
   ngOnDestroy() {
-    if (this.oSub$) {
-      this.oSub$.unsubscribe();
-    }
+
   }
   initDatepicker() {
     this.start = MaterialService.initDatepicker(
