@@ -29,8 +29,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dayStart') dayDateStartRef: ElementRef;
 
   formTask: FormGroup;
-  startTime: Date = new Date();
-  endTime: Date = new Date();
 
   isNew = true;
   start: MaterialDatepicker;
@@ -142,8 +140,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     let initTimend = new Date();
     let initStartDay = moment().format('DD.MM.YYYY');
     if (this.taskData) {
-      this.startTime = this.taskData.startTime;
-      this.endTime = this.taskData.endTime;
       initName = this.taskData.name;
       initTimetart = this.taskData.startTime;
       initTimend = this.taskData.endTime;
