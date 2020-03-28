@@ -13,16 +13,7 @@
       placeholder="Task name"
     />
 
-    <div class="groupInptWaraper groupInptWaraper-left dfl ai">
-      <timepicker
-        [minuteStep]="1"
-        class="timepicker"
-        formControlName="timeStart"
-        [showMeridian]="false"
-        [showSpinners]="false"
-        #timepikerStart
-      ></timepicker>
-
+    <div class="groupInputWrapper groupInputWrapper-left dfl ai">
       <input
         id="dayStart"
         class="dibl task_inputs dayStart"
@@ -31,6 +22,16 @@
         #dayStart
         placeholder="Today"
       />
+    </div>
+    <div class="groupInputWrapper groupInputWrapper-right dfl ai">
+      <timepicker
+        [minuteStep]="1"
+        class="timepicker"
+        formControlName="timeStart"
+        [showMeridian]="false"
+        [showSpinners]="false"
+        #timepikerStart
+      ></timepicker>
     </div>
 
     <svg
@@ -50,7 +51,7 @@
       />
     </svg>
 
-    <div class="groupInptWaraper groupInptWaraper-right dfl ai">
+    <div class="groupInputWrapper groupInputWrapper-right dfl ai">
       <timepicker
         [minuteStep]="1"
         class="timepicker"
@@ -78,7 +79,9 @@
       </svg>
     </button>
     <div *ngIf="!isNew" class="delete-button" class="btnWrapper">
-      <i class="small material-icons deleteTask" (click)="deleteTask()">delete</i>
+      <i class="small material-icons deleteTask" (click)="deleteTask()"
+        >delete</i
+      >
     </div>
   </div>
 </form>

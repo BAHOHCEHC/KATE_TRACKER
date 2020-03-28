@@ -18,6 +18,8 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { TaskRowComponent } from './shared/components/task-row/task-row.component';
 import { DayPipe } from './shared/pipes/day.pipe';
 import { HourPipe } from './shared/pipes/hour.pipe';
+import { ClientStatisticComponent } from './shared/layouts/clients-layout/clients-statistic.component';
+import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-view/clients-view.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { HourPipe } from './shared/pipes/hour.pipe';
     TaskRowComponent,
     DayPipe,
     HourPipe,
+    ClientStatisticComponent,
+    ClientsViewComponent,
   ],
   imports: [
     BrowserModule,

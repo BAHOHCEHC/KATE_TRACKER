@@ -1,0 +1,25 @@
+<div class="container">
+  <h3>
+    clients-clients-statistic works!
+  </h3>
+</div>
+
+<div class="container">
+  <div class="statusBar" *ngIf="allTasks$ | async as allTasks; else loader">
+    <h1 class="projectName">{{ clientName }}</h1>
+    <div class="dfl ai">
+      <div class="dfl">
+        <div class="wrap">{{ client.tarif }} $ / hour</div>
+        <div class="wrap">Total hours:{{ totalHours }}</div>
+        <div class="wrap">Total payment: ${{ totalPayment }}</div>
+      </div>
+    </div>
+    <div class="taskRow" *ngFor="let task of allTasks">
+      <app-clients-view [taskData]="task" [client]="client"></app-clients-view>
+    </div>
+  </div>
+</div>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

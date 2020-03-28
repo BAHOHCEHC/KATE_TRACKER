@@ -5,18 +5,24 @@ import {
   ViewChild,
   OnDestroy,
   AfterViewInit,
-  Input
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Task, Client } from '../../interfaces';
 import * as moment from 'moment';
 import { ClientsService } from '../../services/clients-service.service';
 import { TasksService } from '../../services/tasks.service';
-import { Subscription } from 'rxjs';
 import {
   MaterialDatepicker,
   MaterialService
 } from '../../classes/material.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
 
 @Component({
   selector: 'app-task-row',
@@ -24,8 +30,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styles: [``]
 })
 export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Output('updateTasks') taskEmitter = new EventEmitter();
+
   @Input() taskData: Task;
   @Input() client: Client;
+
   @ViewChild('dayStart') dayDateStartRef: ElementRef;
 
   formTask: FormGroup;
@@ -35,10 +44,7 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
   currentTime = moment();
   currentTime2 = moment();
 
-  constructor(
-    private taskService: TasksService,
-    private clientService: ClientsService
-  ) {}
+  constructor(private taskService: TasksService, private fb: FormBuilder) {}
 
   ngOnInit() {
     if (this.taskData) {
@@ -56,16 +62,17 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   deleteTask() {
-    const totalHours = this.client.totalHours - this.taskData.wastedTime / 60;
-    const totalPayment = +totalHours * this.client.tarif;
+    // const totalHours = this.client.totalHours - this.taskData.wastedTime / 60;
+    // const totalPayment = +totalHours * this.client.tarif;
 
-    this.clientService
-      .update(this.client._id, totalHours, totalPayment)
-      .subscribe(res => {
-        console.log('clientService', res);
-      });
+    // this.clientService
+    //   .update(this.client._id, totalHours, totalPayment)
+    //   .subscribe(res => {
+    //     console.log('clientService', res);
+    //   });
     this.taskService.delete(this.taskData).subscribe(response => {
       this.throwMessage(response.message);
+      this.taskEmitter.emit();
     });
   }
   onSubmit() {
@@ -98,13 +105,13 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     // ******************
-    const totalHours = this.client.totalHours + wasteTime;
-    const totalPayment = +totalHours * this.client.tarif;
-    this.clientService
-      .update(this.client._id, totalHours, totalPayment)
-      .subscribe(res => {
-        console.log('clientService', res);
-      });
+    // const totalHours = this.client.totalHours + wasteTime;
+    // const totalPayment = +totalHours * this.client.tarif;
+    // this.clientService
+    //   .update(this.client._id, totalHours, totalPayment)
+    //   .subscribe(res => {
+    //     console.log('clientService', res);
+    //   });
     // ******************
 
     if (this.isNew) {
@@ -121,13 +128,13 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initDatepicker();
       });
     }
+    this.taskEmitter.emit();
   }
   throwMessage(message) {
     MaterialService.toast(message);
   }
-  ngOnDestroy() {
+  ngOnDestroy() {}
 
-  }
   initDatepicker() {
     this.start = MaterialService.initDatepicker(
       this.dayDateStartRef,
@@ -146,7 +153,7 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
       initStartDay = this.taskData.startDay;
     }
 
-    this.formTask = new FormGroup({
+    this.formTask = this.fb.group({
       name: new FormControl(initName, [Validators.required]),
       timeStart: new FormControl(initTimetart, Validators.required),
       timeEnd: new FormControl(initTimend, Validators.required),

@@ -25,10 +25,9 @@ module.exports.getByName = async function(req, res) {
 module.exports.remove = async function(req, res) {
 	try {
 		await Client.remove({ _id: req.params.id });
-		await Task.remove({ client: req.params.id }); //по полю клиентов в модели Task
+		await Task.remove({ clientId: req.params.id }); //по полю клиентов в модели Task
 		res.status(200).json({
 			message: 'Клиент удален.Вместе со всеми тасками!!!'
-			// message: 'Категория удалена.'
 		});
 	} catch (e) {
 		errorHandler(res, e);
