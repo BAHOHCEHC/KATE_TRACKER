@@ -3,7 +3,6 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  OnDestroy,
   AfterViewInit,
   Input,
   Output,
@@ -11,7 +10,6 @@ import {
 } from '@angular/core';
 import { Task, Client } from '../../interfaces';
 import * as moment from 'moment';
-import { ClientsService } from '../../services/clients-service.service';
 import { TasksService } from '../../services/tasks.service';
 import {
   MaterialDatepicker,
@@ -29,7 +27,7 @@ import {
   templateUrl: './task-row.component.html',
   styles: [``]
 })
-export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TaskRowComponent implements OnInit, AfterViewInit {
   @Output('updateTasks') taskEmitter = new EventEmitter();
 
   @Input() taskData: Task;
@@ -62,14 +60,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   deleteTask() {
-    // const totalHours = this.client.totalHours - this.taskData.wastedTime / 60;
-    // const totalPayment = +totalHours * this.client.tarif;
-
-    // this.clientService
-    //   .update(this.client._id, totalHours, totalPayment)
-    //   .subscribe(res => {
-    //     console.log('clientService', res);
-    //   });
     this.taskService.delete(this.taskData).subscribe(response => {
       this.throwMessage(response.message);
       this.taskEmitter.emit();
@@ -104,16 +94,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
       startDay: this.formTask.value.dayStart
     };
 
-    // ******************
-    // const totalHours = this.client.totalHours + wasteTime;
-    // const totalPayment = +totalHours * this.client.tarif;
-    // this.clientService
-    //   .update(this.client._id, totalHours, totalPayment)
-    //   .subscribe(res => {
-    //     console.log('clientService', res);
-    //   });
-    // ******************
-
     if (this.isNew) {
       this.taskService.create(task).subscribe(response => {
         this.throwMessage(response.message);
@@ -133,7 +113,6 @@ export class TaskRowComponent implements OnInit, OnDestroy, AfterViewInit {
   throwMessage(message) {
     MaterialService.toast(message);
   }
-  ngOnDestroy() {}
 
   initDatepicker() {
     this.start = MaterialService.initDatepicker(

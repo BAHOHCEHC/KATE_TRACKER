@@ -3,7 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { MaterialService } from 'src/app/shared/classes/material.service';
 import { TasksService } from 'src/app/shared/services/tasks.service';
 import { Task, Client } from 'src/app/shared/interfaces';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { takeUntil, map, tap } from 'rxjs/operators';
 import { ClientsService } from 'src/app/shared/services/clients-service.service';
 
@@ -12,7 +12,6 @@ import { ClientsService } from 'src/app/shared/services/clients-service.service'
   templateUrl: './tasks.component.html'
 })
 export class TasksComponent implements OnInit, OnDestroy {
-
   tokenId: string;
 
   clientName: string;
@@ -26,26 +25,24 @@ export class TasksComponent implements OnInit, OnDestroy {
   constructor(
     private taskService: TasksService,
     private route: ActivatedRoute,
-    private clientService: ClientsService,
-    // private router: Router
+    private clientService: ClientsService
   ) {}
 
   ngOnInit() {
     this.tokenId = localStorage.getItem('auth-token');
     // const userId = localStorage.getItem('userId');
 
-    // this.clientName = this.router.url.substring('/clients/'.length);
 
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: Params) => {
         this.clientName = params.id;
-        this.updateTasksList();
         this.clientService
           .getByName(this.clientName)
           .pipe(map(res => res[0]))
           .subscribe(client => {
             this.client = client;
+            this.updateTasksList();
           });
       });
   }
@@ -59,6 +56,11 @@ export class TasksComponent implements OnInit, OnDestroy {
           }, 0)
           .toFixed(2);
         this.totalPayment = Math.round(this.totalHours) * this.client.tarif;
+        this.clientService
+          .update(this.client._id, this.totalHours, this.totalPayment)
+          .subscribe(res => {
+            console.log('clientService', res);
+          });
       })
     );
   }
