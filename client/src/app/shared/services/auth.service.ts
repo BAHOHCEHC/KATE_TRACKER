@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { User } from "../interfaces";
-import { tap } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../interfaces';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthService {
   private token = null;
@@ -15,22 +15,21 @@ export class AuthService {
   register(user: User, image?: File): Observable<User> {
     const formData = new FormData();
     if (image) {
-      formData.append("image", image, image.name);
+      formData.append('image', image, image.name);
     }
-    formData.append("email", user.email);
-    formData.append("password", user.password);
-    formData.append("role", user.role);
-    formData.append("nickName", user.nickName);
+    formData.append('email', user.email);
+    formData.append('password', user.password);
+    formData.append('role', user.role);
+    formData.append('nickName', user.nickName);
 
-    return this.http.post<User>("/api/auth/register", formData);
+    return this.http.post<User>('/api/auth/register', formData);
   }
 
-
   login(user: User): Observable<User> {
-    return this.http.post<User>("/api/auth/login", user).pipe(
+    return this.http.post<User>('/api/auth/login', user).pipe(
       tap(e => {
-        localStorage.setItem("auth-token", e.token);
-        localStorage.setItem("userId", e._id);
+        localStorage.setItem('auth-token', e.token);
+        localStorage.setItem('userId', e._id);
         this.setToken(e.token);
       })
     );

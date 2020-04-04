@@ -27,6 +27,10 @@
   justify-content: center;
 }
 
+.jc-space {
+  justify-content: space-around;
+}
+
 .cw {
   color: #fff;
 }
@@ -129,7 +133,7 @@
 }
 
 .input-field {
-  margin-top: 15px;
+  margin-top: 25px;
   margin-bottom: 0;
 }
 
@@ -161,7 +165,7 @@ input.invalid:not(.browser-default) {
 
 .input-field .helper-text {
   position: absolute;
-  bottom: -10px;
+  bottom: -15px;
 }
 
 .form select {
@@ -279,17 +283,46 @@ a.registraton_link {
   border: none;
 }
 
+.popup-btn {
+  width: calc(50% - 4%);
+  margin: 0 2% 20px;
+}
+
 svg.closeBtn {
   position: absolute;
   right: 10px;
   top: 10px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .createProj {
   width: 400px;
-  min-height: 270px;
-  top: 30% !important;
+  background-color: #fff;
+  max-height: 400px;
+}
+
+.deleteProj {
+  max-height: 200px;
+  max-width: 450px;
+}
+
+.alertTitle {
+  margin: auto;
+}
+
+.modal-content {
+  border: none;
+  background-color: inherit;
+}
+
+.innerWrapp {
+  height: 200px;
+}
+
+.modal .modal-footer {
+  border: none;
+  background-color: inherit;
 }
 
 .titleCreateProj {
@@ -373,25 +406,38 @@ svg.closeBtn {
 }
 
 .newTaskBtn:focus svg rect {
-  fill: green;
+  fill: #0ec151;
 }
 
-.groupInptWaraper input {
+.newTaskBtn:hover {
+  cursor: pointer;
+}
+
+.btnWrapper {
+  min-width: 35px;
+  text-align: center;
+}
+
+.groupInputWrapper input {
   box-shadow: none !important;
 }
 
-.groupInptWaraper {
+.groupInputWrapper {
   height: 40px;
   border-radius: 5px;
-  margin: 0 10px;
+  margin: 0 5px;
   border: 1px solid rgba(33, 33, 33, 0.15);
 }
 
-.groupInptWaraper-left {
-  min-width: 170px;
+.border-n {
+  border: none;
 }
 
-.groupInptWaraper-right {
+.groupInputWrapper-left {
+  min-width: 100px;
+}
+
+.groupInputWrapper-right {
   min-width: 70px;
 }
 
@@ -413,6 +459,10 @@ form#formId {}
   right: 40px;
 }
 
+.copylink:hover {
+  cursor: pointer;
+}
+
 .clients_list {
   height: 40px;
   display: flex;
@@ -429,10 +479,11 @@ form#formId {}
   cursor: pointer;
 }
 
-.clients_list i:hover {
+.deleteTask:hover, .clients_list i:hover {
   color: red;
   font-size: 25px;
   transition: linear 0.1s;
+  cursor: pointer;
 }
 
 .clients_list.active a {
@@ -485,6 +536,10 @@ form#formId {}
 
 .allTasks {
   padding: 0 40px;
+}
+
+.taskRow {
+  margin: 10px 0;
 }
 
 .labelTaksDate {
@@ -571,9 +626,7 @@ form#formId {}
 }
 
 .dayStart {
-  width: 98px !important;
-  padding: 0 5px !important;
-  margin: 0 !important;
+  text-align: center;
 }
 
 .bs-timepicker-field {

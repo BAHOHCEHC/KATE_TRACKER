@@ -7,19 +7,12 @@ export interface User {
   token?: string;
   _id?: string;
 }
-
-export interface Category {
-  name: string;
-  user?: string;
-  imageSrc?: string;
-  _id?: string;
-}
-export interface Clients {
+export interface Client {
   name: string;
   imageSrc?: string;
   user?: string;
   tarif?: number;
-  totalHours?: string;
+  totalHours?: number;
   totalPayment?: number;
   taskList?: Task[];
   _id?: string;
@@ -28,7 +21,8 @@ export interface Clients {
 export interface Task {
   name: string;
   cost: number;
-  client: string;
+  clientName: string;
+  clientId: string;
   startTime?: Date;
   endTime?: Date;
   wastedTime?: number;
@@ -36,37 +30,8 @@ export interface Task {
   user?: string;
   formatTime?: string;
   _id?: string;
-  startDay:string;
+  startDay: string;
 }
 export interface Message {
   message: string;
-}
-export interface Order {
-  date?: Date;
-  order?: string;
-  user?: string;
-  list: any[];
-  _id?: string;
-}
-
-export interface OrderPosition {
-  name: string;
-  cost: number;
-  quantity: number;
-  _id?: any;
-}
-export interface Filter {
-  start?: Date;
-  end: Date;
-  order?: number;
-}
-export interface OverviewPage {
-  orders: OverviewPageItem;
-  gain: OverviewPageItem;
-}
-export interface OverviewPageItem {
-  percent: number;
-  compare: number;
-  yesterday: number;
-  isHighter: boolean;
 }

@@ -1,59 +1,28 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  OnDestroy,
-  AfterViewInit,
-  EventEmitter,
-  Output
-} from '@angular/core';
-import { FormGroup, FormControl, NgForm } from '@angular/forms';
-import { Subscription, Subject } from 'rxjs';
-import {
-  MaterialService,
-  MaterialDatepicker
-} from 'src/app/shared/classes/material.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
+import { MaterialService } from 'src/app/shared/classes/material.service';
 import { TasksService } from 'src/app/shared/services/tasks.service';
-import { Task, User, Clients } from 'src/app/shared/interfaces';
+import { Task, Client } from 'src/app/shared/interfaces';
 import { ActivatedRoute, Params } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map, tap } from 'rxjs/operators';
 import { ClientsService } from 'src/app/shared/services/clients-service.service';
-import { SharedService } from 'src/app/shared/services/shared-service';
 
 @Component({
   selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
+  templateUrl: './tasks.component.html'
 })
-export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('refForm') form: NgForm;
-  @ViewChild('start') startRef: ElementRef;
-  @ViewChild('end') endRef: ElementRef;
-  @ViewChild('modal') modalRef: ElementRef[];
-
-  // start: MaterialDatepicker;
-  // end: MaterialDatepicker;
-  // user: User;
-
-  aSub: Subscription;
-  aSub2: Subscription;
-  // form: FormGroup;
-  isValid = true;
-  user: any;
+export class TasksComponent implements OnInit, OnDestroy {
   tokenId: string;
 
-  nameClients: string;
-  allTasks$: Task[];
+  clientName: string;
+  allTasks$: Observable<Task[]>;
   destroy$ = new Subject<undefined>();
-  client: Clients;
+  client: Client;
 
-  tarif: number;
-  totalHours: string;
+  totalHours: number;
   totalPayment: number;
-  visible = false;
 
   constructor(
-    private _sharedService: SharedService,
     private taskService: TasksService,
     private route: ActivatedRoute,
     private clientService: ClientsService
@@ -61,91 +30,58 @@ export class TasksComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.tokenId = localStorage.getItem('auth-token');
-    const userId = localStorage.getItem('userId');
+    // const userId = localStorage.getItem('userId');
 
-    // this.form = new FormGroup({
-    //   name: new FormControl(null),
-    //   cost: new FormControl(10),
-    //   start: new FormControl(null),
-    //   end: new FormControl(null),
-    //   wastedTime: new FormControl(null),
-    //   totalMoney: new FormControl(null)
-    // });
-
-    // this.clientService.getByName(this.nameClients);
 
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: Params) => {
-        this.nameClients = params.id;
-        this.aSub = this.taskService
-          .fetch(this.nameClients)
-          .subscribe(response => {
-            this.allTasks$ = response;
-            console.log('*******ALTASKS*******', this.allTasks$);
-          });
-        this.aSub2 = this.clientService
-          .getByName(this.nameClients)
-          .subscribe(response => {
-            this.client = response[0];
-            this.tarif = this.client.tarif;
-            this.totalHours = this.client.totalHours;
-            this.totalPayment = this.client.totalPayment;
-            console.log('///////client///////', this.client);
-            this._sharedService.emitChange(this.client);
+        this.clientName = params.id;
+        this.clientService
+          .getByName(this.clientName)
+          .pipe(map(res => res[0]))
+          .subscribe(client => {
+            this.client = client;
+            this.updateTasksList();
           });
       });
   }
-  ngAfterViewInit() {}
-  changeTask(form: NgForm) {
-    console.log(form);
+
+  updateTasksList() {
+    this.allTasks$ = this.taskService.fetch(this.clientName).pipe(
+      tap(res => {
+        this.totalHours = +res
+          .reduce((acc, cur) => {
+            return acc + cur.wastedTime / 60;
+          }, 0)
+          .toFixed(2);
+        this.totalPayment = Math.round(this.totalHours) * this.client.tarif;
+        this.clientService
+          .update(this.client._id, this.totalHours, this.totalPayment)
+          .subscribe(res => {
+            console.log('clientService', res);
+          });
+      })
+    );
   }
-  cancel(form: NgForm) {
-    console.log(form);
-  }
-  changeVisibility() {}
 
   copyLink() {
     console.log(this.client);
 
     const url = document.location.href;
+    const firsPart = url.substring(0, url.indexOf('/clients/'));
+
+    const finalurl = firsPart + `/clients-statistic/` + this.client.name;
     document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', url);
+      e.clipboardData.setData('text/plain', finalurl);
       e.preventDefault();
       document.removeEventListener('copy', null);
     });
     document.execCommand('copy');
     MaterialService.toast('Скопированно в буфер');
   }
-  validate() {
-    // this.form.controls.start.setValue(this.startRef.nativeElement.value);
-    // this.form.controls.end.setValue(this.endRef.nativeElement.value);
-    // console.log(this.form);
-    // if (!this.start.date || !this.end.date) {
-    //   this.isValid = true;
-    //   return;
-    // }
-    // this.isValid = this.start.date < this.end.date;
-  }
   ngOnDestroy() {
-    if (this.aSub) {
-      this.aSub.unsubscribe();
-      this.allTasks$ = [];
-    }
-    if (this.aSub2) {
-      this.aSub2.unsubscribe();
-    }
     this.destroy$.next();
     this.destroy$.complete();
-  }
-  onSubmit() {
-    // this.form.disable();
-    // this.form.disable();
-    console.log(this.form);
-    // const newPos: Task = {
-    //   name: this.form.value.name,
-    //   cost: this.form.value.cost,
-    //   user: this.user._id
-    // };
   }
 }

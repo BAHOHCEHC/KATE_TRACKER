@@ -14,10 +14,12 @@ import { LoaderComponent } from './shared/components/loader/loader.component';
 import { ClientsPageComponent } from './clients-page/clients-page.component';
 import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
-import { TaskComponent } from './clients-page/task/task.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { TaskRowComponent } from './shared/components/task-row/task-row.component';
 import { DayPipe } from './shared/pipes/day.pipe';
 import { HourPipe } from './shared/pipes/hour.pipe';
+import { ClientStatisticComponent } from './shared/layouts/clients-layout/clients-statistic.component';
+import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-view/clients-view.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +32,11 @@ import { HourPipe } from './shared/pipes/hour.pipe';
     ClientsPageComponent,
     TasksComponent,
     MonthlyReportsComponent,
-    TaskComponent,
+    TaskRowComponent,
     DayPipe,
-    HourPipe
+    HourPipe,
+    ClientStatisticComponent,
+    ClientsViewComponent,
   ],
   imports: [
     BrowserModule,
