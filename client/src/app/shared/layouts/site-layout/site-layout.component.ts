@@ -6,14 +6,15 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { Clients, User } from '../../interfaces';
+import { Client, User } from '../../interfaces';
 import { ClientsService } from '../../services/clients-service.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { MaterialInstance } from '../../classes/material.service';
 import { MaterialService } from './../../classes/material.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-site-layout',
@@ -35,9 +36,11 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('confirm') confirmRef: ElementRef;
 
   loading = false;
-  deleteClientId = '';
+  deletedClient: Client = null;
   user: User;
+  destroy$ = new Subject<undefined>();
   aSub: Subscription;
+
   show: boolean;
   form: FormGroup;
   modal: MaterialInstance;
@@ -45,11 +48,12 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   confirm: MaterialInstance;
   clientsName = [];
   message = '';
-  clients$: Observable<Clients[]>;
+  clients$: Observable<Client[]>;
 
   constructor(
     private clientsService: ClientsService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -88,7 +92,6 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
   }
-
   addNewProject() {
     this.form.reset({
       name: '',
@@ -118,14 +121,6 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       tarif: 10
     });
   }
-
-  ngOnDestroy() {
-    this.modal.destroy();
-    if (this.aSub) {
-      this.aSub.unsubscribe();
-    }
-  }
-
   closeModal() {
     this.modal.close();
     this.resetForm();
@@ -143,24 +138,42 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.form.value.currency = this.selectRef.nativeElement.value;
-    this.clientsService.create(this.form.value).subscribe(e => {
+    this.clientsService.create(this.form.value).subscribe(client => {
+      this.router.navigate([`/clients/${client.name}`]);
       this.fethClients();
     });
     this.closeModal();
     MaterialService.updateTextInputs();
   }
-  deleteClient(clientId) {
-    this.deleteClientId = clientId;
+  deleteClient(client) {
+    this.deletedClient = client;
     this.confirm.open();
   }
   confirmDelete() {
-    this.clientsService.delete(this.deleteClientId).subscribe(message => {});
-    this.deleteClientId = '';
+    this.clientsService
+      .delete(this.deletedClient._id)
+      .subscribe(({ message }) => {
+        MaterialService.toast(message);
+      });
     this.fethClients();
+
+    const deletedClient = this.router.url.substring('/clients/'.length);
+    if (this.deletedClient.name === deletedClient) {
+      this.router.navigate(['/clients']);
+    }
+    this.deletedClient = null;
     this.confirm.close();
   }
   cancelDelete() {
     this.confirm.close();
-    this.deleteClientId = '';
+    this.deletedClient = null;
+  }
+  ngOnDestroy() {
+    this.modal.destroy();
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.aSub) {
+      this.aSub.unsubscribe();
+    }
   }
 }

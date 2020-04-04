@@ -13,15 +13,21 @@ export class TasksService {
     return this.http.get<Task[]>(`/api/task/${clientsName}`);
   }
 
-  create(task: Task): Observable<Task> {
-    return this.http.post<Task>('/api/task', task);
+  create(task: Task): Observable<Message> {
+    return this.http.post<Message>('/api/task', task);
   }
 
-  update(task: Task): Observable<Task> {
-    return this.http.patch<Task>(`/api/task/${task._id}`, task);
+  update(task: Task): Observable<Message> {
+    return this.http.patch<Message>(`/api/task/${task._id}`, task);
   }
 
   delete(task: Task): Observable<Message> {
     return this.http.delete<Message>(`/api/task/${task._id}`);
   }
+  // create(task: Task): Observable<Task> {
+  //   return this.http.post<Task>('/api/task', task);
+  // }
+  // update(task: Task): Observable<Task> {
+  //   return this.http.patch<Task>(`/api/task/${task._id}`, task);
+  // }
 }
