@@ -35,14 +35,15 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dayStart') dayDateStartRef: ElementRef;
 
-  formTask: FormGroup;
+  form: FormGroup;
 
+  submitted = false
   isNew = true;
   start: MaterialDatepicker;
   currentTime = moment();
   currentTime2 = moment();
 
-  constructor(private taskService: TasksService, private fb: FormBuilder) {}
+  constructor(private taskService: TasksService, private fb: FormBuilder) { }
 
   ngOnInit() {
     if (this.taskData) {
@@ -54,9 +55,9 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     this.initDatepicker();
   }
   setDate() {
-    if (this.formTask.controls.name.untouched) {
+    if (this.form.controls.name.untouched) {
       const newTaskName = moment(this.start.date).format('LL') + ` Task`;
-      this.formTask.controls.name.setValue(newTaskName);
+      this.form.controls.name.setValue(newTaskName);
     }
   }
   deleteTask() {
@@ -66,8 +67,10 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     });
   }
   onSubmit() {
-    const start = moment(this.formTask.value.timeStart);
-    const endTime = moment(this.formTask.value.timeEnd);
+    this.submitted = true;
+
+    const start = moment(this.form.value.timeStart);
+    const endTime = moment(this.form.value.timeEnd);
     const betweenDifferenceM = endTime.diff(start, 'minutes');
     const betweenDifferenceH = endTime.diff(start, 'hours');
     const overMinutes = betweenDifferenceM - betweenDifferenceH * 60;
@@ -81,39 +84,52 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     const formatTime = betweenDifferenceH + ':' + formatMinute;
 
     const task: Task = {
-      name: this.formTask.value.name,
+      name: this.form.value.name,
       cost: this.client.tarif,
       clientName: this.client.name,
       clientId: this.client._id,
-      startTime: this.formTask.value.timeStart,
-      endTime: this.formTask.value.timeEnd,
+      startTime: this.form.value.timeStart,
+      endTime: this.form.value.timeEnd,
       wastedTime: betweenDifferenceM,
       totalMoney: wasteTime * this.client.tarif,
       user: this.client.user,
       formatTime,
-      startDay: this.formTask.value.dayStart
+      startDay: this.form.value.dayStart
     };
-
     if (this.isNew) {
       this.taskService.create(task).subscribe(response => {
         this.throwMessage(response.message);
-        this.formTask.reset();
         this.initDatepicker();
       });
     } else {
       task._id = this.taskData._id;
       this.taskService.update(task).subscribe(response => {
         this.throwMessage(response.message);
-        this.formTask.reset();
         this.initDatepicker();
       });
     }
+    this.form.reset();
+    this.setFormControlsValues();
     this.taskEmitter.emit();
+    this.submitted = false;
   }
   throwMessage(message) {
     MaterialService.toast(message);
   }
 
+  setFormControlsValues() {
+    if (!this.taskData) {
+      this.form.controls['name'].setValue(moment().format('LL') + ` Task`);
+      this.form.controls['dayStart'].setValue(moment().format('DD.MM.YYYY'));
+      this.form.controls['timeStart'].setValue(new Date());
+      this.form.controls['timeEnd'].setValue(new Date());
+    } else {
+      this.form.controls['name'].setValue(this.taskData.name);
+      this.form.controls['dayStart'].setValue(this.taskData.startDay);
+      this.form.controls['timeStart'].setValue(this.taskData.startTime);
+      this.form.controls['timeEnd'].setValue(this.taskData.endTime);
+    }
+  }
   initDatepicker() {
     this.start = MaterialService.initDatepicker(
       this.dayDateStartRef,
@@ -121,22 +137,12 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     );
   }
   initForm() {
-    let initName = moment().format('LL') + ` Task`;
-    let initTimetart = new Date();
-    let initTimend = new Date();
-    let initStartDay = moment().format('DD.MM.YYYY');
-    if (this.taskData) {
-      initName = this.taskData.name;
-      initTimetart = this.taskData.startTime;
-      initTimend = this.taskData.endTime;
-      initStartDay = this.taskData.startDay;
-    }
-
-    this.formTask = this.fb.group({
-      name: new FormControl(initName, [Validators.required]),
-      timeStart: new FormControl(initTimetart, Validators.required),
-      timeEnd: new FormControl(initTimend, Validators.required),
-      dayStart: new FormControl(initStartDay, Validators.required)
+    this.form = this.fb.group({
+      name: new FormControl(null, [Validators.required]),
+      timeStart: new FormControl(null, Validators.required),
+      timeEnd: new FormControl(null, Validators.required),
+      dayStart: new FormControl(null, [Validators.required,])
     });
+    this.setFormControlsValues();
   }
 }

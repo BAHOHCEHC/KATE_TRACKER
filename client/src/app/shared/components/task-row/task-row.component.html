@@ -1,5 +1,5 @@
 <form
-  [formGroup]="formTask"
+  [formGroup]="form"
   #task
   class="formNewTask_top"
   (ngSubmit)="onSubmit()"
@@ -63,7 +63,7 @@
       </timepicker>
     </div>
 
-    <button class=" modal-action dibl newTaskBtn" type="submit">
+    <button [disabled]="form.invalid || submitted" class="modal-action dibl newTaskBtn" type="submit">
       <svg
         width="40"
         height="40"

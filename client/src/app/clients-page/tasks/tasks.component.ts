@@ -80,6 +80,10 @@ export class TasksComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     MaterialService.toast('Скопированно в буфер');
   }
+  changeClientData(){
+    console.log("WORK changeClientData");
+    
+  }
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
