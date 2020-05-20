@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
+import { AppStoreModule } from './store/app-store.module';
+
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { AuthLayoutComponent } from './shared/layouts/auth-layout/auth-layout.component';
@@ -37,14 +39,17 @@ import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-vi
     HourPipe,
     ClientStatisticComponent,
     ClientsViewComponent,
+   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    AppStoreModule,
     ReactiveFormsModule,
     HttpClientModule,
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+
   ],
   providers: [
     {
@@ -55,4 +60,4 @@ import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-vi
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

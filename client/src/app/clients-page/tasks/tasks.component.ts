@@ -6,6 +6,13 @@ import { Task, Client } from 'src/app/shared/interfaces';
 import { ActivatedRoute, Params } from '@angular/router';
 import { takeUntil, map, tap } from 'rxjs/operators';
 import { ClientsService } from 'src/app/shared/services/clients-service.service';
+import { AppState } from 'src/app/store/app-store.module';
+import { Store } from '@ngrx/store';
+import { GettingAllTasks, CurrentClientTasks } from 'src/app/store/actions/tasks.action';
+import { GetCurrentClient, GetAllClientOfUser } from 'src/app/store/actions/client.action';
+import { TasksState } from 'src/app/store/reducers/tasks.reducers';
+import { UserService } from 'src/app/shared/services/user.service';
+import { LogIn } from 'src/app/store/actions/auth.action';
 
 @Component({
   selector: 'app-tasks',
@@ -16,6 +23,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   clientName: string;
   allTasks$: Observable<Task[]>;
+  // allTasksState$: Observable<TasksState>;
   destroy$ = new Subject<undefined>();
   client: Client;
 
@@ -25,13 +33,18 @@ export class TasksComponent implements OnInit, OnDestroy {
   constructor(
     private taskService: TasksService,
     private route: ActivatedRoute,
-    private clientService: ClientsService
-  ) {}
+    private clientService: ClientsService,
+    private store: Store<AppState>,
+    // private userService: UserService,
+  ) { }
 
   ngOnInit() {
     this.tokenId = localStorage.getItem('auth-token');
     // const userId = localStorage.getItem('userId');
 
+    this.taskService.getAllClientTask().subscribe(res => {
+      this.store.dispatch(new GettingAllTasks(res));
+    })
 
     this.route.params
       .pipe(takeUntil(this.destroy$))
@@ -45,9 +58,15 @@ export class TasksComponent implements OnInit, OnDestroy {
             this.updateTasksList();
           });
       });
+
+    // this.allTasksState$ = this.store.select('taskState');
   }
 
   updateTasksList() {
+    this.taskService.getAllClientTask().subscribe(res => {
+      this.store.dispatch(new GettingAllTasks(res));
+    })
+
     this.allTasks$ = this.taskService.fetch(this.clientName).pipe(
       tap(res => {
         this.totalHours = +res
@@ -55,12 +74,23 @@ export class TasksComponent implements OnInit, OnDestroy {
             return acc + cur.wastedTime / 60;
           }, 0)
           .toFixed(2);
+
+        this.store.dispatch(new CurrentClientTasks(res));
+
         this.totalPayment = Math.round(this.totalHours) * this.client.tarif;
+
         this.clientService
           .update(this.client._id, this.totalHours, this.totalPayment)
           .subscribe(res => {
             console.log('clientService', res);
+            this.store.dispatch(new GetCurrentClient(res));
           });
+
+        this.clientService.fetchAll().subscribe(
+          (clients) => {
+            this.store.dispatch(new GetAllClientOfUser(clients));
+          });
+
       })
     );
   }

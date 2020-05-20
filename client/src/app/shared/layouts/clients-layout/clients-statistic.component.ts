@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksService } from '../../services/tasks.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ClientsService } from '../../services/clients-service.service';
 import { Observable, Subject } from 'rxjs';
 import { Task, Client } from '../../interfaces';
-import { takeUntil, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clients-statistic',
@@ -24,7 +24,6 @@ export class ClientStatisticComponent implements OnInit {
 
   constructor(
     private taskService: TasksService,
-    private route: ActivatedRoute,
     private clientService: ClientsService,
     private router: Router
   ) {}

@@ -5,7 +5,7 @@
   ></app-task-row>
 </div>
 
-<div class="statusBar ">
+<div class="statusBar">
   <h1 class="projectName">{{ clientName }}</h1>
   <div class="dfl ai">
     <div *ngIf="client" class="dfl">
@@ -41,11 +41,13 @@
   class="row allTasks dfl fd_col"
 >
   <div class="taskRow" *ngFor="let task of allTasks">
+
     <app-task-row
       [taskData]="task"
       [client]="client"
       (updateTasks)="updateTasksList()"
     ></app-task-row>
+    
   </div>
 </div>
 <ng-template #loader>

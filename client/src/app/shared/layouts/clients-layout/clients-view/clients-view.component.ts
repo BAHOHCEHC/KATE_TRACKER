@@ -16,14 +16,14 @@ export class ClientsViewComponent implements OnInit {
 
   ngOnInit() {
     const initName = this.taskData.name;
-    const initTimetart = this.taskData.startTime;
-    const initTimend = this.taskData.endTime;
+    const initTimeStart = this.taskData.startTime;
+    const initTimeEnd = this.taskData.endTime;
     const initStartDay = this.taskData.startDay;
 
     this.formTask = this.fb.group({
       name: new FormControl(initName),
-      timeStart: new FormControl(initTimetart),
-      timeEnd: new FormControl(initTimend),
+      timeStart: new FormControl(initTimeStart),
+      timeEnd: new FormControl(initTimeEnd),
       dayStart: new FormControl(initStartDay)
     });
   }

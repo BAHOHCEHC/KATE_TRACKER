@@ -14,6 +14,17 @@ module.exports.getByClientName = async function(req, res) {
 	}
 };
 
+module.exports.getAllTask = async function(req, res) {
+	try {
+		const tasks = await Task.find({ // clientId в роутах /:clientName'
+			user: req.user.id //из passporta тянем юзера id
+		});
+		res.status(200).json(tasks);
+	} catch (e) {
+		errorHandler(res, e);
+	}
+};
+
 module.exports.create = async function(req, res) {
 	try {
 		const task = await new Task({

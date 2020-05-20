@@ -63,7 +63,7 @@
       </timepicker>
     </div>
 
-    <button class=" modal-action dibl newTaskBtn" type="submit">
+    <button class=" modal-action dibl newTaskBtn" type="submit" [disabled]="formTask.invalid || submitted">
       <svg
         width="40"
         height="40"
