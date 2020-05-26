@@ -1,18 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
+import { takeUntil, map, tap, reduce } from 'rxjs/operators';
+import * as moment from 'moment';
+
 import { MaterialService } from 'src/app/shared/classes/material.service';
 import { TasksService } from 'src/app/shared/services/tasks.service';
-import { Task, Client } from 'src/app/shared/interfaces';
-import { ActivatedRoute, Params } from '@angular/router';
-import { takeUntil, map, tap } from 'rxjs/operators';
-import { ClientsService } from 'src/app/shared/services/clients-service.service';
-import { AppState } from 'src/app/store/app-store.module';
+
 import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app-store.module';
 import { GettingAllTasks, CurrentClientTasks } from 'src/app/store/actions/tasks.action';
 import { GetCurrentClient, GetAllClientOfUser } from 'src/app/store/actions/client.action';
+import { LogIn } from 'src/app/store/actions/auth.action';
+
+import { Task, Client } from 'src/app/shared/interfaces';
+import { ClientsService } from 'src/app/shared/services/clients-service.service';
 import { TasksState } from 'src/app/store/reducers/tasks.reducers';
 import { UserService } from 'src/app/shared/services/user.service';
-import { LogIn } from 'src/app/store/actions/auth.action';
+
 
 @Component({
   selector: 'app-tasks',
@@ -22,7 +27,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   tokenId: string;
 
   clientName: string;
-  allTasks$: Observable<Task[]>;
+  allTasks$: Observable<any[]>;
   // allTasksState$: Observable<TasksState>;
   destroy$ = new Subject<undefined>();
   client: Client;
@@ -71,16 +76,15 @@ export class TasksComponent implements OnInit, OnDestroy {
       tap(res => {
         this.totalHours = +res
           .reduce((acc, cur) => {
-            return acc + cur.wastedTime / 60;
+            return acc + cur.wastedTime;
           }, 0)
           .toFixed(2);
-
         this.store.dispatch(new CurrentClientTasks(res));
 
-        this.totalPayment = Math.round(this.totalHours) * this.client.tarif;
+        this.totalPayment = Math.round(this.totalHours / 60) * this.client.tarif;
 
         this.clientService
-          .update(this.client._id, this.totalHours, this.totalPayment)
+          .update(this.client._id, this.totalHours / 60, this.totalPayment)
           .subscribe(res => {
             console.log('clientService', res);
             this.store.dispatch(new GetCurrentClient(res));
@@ -90,9 +94,41 @@ export class TasksComponent implements OnInit, OnDestroy {
           (clients) => {
             this.store.dispatch(new GetAllClientOfUser(clients));
           });
+      }),
+      reduce((acc, tasks) => {
+        tasks.forEach((task: Task) => {
+          const fixDate = new Date(task.startDay);
+          const date = moment(fixDate).format('dddd, D MMM');
+          const exist = acc.find(e => {
+            return e.taskDayDate === date;
+          })
+          if (exist) {
+            exist.tasksInDay.push(task)
+            exist.totalDayHour += task.wastedTime;
+          } else {
+            let obj = {
+              totalDayHour: task.wastedTime,
+              taskDayDate: date,
+              tasksInDay: []
+            }
+            obj.tasksInDay.push(task);
+            acc.push(obj);
+          }
+        })
 
-      })
+        //******************FIX deprecation warning*****************/
+        //******************FIX deprecation warning*****************/
+        acc.sort(function (left, right) {
+          let first = moment.utc(left.taskDayDate).format();
+          let second = moment.utc(right.taskDayDate).format();
+          return moment.utc(first).diff(moment.utc(second))
+        });
+        //******************FIX deprecation warning*****************/
+        //******************FIX deprecation warning*****************/
+        return acc.reverse();
+      }, [])
     );
+
   }
 
   copyLink() {
@@ -110,6 +146,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     MaterialService.toast('Скопированно в буфер');
   }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

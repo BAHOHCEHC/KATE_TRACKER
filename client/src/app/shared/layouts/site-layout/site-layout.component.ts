@@ -6,20 +6,22 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { Client, User } from '../../interfaces';
-import { ClientsService } from '../../services/clients-service.service';
-import { Subscription, Observable, Subject } from 'rxjs';
-import { UserService } from '../../services/user.service';
-import { MaterialInstance } from '../../classes/material.service';
-import { MaterialService } from './../../classes/material.service';
+import { Observable, Subject } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+
 import { AppState } from 'src/app/store/app-store.module';
+import { Store } from '@ngrx/store';
+
 import { LogIn } from 'src/app/store/actions/auth.action';
 import { GetAllClientOfUser, RemoveClient } from 'src/app/store/actions/client.action';
 
+import { Client, User } from '../../interfaces';
+import { ClientsService } from '../../services/clients-service.service';
+import { UserService } from '../../services/user.service';
+import { MaterialInstance } from '../../classes/material.service';
+import { MaterialService } from './../../classes/material.service';
 @Component({
   selector: 'app-site-layout',
   templateUrl: './site-layout.component.html',
@@ -43,7 +45,6 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   deletedClient: Client = null;
   user: User;
   destroy$ = new Subject<undefined>();
-  aSub: Subscription;
 
   show: boolean;
   form: FormGroup;
@@ -72,7 +73,7 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.fethClients();
 
-    this.aSub = this.userService
+    this.userService
       .getUserData(localStorage.getItem('userId'))
       .subscribe((user: User) => {
         this.user = user;
@@ -186,8 +187,5 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.modal.destroy();
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.aSub) {
-      this.aSub.unsubscribe();
-    }
   }
 }

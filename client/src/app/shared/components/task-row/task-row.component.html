@@ -13,7 +13,7 @@
       placeholder="Task name"
     />
 
-    <div class="groupInputWrapper groupInputWrapper-left dfl ai">
+    <div class="groupInputWrapper groupInputWrapper-left dfl ai" *ngIf="isNew">
       <input
         id="dayStart"
         class="dibl task_inputs dayStart"
@@ -51,7 +51,15 @@
       />
     </svg>
 
-    <div class="groupInputWrapper groupInputWrapper-right dfl ai">
+    <div
+      class="groupInputWrapper groupInputWrapper-right dfl ai"
+      [ngClass]="{ msg_error: formTask.get('timeEnd').dirty && timeLessError() }"
+    >
+      <span
+        class="red-text pa error_msg"
+        *ngIf="formTask.get('timeEnd').dirty && timeLessError()"
+        >Time is wrong</span
+      >
       <timepicker
         [minuteStep]="1"
         class="timepicker"
@@ -63,7 +71,11 @@
       </timepicker>
     </div>
 
-    <button class=" modal-action dibl newTaskBtn" type="submit" [disabled]="formTask.invalid || submitted">
+    <button
+      class="modal-action dibl newTaskBtn"
+      type="submit"
+      [disabled]="formTask.invalid || submitted || timeLessError()"
+    >
       <svg
         width="40"
         height="40"

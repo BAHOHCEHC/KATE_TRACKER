@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from '../../services/tasks.service';
 import { Router } from '@angular/router';
-import { ClientsService } from '../../services/clients-service.service';
 import { Observable, Subject } from 'rxjs';
+import * as moment from 'moment';
+
+import { TasksService } from '../../services/tasks.service';
+import { ClientsService } from '../../services/clients-service.service';
 import { Task, Client } from '../../interfaces';
 import { map, tap } from 'rxjs/operators';
 
@@ -26,17 +28,17 @@ export class ClientStatisticComponent implements OnInit {
     private taskService: TasksService,
     private clientService: ClientsService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.clientName = this.router.url.substring('/clients-statistic/'.length);
     this.clientService
-    .getByName(this.clientName)
-    .pipe(map(res => res[0]))
-    .subscribe(client => {
-      this.client = client;
-      this.updateTasksList();
-    });
+      .getByName(this.clientName)
+      .pipe(map(res => res[0]))
+      .subscribe(client => {
+        this.client = client;
+        this.updateTasksList();
+      });
   }
 
   updateTasksList() {
@@ -44,10 +46,15 @@ export class ClientStatisticComponent implements OnInit {
       tap(res => {
         this.totalHours = +res
           .reduce((acc, cur) => {
-            return acc + cur.wastedTime / 60;
+            return acc + cur.wastedTime;
           }, 0)
           .toFixed(2);
-        this.totalPayment = Math.round(this.totalHours) * this.client.tarif;
+        this.totalPayment = Math.round(this.totalHours / 60) * this.client.tarif;
+      }),
+      map(res => {
+        return (res.sort(function (left, right) {
+          return moment.utc(left.startDay).diff(moment.utc(right.startDay));
+        }).reverse());
       })
     );
   }
