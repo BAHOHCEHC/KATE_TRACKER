@@ -424,9 +424,14 @@ svg.closeBtn {
   cursor: pointer;
 }
 
+.btnWrapper:hover {
+  cursor: pointer;
+}
 .btnWrapper {
   min-width: 35px;
+  min-height: 35px;
   text-align: center;
+  padding-top: 5px;
 }
 
 .groupInputWrapper input {
@@ -472,10 +477,33 @@ h1.projectName {
   margin: 15px 0 5px 0;
   font-size: 32px;
 }
+.status_info {
+  flex-grow: 8;
+}
+.daterange {
+  width: 200px;
+  margin-bottom: 0;
+  padding: 0 5px;
+  text-align: center;
+}
+.daterange input {
+  text-align: center;
+  border-radius: 5px !important;
+  margin-bottom: 0 !important;
+  border: 1px solid rgba(33, 33, 33, 0.15) !important;
+  background-color: #fff !important;
+}
+input[type='text']:not(.browser-default):focus:not([readonly]) {
+  box-shadow: none !important;
+}
+bs-daterangepicker-container {
+  left: -210px !important;
+  top: 0 !important;
+}
 .copylink {
   height: 40px;
-  position: absolute;
   right: 40px;
+  margin-left: 10px;
 }
 
 .copylink:hover {
@@ -495,17 +523,11 @@ h1.projectName {
   background: #35404d;
 }
 
-.clients_list i {
-  font-size: 23px;
+.clients_list svg:hover {
   cursor: pointer;
 }
-
-.deleteTask:hover,
-.clients_list i:hover {
-  color: red;
-  font-size: 25px;
-  transition: linear 0.1s;
-  cursor: pointer;
+.clients_list svg:hover path {
+  fill: #00bcd4;
 }
 
 .clients_list.active a {
@@ -604,6 +626,7 @@ h1.projectName {
   margin: 10px 20px;
   border-top: 1px solid #2121212e;
   padding-top: 10px;
+  padding-bottom: 5px;
 }
 .taskRow:nth-of-type(1) {
   border-top: none !important;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 
@@ -20,6 +20,8 @@ export class ClientStatisticComponent implements OnInit {
   allTasks$: Observable<Task[]>;
   destroy$ = new Subject<undefined>();
   client: Client = null;
+  from: string;
+  to: string;
 
   totalHours: number;
   totalPayment: number;
@@ -27,11 +29,16 @@ export class ClientStatisticComponent implements OnInit {
   constructor(
     private taskService: TasksService,
     private clientService: ClientsService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.clientName = this.router.url.substring('/clients-statistic/'.length);
+
+    const url = this.router.url.substring('/clients-statistic/'.length).split('/');
+    this.clientName = url[0];
+    this.from = url[1];
+    this.to = url[2];
     this.clientService
       .getByName(this.clientName)
       .pipe(map(res => res[0]))
@@ -44,7 +51,8 @@ export class ClientStatisticComponent implements OnInit {
   updateTasksList() {
     this.allTasks$ = this.taskService.fetch(this.clientName).pipe(
       tap(res => {
-        this.totalHours = +res
+        const takskbyPeriod = this.filtered(res)
+        this.totalHours = +takskbyPeriod
           .reduce((acc, cur) => {
             return acc + cur.wastedTime;
           }, 0)
@@ -52,10 +60,23 @@ export class ClientStatisticComponent implements OnInit {
         this.totalPayment = Math.round(this.totalHours / 60) * this.client.tarif;
       }),
       map(res => {
-        return (res.sort(function (left, right) {
+        // return (res.sort(function (left, right) {
+        //   return moment.utc(left.startDay).diff(moment.utc(right.startDay));
+        // }).reverse());
+        const takskbyPeriod = this.filtered(res);
+        return takskbyPeriod.sort(function (left, right) {
           return moment.utc(left.startDay).diff(moment.utc(right.startDay));
-        }).reverse());
+        });
       })
     );
+  }
+  filtered(arr) {
+    return arr.filter((task) => {
+      const day = new Date(task.startDay).getTime().toString();
+      const from = day >= this.from;
+      const to = day <= this.to;
+      const final = from && to;
+      return final;
+    });
   }
 }

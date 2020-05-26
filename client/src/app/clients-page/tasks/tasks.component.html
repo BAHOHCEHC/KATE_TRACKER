@@ -8,12 +8,27 @@
 <div class="statusBar">
   <h1 class="projectName">{{ clientName }}</h1>
   <div class="client_info_bar dfl ai">
-    <div *ngIf="client" class="dfl">
+    <div *ngIf="client" class="dfl status_info">
       <div class="wrap">{{ client.tarif }} $ / hour</div>
       <div class="wrap">Total hours: {{ totalHours | hourPipe }}</div>
       <div class="wrap">Total payment: ${{ totalPayment }}</div>
     </div>
 
+    <div class="form-group daterange">
+      <input
+        class="tac"
+        type="text"
+        placeholder="Daterangepicker"
+        class="form-control"
+        bsDaterangepicker
+        [(ngModel)]="bsRangeValue"
+        [bsConfig]="{
+          rangeInputFormat: 'MMMM Do',
+          dateInputFormat: 'MMMM Do',
+          containerClass: 'theme-blue'
+        }"
+      />
+    </div>
     <div class="copylink" (click)="copyLink()">
       <svg
         width="40"

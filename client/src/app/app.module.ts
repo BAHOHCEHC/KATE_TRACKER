@@ -2,8 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { AppStoreModule } from './store/app-store.module';
+
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -16,7 +21,6 @@ import { LoaderComponent } from './shared/components/loader/loader.component';
 import { ClientsPageComponent } from './clients-page/clients-page.component';
 import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
-import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { TaskRowComponent } from './shared/components/task-row/task-row.component';
 import { ClientStatisticComponent } from './shared/layouts/clients-layout/clients-statistic.component';
 import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-view/clients-view.component';
@@ -52,8 +56,9 @@ import {
     AppStoreModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     TimepickerModule.forRoot(),
-
+    BsDatepickerModule.forRoot(),
   ],
   providers: [
     {

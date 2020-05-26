@@ -32,6 +32,11 @@ export class TasksComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<undefined>();
   client: Client;
 
+  statisticParam: string;
+  initialDate = new Date();
+  bsRangeValue: Date[];
+  maxDate = new Date();
+
   totalHours: number;
   totalPayment: number;
 
@@ -41,15 +46,13 @@ export class TasksComponent implements OnInit, OnDestroy {
     private clientService: ClientsService,
     private store: Store<AppState>,
     // private userService: UserService,
-  ) { }
-
+  ) {
+    this.maxDate.setDate(this.maxDate.getDate() + 7);
+    this.bsRangeValue = [this.initialDate, this.maxDate];
+  }
   ngOnInit() {
     this.tokenId = localStorage.getItem('auth-token');
     // const userId = localStorage.getItem('userId');
-
-    this.taskService.getAllClientTask().subscribe(res => {
-      this.store.dispatch(new GettingAllTasks(res));
-    })
 
     this.route.params
       .pipe(takeUntil(this.destroy$))
@@ -103,7 +106,12 @@ export class TasksComponent implements OnInit, OnDestroy {
             return e.taskDayDate === date;
           })
           if (exist) {
-            exist.tasksInDay.push(task)
+            exist.tasksInDay.push(task);
+            exist.tasksInDay.sort(function (left, right) {
+              let first = moment.utc(left.endTime).format();
+              let second = moment.utc(right.endTime).format();
+              return moment.utc(first).diff(moment.utc(second))
+            });
             exist.totalDayHour += task.wastedTime;
           } else {
             let obj = {
@@ -132,12 +140,14 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   copyLink() {
-    console.log(this.client);
+    // console.log(this.client);
 
     const url = document.location.href;
     const firsPart = url.substring(0, url.indexOf('/clients/'));
+    const from = moment(this.bsRangeValue[0]).startOf('day');
+    const to = moment(this.bsRangeValue[1]).endOf('day');
 
-    const finalurl = firsPart + `/clients-statistic/` + this.client.name;
+    const finalurl = firsPart + `/clients-statistic/` + this.client.name + `/${from}/${to}`;
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', finalurl);
       e.preventDefault();
