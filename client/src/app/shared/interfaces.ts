@@ -15,9 +15,15 @@ export interface Client {
   totalHours?: number;
   totalPayment?: number;
   taskList?: Task[];
+  currency?: string;
   _id?: string;
 }
 
+export interface TaskDay {
+  totalDayHour: string;
+  taskDayDate: string;
+  tasksInDay: Task[]
+}
 export interface Task {
   name: string;
   cost?: number;

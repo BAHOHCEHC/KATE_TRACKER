@@ -2,6 +2,7 @@
   <app-task-row
     [client]="client"
     (updateTasks)="updateTasksList()"
+    [readonlyParam]="false"
   ></app-task-row>
 </div>
 
@@ -9,9 +10,13 @@
   <h1 class="projectName">{{ clientName }}</h1>
   <div class="client_info_bar dfl ai">
     <div *ngIf="client" class="dfl status_info">
-      <div class="wrap">{{ client.tarif }} $ / hour</div>
-      <div class="wrap">Total hours: {{ totalHours | hourPipe }}</div>
-      <div class="wrap">Total payment: ${{ totalPayment }}</div>
+      <div class="wrap color_grey_text">{{ client.tarif }} $ / hour</div>
+      <div class="wrap color_grey_text">
+        Total hours: <span class="fw_b_600 color_black_text">{{ totalHours | hourPipe }}</span>
+      </div>
+      <div class="wrap color_grey_text">
+        Total payment: <span class="fw_b_600 color_black_text">{{ totalPayment }} $</span>
+      </div>
     </div>
 
     <div class="form-group daterange">
@@ -61,7 +66,7 @@
         {{ days.taskDayDate }}
       </span>
       <div class="day_time_wrap">
-        <span class="fw_b_600 day_total_header">Total:</span>
+        <span class="fw_b_600 color_black_text day_total_header">Total:</span>
         <span class="day_total_time">{{ days.totalDayHour | hourPipe }}</span>
       </div>
     </h5>
@@ -69,6 +74,7 @@
       <app-task-row
         [taskData]="task"
         [client]="client"
+        [readonlyParam]="false"
         (updateTasks)="updateTasksList()"
       ></app-task-row>
     </div>

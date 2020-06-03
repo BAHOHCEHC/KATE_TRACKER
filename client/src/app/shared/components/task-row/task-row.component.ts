@@ -37,12 +37,14 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
   @Output('updateTasks') taskEmitter = new EventEmitter();
 
   @Input() taskData: Task;
+  @Input() readonlyParam: boolean;
   @Input() client: Client;
 
   @ViewChild('dayStart') dayDateStartRef: ElementRef;
 
   formTask: FormGroup;
   submitted = false;
+  isEditNow = false;
 
   isNew = true;
   start: MaterialDatepicker;
@@ -118,9 +120,11 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
         this.formTask.controls['timeEnd'].setValue(moment(new Date()).add(1, 'm').toDate());
       });
     } else {
+      
       task._id = this.taskData._id;
       this.taskService.update(task).subscribe(response => {
         this.throwMessage(response.message);
+        this.isEditNow = true;
       });
     }
     this.taskEmitter.emit();
@@ -168,5 +172,8 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       timeEnd: new FormControl(initTimeEnd, [Validators.required]),
       dayStart: new FormControl(initStartDay, Validators.required)
     });
+  }
+  changed(event){
+    this.isEditNow = true;
   }
 }

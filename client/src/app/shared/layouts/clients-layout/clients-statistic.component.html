@@ -1,15 +1,114 @@
-<div class="container">
+<div class="dbl color_black_text bg-white bx_sh_down">
+  <div class="container dfl jc-space-between">
+    <div class="client_statistic_user_section">
+      <div class="client_statistic_user_icon center dibl fl">
+        <img class="userImage" src="{{ imageSrc }}" />
+      </div>
+      <h3 class="userName client_statistic_user_userName dibl fl">{{ nickName }}</h3>
+      <h4 class="userPosition client_statistic_user_userName dibl fl">UX/UI designer</h4>
+    </div>
+    <div class="client_statistic_btn_wrap dfl fd_col jc">
+      <a class="bg-blue monthlyReports_btn dfl" (click)="getPDF()">
+        <svg
+          class="reportsImg"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3 3.75H17V2.25H3V3.75ZM1.75 17V5H0.25V17H1.75ZM10 18.25H3V19.75H10V18.25ZM18.25 5V10H19.75V5H18.25ZM10 19.75H17V18.25H10V19.75ZM19.75 17V10H18.25V17H19.75ZM0.25 17C0.25 18.5188 1.48122 19.75 3 19.75V18.25C2.30964 18.25 1.75 17.6904 1.75 17H0.25ZM17 3.75C17.6904 3.75 18.25 4.30964 18.25 5H19.75C19.75 3.48122 18.5188 2.25 17 2.25V3.75ZM17 19.75C18.5188 19.75 19.75 18.5188 19.75 17H18.25C18.25 17.6904 17.6904 18.25 17 18.25V19.75ZM3 2.25C1.48122 2.25 0.25 3.48122 0.25 5H1.75C1.75 4.30964 2.30964 3.75 3 3.75V2.25Z"
+            fill="white"
+          />
+          <path
+            d="M5 1V5"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            d="M10 1V5"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            d="M15 1V5"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            d="M15 9L11.5 9M15 9L15 12.5M15 9L9.99998 14L8 12L5 15"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="color_white_text">
+          Monthly reports PDF
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container bg-grey">
   <div class="statusBar" *ngIf="allTasks$ | async as allTasks; else loader">
     <h1 class="projectName">{{ clientName }}</h1>
     <div class="client_info_bar dfl ai">
-      <div class="dfl">
-        <div class="wrap">{{ client.tarif }} $ / hour</div>
-        <div class="wrap">Total hours: {{ totalHours | hourPipe }}</div>
-        <div class="wrap">Total payment: ${{ totalPayment }}</div>
+      <div class="dfl fl_gr-10">
+        <div class="wrap color_grey_text">{{ client.tarif }} $ / hour</div>
+        <div class="wrap color_grey_text">
+          Total hours:
+          <span class="fw_b_600 color_black_text">{{
+            totalHours | hourPipe
+          }}</span>
+        </div>
+        <div class="wrap color_grey_text">
+          Total payment:
+          <span class="fw_b_600 color_black_text">{{ totalPayment }} $</span>
+        </div>
+      </div>
+      <div class="form-group client_info_range dfl ai fl_gr-2 color_grey_text">
+        Period:
+        <input
+          type="text"
+          placeholder="Daterangepicker"
+          class="form-control tac"
+          bsDaterangepicker
+          [(ngModel)]="bsRangeValue"
+          [readonly]="true"
+          [disabled]="true"
+          [bsConfig]="{
+            rangeInputFormat: 'MMMM Do',
+            dateInputFormat: 'MMMM Do',
+            containerClass: 'theme-blue'
+          }"
+        />
       </div>
     </div>
-    <div class="taskRow" *ngFor="let task of allTasks">
-      <app-clients-view [taskData]="task" [client]="client"></app-clients-view>
+
+    <div class="taskRow_wrap" *ngFor="let days of allTasks">
+      <h5 class="day_title dfl">
+        <span class="day_date_title">
+          {{ days.taskDayDate }}
+        </span>
+        <div class="day_time_wrap dfl jc-end">
+          <span class="fw_b_600 color_black_text day_total_header">Total:</span>
+          <span class="day_total_time">{{ days.totalDayHour | hourPipe }}</span>
+        </div>
+      </h5>
+      <div class="taskRow" *ngFor="let task of days.tasksInDay">
+        <app-task-row
+          [taskData]="task"
+          [client]="client"
+          (updateTasks)="updateTasksList()"
+          [readonlyParam]="true"
+        ></app-task-row>
+      </div>
     </div>
   </div>
 </div>

@@ -30,19 +30,52 @@
 .jc-space {
   justify-content: space-around;
 }
-
-.cw {
-  color: #fff;
+.jc-space-between {
+  justify-content: space-between;
+}
+.jc-end {
+  justify-content: flex-end;
 }
 
+.color_white_text {
+  color: #fff;
+}
+.color_grey_text {
+  color: #8d8d8d;
+}
+.color_black_text {
+  color: #1f2b39;
+}
+.bg-grey {
+  background: #f9f9f9;
+}
+.bg-dark_blue {
+  background: #1f2b39;
+}
+.bg-dark_blue {
+  background: #1f2b39;
+}
+.bg-blue {
+  background: #00bcd4;
+}
+.bg-white {
+  background: #fff;
+}
+.bx_sh_down {
+  box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
+}
 .fl {
   float: left;
 }
-
+.fl_gr-10 {
+  flex-grow: 10;
+}
+.fl_gr-2 {
+  flex-grow: 2;
+}
 .fd_col {
   flex-direction: column;
 }
-
 .tac {
   text-align: center;
 }
@@ -70,7 +103,6 @@
 .auth_top {
   min-height: 70px;
   background: #fff;
-  box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,18 +136,6 @@
   font-weight: bold;
   font-size: 24px;
   margin: 0px 0 0 10px;
-}
-
-.top_logo-black h1 {
-  color: #1f2b39;
-}
-
-.top_logo-white h1 {
-  color: #fff;
-}
-
-.top_logo-white h1 {
-  color: #fff;
 }
 
 .form {
@@ -222,11 +242,9 @@ a.registraton_link {
 .left-sidebar {
   min-width: 250px;
   width: 20%;
-  color: #fff;
   max-width: 300px;
   min-height: 100vh;
   font-family: Muli;
-  background: #1f2b39;
 }
 
 .content {
@@ -236,10 +254,6 @@ a.registraton_link {
 
 .task_inputs {
   margin: 0 !important;
-}
-
-.userSection {
-  color: #fff;
 }
 
 .userPosition {
@@ -257,7 +271,6 @@ a.registraton_link {
 
 .reportsLink {
   line-height: 16px;
-  color: #fff;
   padding: 0 0 0 10px;
   font-size: 16px;
 }
@@ -275,14 +288,24 @@ a.registraton_link {
 }
 
 .clientsNone {
-  color: #fff;
   opacity: 0.5;
-  font-size: 16px;
+  font-size: 18px;
   margin-top: 50px;
 }
+.client_info_range {
+  max-width: 250px;
+  margin: 0;
+  font-size: 18px;
+}
 
+.client_info_range input {
+  font-size: 18px !important;
+  color: #000 !important;
+  font-weight: 600;
+  margin-bottom: 0 !important;
+  border: none !important;
+}
 .newProjectBtn {
-  background: #00bcd4;
   border-radius: 5px;
   width: 90%;
   max-width: 240px;
@@ -307,7 +330,6 @@ svg.closeBtn {
 
 .createProj {
   width: 400px;
-  background-color: #fff;
   max-height: 400px;
 }
 
@@ -352,7 +374,7 @@ svg.closeBtn {
 
 .select-wrapper input.select-dropdown:focus,
 .createProj input[type='text']:not(.browser-default):focus:not([readonly]) {
-  border: 1px solid #25a699 !important;
+  border: 1px solid #00bcd4 !important;
 }
 
 .input-field.left {
@@ -397,12 +419,6 @@ svg.closeBtn {
   padding: 0;
   width: 40px;
   height: 40px;
-}
-
-.newTaskBtn:focus {
-  outline: none;
-  border-radius: 50%;
-  background-color: green;
 }
 
 .page-title {
@@ -470,9 +486,7 @@ svg.closeBtn {
 .wrap {
   margin: 10px 30px 10px 0;
 }
-main {
-  background: #f9f9f9;
-}
+
 h1.projectName {
   margin: 15px 0 5px 0;
   font-size: 32px;
@@ -628,18 +642,26 @@ bs-daterangepicker-container {
   padding-top: 10px;
   padding-bottom: 5px;
 }
+
+.task_spended_time {
+  width: 80px;
+  font-size: 16px;
+}
+.groupInputWrapper_client_statistic {
+  border: none;
+}
 .taskRow:nth-of-type(1) {
   border-top: none !important;
   margin-top: -10px;
 }
 .day_title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   padding: 0px 20px 15px;
   border-bottom: 1px solid #2121212e;
 }
 .day_date_title {
-  flex-grow: 1;
+  flex-grow: 20;
 }
 .day_total_header {
   margin-right: 5px;
@@ -650,8 +672,12 @@ bs-daterangepicker-container {
   margin-bottom: 15px;
   border-radius: 5px;
 }
+.day_total_time {
+  margin-left: 20px;
+}
 .day_time_wrap {
-  min-width: 230px;
+  flex-grow: 1;
+  padding-right: 20px;
 }
 
 /* **************************************** */
@@ -827,4 +853,30 @@ input.bs-timepicker-field {
 
 .datepicker-table td.is-selected {
   background-color: transparent !important;
+}
+
+.monthlyReports_btn {
+  border-radius: 5px;
+  max-width: 200px;
+  height: 40px;
+  padding: 10px 15px 0;
+  border: none;
+}
+.client_statistic_user_section {
+  width: 300px;
+  padding: 10px 0;
+}
+.client_statistic_user_icon img {
+  width: 100%;
+}
+.client_statistic_user_icon {
+  width: 20%;
+}
+.client_statistic_user_userName {
+  width: 80%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 15px;
+}
+.monthlyReports_btn:hover {
+  cursor: pointer;
 }

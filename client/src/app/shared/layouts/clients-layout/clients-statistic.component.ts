@@ -1,27 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 
+import * as jsPDF from 'jspdf'
+
 import { TasksService } from '../../services/tasks.service';
 import { ClientsService } from '../../services/clients-service.service';
-import { Task, Client } from '../../interfaces';
-import { map, tap } from 'rxjs/operators';
+import { Task, Client, User, TaskDay } from '../../interfaces';
+import { map, tap, reduce } from 'rxjs/operators';
+import { HourPipe } from '../../pipes';
 
 @Component({
   selector: 'app-clients-statistic',
   templateUrl: './clients-statistic.component.html',
-  styleUrls: ['./clients-statistic.component.css']
+  styles: [`
+  .statusBar {
+    padding: 0;
+  }
+  `],
+  providers: [
+    { provide: 'Window', useValue: window },
+    HourPipe
+  ]
 })
 export class ClientStatisticComponent implements OnInit {
   tokenId: string;
+  userName: string;
 
   clientName: string;
-  allTasks$: Observable<Task[]>;
+  currency: string;
+
+  allTasks$: Observable<TaskDay[]>;
   destroy$ = new Subject<undefined>();
   client: Client = null;
+
   from: string;
   to: string;
+
+  fromFormat: Date;
+  toFormat: Date;
+
+  nickName: string;
+  imageSrc: string;
+  bsRangeValue: Date[];
+
+  PDFdataArray: any[];
 
   totalHours: number;
   totalPayment: number;
@@ -30,8 +54,11 @@ export class ClientStatisticComponent implements OnInit {
     private taskService: TasksService,
     private clientService: ClientsService,
     private router: Router,
-    private route: ActivatedRoute,
-  ) { }
+    private hourPipe: HourPipe,
+    @Inject('Window') private window: Window,
+  ) {
+
+  }
 
   ngOnInit() {
 
@@ -39,11 +66,38 @@ export class ClientStatisticComponent implements OnInit {
     this.clientName = url[0];
     this.from = url[1];
     this.to = url[2];
+
+    this.nickName = url[3];
+    this.imageSrc = 'uploads/' + url[4];
+
+
+    this.fromFormat = new Date(+this.from);
+    this.toFormat = new Date(+this.to);
+
+    this.bsRangeValue = [this.fromFormat, this.toFormat];
+
     this.clientService
       .getByName(this.clientName)
       .pipe(map(res => res[0]))
       .subscribe(client => {
         this.client = client;
+        switch (client.currency) {
+          case 'dollar':
+            this.currency = '$'
+            break;
+          case 'uah':
+            this.currency = '₴'
+            break;
+          case 'rub':
+            this.currency = '₽'
+            break;
+          case 'euro':
+            this.currency = '€'
+            break;
+          default:
+            this.currency = '$'
+            break;
+        }
         this.updateTasksList();
       });
   }
@@ -67,8 +121,163 @@ export class ClientStatisticComponent implements OnInit {
         return takskbyPeriod.sort(function (left, right) {
           return moment.utc(left.startDay).diff(moment.utc(right.startDay));
         });
+      }),
+      reduce((acc, tasks) => {
+        tasks.forEach((task: Task) => {
+          const fixDate = new Date(task.startDay);
+          const date = moment(fixDate).format('dddd, D MMM');
+          const exist = acc.find(e => {
+            return e.taskDayDate === date;
+          })
+          if (exist) {
+            exist.tasksInDay.push(task);
+            exist.tasksInDay.sort(function (left, right) {
+              let first = moment.utc(left.endTime).format();
+              let second = moment.utc(right.endTime).format();
+              return moment.utc(first).diff(moment.utc(second))
+            });
+            exist.totalDayHour += task.wastedTime;
+          } else {
+            let obj = {
+              totalDayHour: task.wastedTime,
+              taskDayDate: date,
+              tasksInDay: []
+            }
+            obj.tasksInDay.push(task);
+            acc.push(obj);
+          }
+        })
+
+        //******************FIX deprecation warning*****************/
+        //******************FIX deprecation warning*****************/
+        acc.sort(function (left, right) {
+          let first = moment.utc(left.taskDayDate).format();
+          let second = moment.utc(right.taskDayDate).format();
+          return moment.utc(first).diff(moment.utc(second))
+        });
+        //******************FIX deprecation warning*****************/
+        //******************FIX deprecation warning*****************/
+        return acc.reverse();
+      }, []),
+      tap(res => {
+
+        let arrayFinal = [];
+        res.forEach((day) => {
+          let obj = {}
+          obj.text = day.taskDayDate;
+          obj.period = 'Total:';
+          obj.time = day.totalDayHour;
+          arrayFinal.push(obj);
+          day.tasksInDay.forEach(task => {
+            let obj = {};
+            obj.text = task.name;
+            obj.period = moment(task.startTime).format('HH:mm') + ' - ' + moment(task.endTime).format('HH:mm');
+            obj.time = this.hourPipe.transform(task.wastedTime);
+            arrayFinal.push(obj);
+          });
+        })
+
+        this.PDFdataArray = arrayFinal;
       })
     );
+
+  }
+
+  getPDF() {
+    let startPoint = 20;
+    let currentPointY = 90;
+    let lineCounter = 0;
+    let total = null;
+
+    let doc = new jsPDF({
+      unit: 'px',
+    });
+
+    doc.setFontSize(10).setFontType('bold');
+    doc.text(20, startPoint, this.nickName);
+    doc.setFontType('normal');
+    doc.text(595 - (('UX/UI designer'.length * 14) + 40), startPoint, 'UX/UI designer');
+    startPoint += 20;
+
+    doc.setFontSize(12).setFontType('bold');
+    doc.text(20, startPoint, this.clientName);
+    startPoint += 20;
+
+    doc.setFontSize(10).setFontType('normal');
+    doc.text(20, startPoint, this.client.tarif + ` ${this.currency} / hour`);
+
+    doc.text(85, startPoint, 'Total hours:');
+    
+    doc.setFontType('bold');
+    doc.text(125, startPoint, this.hourPipe.transform(this.totalHours));
+    doc.setFontType('normal');
+
+    doc.text(195, startPoint, 'Total payment:');
+
+    doc.setFontType('bold');
+    doc.text(245, startPoint, `${this.totalPayment.toString()} ${this.currency}`);
+    doc.setFontType('normal');
+
+    doc.text(320, startPoint, 'Period:');
+
+    doc.setFontType('bold');
+    let range = moment(this.fromFormat).format('MMMM Do') + ' - ' + moment(this.toFormat).format('MMMM Do');
+    let textWidth = doc.getTextWidth(range) / 2;
+    doc.text(385 - textWidth, startPoint, range);
+    doc.setFontType('normal');
+
+    this.PDFdataArray.forEach((line, indx) => {
+
+      if (typeof line.time === 'number') {
+        doc.setLineWidth(0.5);
+        doc.line(20, currentPointY - 10, 420, currentPointY - 10);
+
+        currentPointY += 5;
+        doc.setFontSize(12).setFontType('bold');
+        doc.text(20, currentPointY, line.text);
+        doc.text(350, currentPointY, line.period);
+        total = this.hourPipe.transform(line.time);
+        textWidth = doc.getTextWidth(total) / 2;
+        if (textWidth > 11) {
+          textWidth = 11.5
+        }
+        doc.text(410 - textWidth, currentPointY, total);
+        doc.setFontType('normal');
+      } else {
+        doc.setFontSize(10).setFontType('normal');
+        doc.text(20, currentPointY, line.text);
+        doc.text(350, currentPointY, line.period);
+        total = line.time;
+        textWidth = doc.getTextWidth(total) / 2;
+        if (textWidth > 11) {
+          textWidth = 11.5
+        }
+        doc.text(410 - textWidth, currentPointY, total);
+      }
+      if (!(indx % 24) && indx) {
+        doc.addPage();
+        currentPointY = 30;
+        if (typeof line.time === 'number') {
+          doc.setLineWidth(0.5);
+          doc.line(20, currentPointY - 10, 420, currentPointY - 10);
+          currentPointY += 5;
+          doc.setFontSize(12).setFontType('bold');
+          doc.text(20, currentPointY, line.text);
+          doc.text(350, currentPointY, line.period);
+          total = this.hourPipe.transform(line.time);
+          textWidth = doc.getTextWidth(total) / 2;
+          if (textWidth > 11) {
+            textWidth = 11.5
+          }
+          doc.text(410 - textWidth, currentPointY, total);
+          doc.setFontType('normal');
+        }
+      }
+
+      currentPointY += 20;
+    })
+
+    doc.save('Test.pdf');
   }
   filtered(arr) {
     return arr.filter((task) => {

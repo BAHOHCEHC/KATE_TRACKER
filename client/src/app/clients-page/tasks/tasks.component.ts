@@ -13,7 +13,7 @@ import { GettingAllTasks, CurrentClientTasks } from 'src/app/store/actions/tasks
 import { GetCurrentClient, GetAllClientOfUser } from 'src/app/store/actions/client.action';
 import { LogIn } from 'src/app/store/actions/auth.action';
 
-import { Task, Client } from 'src/app/shared/interfaces';
+import { Task, Client, User } from 'src/app/shared/interfaces';
 import { ClientsService } from 'src/app/shared/services/clients-service.service';
 import { TasksState } from 'src/app/store/reducers/tasks.reducers';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -141,13 +141,22 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   copyLink() {
     // console.log(this.client);
-
     const url = document.location.href;
     const firsPart = url.substring(0, url.indexOf('/clients/'));
     const from = moment(this.bsRangeValue[0]).startOf('day');
     const to = moment(this.bsRangeValue[1]).endOf('day');
+    let userAdmin = {
+      nickName: null,
+      imageSrc: null
+    }
+    this.store.select('userState').subscribe(({ user }) => {
+      userAdmin = {
+        nickName: user.nickName,
+        imageSrc: user.imageSrc.replace('uploads\\', ''),
+      }
+    })
 
-    const finalurl = firsPart + `/clients-statistic/` + this.client.name + `/${from}/${to}`;
+    const finalurl = firsPart + `/clients-statistic/` + this.client.name + `/${from}/${to}/${userAdmin.nickName}/${userAdmin.imageSrc}`;
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', finalurl);
       e.preventDefault();

@@ -1,4 +1,4 @@
-<div *ngIf="show" class="fl dibl left-sidebar">
+<div *ngIf="show" class="fl dibl left-sidebar color_white_text bg-dark_blue">
   <div class="center top_logo top_logo-white">
     <svg
       width="32"
@@ -17,17 +17,17 @@
       />
       <circle cx="8" cy="8" r="2" fill="white" />
     </svg>
-    <h1>MyWorkFlow</h1>
+    <h1 class="color_white_text">MyWorkFlow</h1>
   </div>
 
-  <div class="userSection tac">
+  <div class="userSection tac color_white_text">
     <div class="userIcon center">
       <img class="userImage" src="{{ user.imageSrc }}" />
     </div>
     <h3 class="userName center">{{ user.nickName }}</h3>
-    <h4 class="userPosition">UX/UI designer</h4>
+    <h4 class="userPosition ">UX/UI designer</h4>
     <button
-      class="cw waves-effect waves-light newProjectBtn dibl"
+      class="color_white_text waves-effect waves-light newProjectBtn bg-blue dibl"
       (click)="addNewProject()"
     >
       New Project
@@ -71,7 +71,7 @@
           stroke-linejoin="round"
         />
       </svg>
-      <a class="reportsLink" [routerLink]="'/reports'">Monthly reports</a>
+      <a class="reportsLink color_white_text" [routerLink]="'/reports'">Monthly reports</a>
     </div>
   </div>
 
@@ -111,7 +111,7 @@
         </ul>
       </div>
       <ng-template #empty>
-        <div class="clientsNone tac">
+        <div class="clientsNone tac color_white_text">
           No projects yet
         </div>
       </ng-template>
@@ -123,7 +123,7 @@
 </div>
 
 <main
-  class="dibl content"
+  class="content"
   [ngClass]="{ empty: !clientsName.length, notEmpty: clientsName.length }"
 >
   <div *ngIf="clientsName.length">
@@ -274,14 +274,14 @@
       </svg>
     </div>
     <button
-      class="cw waves-effect waves-light newProjectBtn dibl"
+      class="color_white_text waves-effect waves-light newProjectBtn bg-blue dibl"
       (click)="addNewProject()"
     >
       New Project
     </button>
   </div>
 
-  <div #modal class="modal createProj">
+  <div #modal class="modal createProj bg-white">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <svg
         class="closeBtn"
@@ -340,6 +340,7 @@
               <option value="dollar">US usd</option>
               <option value="uah">UA uah</option>
               <option value="rub">RU rub</option>
+              <option value="euro">Euro</option>
             </select>
           </div>
         </div>
@@ -383,13 +384,13 @@
     </div>
     <div class="dfl">
       <button
-        class="cw waves-effect waves-light newProjectBtn popup-btn dibl"
+        class="color_white_text waves-effect waves-light newProjectBtn bg-blue popup-btn dibl"
         (click)="confirmDelete()"
       >
         confirm
       </button>
       <button
-        class="cw waves-effect waves-light newProjectBtn popup-btn dibl"
+        class="color_white_text waves-effect waves-light newProjectBtn bg-blue popup-btn dibl"
         (click)="cancelDelete()"
       >
         cancel

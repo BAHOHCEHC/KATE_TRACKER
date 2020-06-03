@@ -49,7 +49,7 @@ const routes: Routes = [
     children: [
       {
         // path: ':id',
-        path: ':id/:from/:to',
+        path: ':id/:from/:to/:name/:imgRoute',
         component: ClientsViewComponent
       }
     ]
