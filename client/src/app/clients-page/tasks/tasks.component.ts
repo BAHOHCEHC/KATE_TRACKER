@@ -89,7 +89,6 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.clientService
           .update(this.client._id, this.totalHours / 60, this.totalPayment)
           .subscribe(res => {
-            console.log('clientService', res);
             this.store.dispatch(new GetCurrentClient(res));
           });
 
@@ -156,7 +155,9 @@ export class TasksComponent implements OnInit, OnDestroy {
       }
     })
 
-    const finalurl = firsPart + `/clients-statistic/` + this.client.name + `/${from}/${to}/${userAdmin.nickName}/${userAdmin.imageSrc}`;
+    const finalurl = firsPart + `/statistic/` + this.client.name + `/${from}/${to}/${userAdmin.nickName}/${userAdmin.imageSrc}`;
+    // const finalurl = firsPart + `/clients-statistic/` + this.client.name + `/${from}/${to}/${userAdmin.nickName}/${userAdmin.imageSrc}`;
+
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', finalurl);
       e.preventDefault();

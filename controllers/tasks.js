@@ -2,11 +2,11 @@ const Task = require('../models/Task');
 const errorHandler = require('../utils/errorHandler');
 const moment = require('moment');
 
-module.exports.getByClientName = async function(req, res) {
+module.exports.getByClientName = async function(req, res) {	
 	try {
 		const tasks = await Task.find({
 			clientName: req.params.clientName, // clientId в роутах /:clientName'
-			user: req.user.id //из passporta тянем юзера id
+			// user: req.user.id //из passporta тянем юзера id
 		});
 		res.status(200).json(tasks);
 	} catch (e) {

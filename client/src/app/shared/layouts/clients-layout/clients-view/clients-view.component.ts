@@ -15,7 +15,6 @@ export class ClientsViewComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    console.log('**********************eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*');
     const initName = this.taskData.name;
     const initTimeStart = this.taskData.startTime;
     const initTimeEnd = this.taskData.endTime;

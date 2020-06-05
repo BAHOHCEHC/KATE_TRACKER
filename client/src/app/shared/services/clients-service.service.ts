@@ -16,6 +16,10 @@ export class ClientsService {
   getByName(name: string): Observable<Client> {
     return this.http.get<Client>(`/api/clients/${name}`);
   }
+  
+  getStatisticsByName(name: string): Observable<Client> {
+    return this.http.get<Client>(`/api/statistic/${name}`);
+  }
 
   create(client: Client): Observable<Client> {
     return this.http.post<Client>('/api/clients', client);
