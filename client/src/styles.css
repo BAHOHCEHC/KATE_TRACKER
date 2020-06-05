@@ -418,6 +418,7 @@ svg.closeBtn {
   border: none;
   padding: 0;
   width: 40px;
+  margin-left: 5px;
   height: 40px;
 }
 
@@ -484,7 +485,7 @@ svg.closeBtn {
 }
 
 .wrap {
-  margin: 10px 30px 10px 0;
+  margin: 0px 30px 10px 5px;
 }
 
 h1.projectName {
@@ -520,6 +521,12 @@ bs-daterangepicker-container {
   margin-left: 10px;
 }
 
+.func-buttons {
+  margin: 0 0 0 5px;
+}
+.func-buttons:hover {
+  cursor: pointer;
+}
 .copylink:hover {
   cursor: pointer;
 }

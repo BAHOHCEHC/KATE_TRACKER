@@ -110,7 +110,6 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       // startDay: this.formTask.controls['dayStart'].value
       startDay: this.taskData ? this.taskData.startDay : (this.start.date).toString(),
     };
-
     if (this.isNew) {
       this.taskService.create(task).subscribe(response => {
         this.throwMessage(response.message);
@@ -127,7 +126,9 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
         this.isEditNow = true;
       });
     }
+    this.formTask.reset();
     this.taskEmitter.emit();
+    this.submitted = false;
   }
   throwMessage(message) {
     MaterialService.toast(message);
