@@ -163,13 +163,21 @@ export class ClientStatisticComponent implements OnInit {
 
         let arrayFinal = [];
         res.forEach((day) => {
-          let obj = {}
+          let obj = {
+            text: null,
+            period: null,
+            time: null,
+          }
           obj.text = day.taskDayDate;
           obj.period = 'Total:';
           obj.time = day.totalDayHour;
           arrayFinal.push(obj);
           day.tasksInDay.forEach(task => {
-            let obj = {};
+            let obj = {
+              text: null,
+              period: null,
+              time: null,
+            };
             obj.text = task.name;
             obj.period = moment(task.startTime).format('HH:mm') + ' - ' + moment(task.endTime).format('HH:mm');
             obj.time = this.hourPipe.transform(task.wastedTime);
@@ -207,7 +215,7 @@ export class ClientStatisticComponent implements OnInit {
     doc.text(20, startPoint, this.client.tarif + ` ${this.currency} / hour`);
 
     doc.text(85, startPoint, 'Total hours:');
-    
+
     doc.setFontType('bold');
     doc.text(125, startPoint, this.hourPipe.transform(this.totalHours));
     doc.setFontType('normal');

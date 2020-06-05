@@ -48,7 +48,6 @@ const routes: Routes = [
     component: ClientStatisticComponent,
     children: [
       {
-        // path: ':id',
         path: ':id/:from/:to/:name/:imgRoute',
         component: ClientsViewComponent
       }

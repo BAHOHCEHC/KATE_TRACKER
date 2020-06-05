@@ -1,3 +1,4 @@
+import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-view/clients-view.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,9 +24,8 @@ import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 import { TaskRowComponent } from './shared/components/task-row/task-row.component';
 import { ClientStatisticComponent } from './shared/layouts/clients-layout/clients-statistic.component';
-import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-view/clients-view.component';
 import {
-  DayPipe, GroupTaskPipe,
+  DayPipe,
   HourPipe
 } from './shared/pipes';
 
@@ -43,7 +43,6 @@ import {
     MonthlyReportsComponent,
     TaskRowComponent,
     DayPipe,
-    // GroupTaskPipe,
     HourPipe,
     ClientStatisticComponent,
     ClientsViewComponent,

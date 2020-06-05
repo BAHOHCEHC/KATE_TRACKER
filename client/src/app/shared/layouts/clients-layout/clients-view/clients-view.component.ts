@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-clients-view',
   templateUrl: './clients-view.component.html',
-  styleUrls: ['./clients-view.component.css']
+  styleUrls: []
 })
 export class ClientsViewComponent implements OnInit {
   @Input() taskData: Task;
@@ -15,6 +15,7 @@ export class ClientsViewComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    console.log('**********************eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*');
     const initName = this.taskData.name;
     const initTimeStart = this.taskData.startTime;
     const initTimeEnd = this.taskData.endTime;
