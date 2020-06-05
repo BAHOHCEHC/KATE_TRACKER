@@ -1,4 +1,4 @@
-<div *ngIf="show" class="fl dibl left-sidebar">
+<div *ngIf="show" class="fl dibl left-sidebar color_white_text bg-dark_blue">
   <div class="center top_logo top_logo-white">
     <svg
       width="32"
@@ -17,17 +17,17 @@
       />
       <circle cx="8" cy="8" r="2" fill="white" />
     </svg>
-    <h1>MyWorkFlow</h1>
+    <h1 class="color_white_text">MyWorkFlow</h1>
   </div>
 
-  <div class="userSection tac">
+  <div class="userSection tac color_white_text">
     <div class="userIcon center">
       <img class="userImage" src="{{ user.imageSrc }}" />
     </div>
     <h3 class="userName center">{{ user.nickName }}</h3>
-    <h4 class="userPosition">UX/UI designer</h4>
+    <h4 class="userPosition ">UX/UI designer</h4>
     <button
-      class="cw waves-effect waves-light newProjectBtn dibl"
+      class="color_white_text waves-effect waves-light newProjectBtn bg-blue dibl"
       (click)="addNewProject()"
     >
       New Project
@@ -71,7 +71,7 @@
           stroke-linejoin="round"
         />
       </svg>
-      <a class="reportsLink" [routerLink]="'/reports'">Monthly reports</a>
+      <a class="reportsLink color_white_text" [routerLink]="'/reports'">Monthly reports</a>
     </div>
   </div>
 
@@ -92,14 +92,26 @@
               class="clients_list-item"
               >{{ client.name }}</a
             >
-            <i class="small material-icons" (click)="deleteClient(client)"
-              >delete</i
+            <svg
+              (click)="deleteClient(client)"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12.75 3.75H12H8H7.25H3.5C3.08579 3.75 2.75 4.08579 2.75 4.5V5.25H3.5H16.5H17.25V4.5C17.25 4.08579 16.9142 3.75 16.5 3.75H12.75ZM12.75 2V2.25H16.5C17.7426 2.25 18.75 3.25736 18.75 4.5V6C18.75 6.41421 18.4142 6.75 18 6.75H17.25V17C17.25 18.5188 16.0188 19.75 14.5 19.75H5.5C3.98122 19.75 2.75 18.5188 2.75 17V6.75H2C1.58579 6.75 1.25 6.41421 1.25 6V4.5C1.25 3.25736 2.25736 2.25 3.5 2.25H7.25V2C7.25 1.0335 8.0335 0.25 9 0.25H11C11.9665 0.25 12.75 1.0335 12.75 2ZM8.75 2.25V2C8.75 1.86193 8.86193 1.75 9 1.75H11C11.1381 1.75 11.25 1.86193 11.25 2V2.25H8.75ZM4.25 17V6.75H15.75V17C15.75 17.6904 15.1904 18.25 14.5 18.25H5.5C4.80964 18.25 4.25 17.6904 4.25 17ZM8 8.25C8.41421 8.25 8.75 8.58579 8.75 9V15C8.75 15.4142 8.41421 15.75 8 15.75C7.58579 15.75 7.25 15.4142 7.25 15V9C7.25 8.58579 7.58579 8.25 8 8.25ZM12.75 9C12.75 8.58579 12.4142 8.25 12 8.25C11.5858 8.25 11.25 8.58579 11.25 9V15C11.25 15.4142 11.5858 15.75 12 15.75C12.4142 15.75 12.75 15.4142 12.75 15V9Z"
+                fill="#727982"
+              />
+            </svg>
           </li>
         </ul>
       </div>
       <ng-template #empty>
-        <div class="clientsNone tac">
+        <div class="clientsNone tac color_white_text">
           No projects yet
         </div>
       </ng-template>
@@ -111,7 +123,7 @@
 </div>
 
 <main
-  class="dibl content"
+  class="content"
   [ngClass]="{ empty: !clientsName.length, notEmpty: clientsName.length }"
 >
   <div *ngIf="clientsName.length">
@@ -262,14 +274,14 @@
       </svg>
     </div>
     <button
-      class="cw waves-effect waves-light newProjectBtn dibl"
+      class="color_white_text waves-effect waves-light newProjectBtn bg-blue dibl"
       (click)="addNewProject()"
     >
       New Project
     </button>
   </div>
 
-  <div #modal class="modal createProj">
+  <div #modal class="modal createProj bg-white">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <svg
         class="closeBtn"
@@ -328,6 +340,7 @@
               <option value="dollar">US usd</option>
               <option value="uah">UA uah</option>
               <option value="rub">RU rub</option>
+              <option value="euro">Euro</option>
             </select>
           </div>
         </div>
@@ -371,13 +384,13 @@
     </div>
     <div class="dfl">
       <button
-        class="cw waves-effect waves-light newProjectBtn popup-btn dibl"
+        class="color_white_text waves-effect waves-light newProjectBtn bg-blue popup-btn dibl"
         (click)="confirmDelete()"
       >
         confirm
       </button>
       <button
-        class="cw waves-effect waves-light newProjectBtn popup-btn dibl"
+        class="color_white_text waves-effect waves-light newProjectBtn bg-blue popup-btn dibl"
         (click)="cancelDelete()"
       >
         cancel

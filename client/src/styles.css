@@ -30,23 +30,58 @@
 .jc-space {
   justify-content: space-around;
 }
-
-.cw {
-  color: #fff;
+.jc-space-between {
+  justify-content: space-between;
+}
+.jc-end {
+  justify-content: flex-end;
 }
 
+.color_white_text {
+  color: #fff;
+}
+.color_grey_text {
+  color: #8d8d8d;
+}
+.color_black_text {
+  color: #1f2b39;
+}
+.bg-grey {
+  background: #f9f9f9;
+}
+.bg-dark_blue {
+  background: #1f2b39;
+}
+.bg-dark_blue {
+  background: #1f2b39;
+}
+.bg-blue {
+  background: #00bcd4;
+}
+.bg-white {
+  background: #fff;
+}
+.bx_sh_down {
+  box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
+}
 .fl {
   float: left;
 }
-
+.fl_gr-10 {
+  flex-grow: 10;
+}
+.fl_gr-2 {
+  flex-grow: 2;
+}
 .fd_col {
   flex-direction: column;
 }
-
 .tac {
   text-align: center;
 }
-
+.fw_b_600 {
+  font-weight: 600;
+}
 .w3_4 {
   width: 75%;
 }
@@ -54,15 +89,20 @@
 .w1_4 {
   width: 25%;
 }
-
+.pa {
+  position: absolute;
+}
 .pr {
   position: relative;
 }
-
+.error_msg {
+  font-size: 10px;
+  left: 4px;
+  bottom: -15px;
+}
 .auth_top {
   min-height: 70px;
   background: #fff;
-  box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,18 +136,6 @@
   font-weight: bold;
   font-size: 24px;
   margin: 0px 0 0 10px;
-}
-
-.top_logo-black h1 {
-  color: #1f2b39;
-}
-
-.top_logo-white h1 {
-  color: #fff;
-}
-
-.top_logo-white h1 {
-  color: #fff;
 }
 
 .form {
@@ -214,11 +242,9 @@ a.registraton_link {
 .left-sidebar {
   min-width: 250px;
   width: 20%;
-  color: #fff;
   max-width: 300px;
   min-height: 100vh;
   font-family: Muli;
-  background: #1f2b39;
 }
 
 .content {
@@ -227,11 +253,7 @@ a.registraton_link {
 }
 
 .task_inputs {
-  margin: 0 10px !important;
-}
-
-.userSection {
-  color: #fff;
+  margin: 0 !important;
 }
 
 .userPosition {
@@ -249,7 +271,6 @@ a.registraton_link {
 
 .reportsLink {
   line-height: 16px;
-  color: #fff;
   padding: 0 0 0 10px;
   font-size: 16px;
 }
@@ -267,14 +288,24 @@ a.registraton_link {
 }
 
 .clientsNone {
-  color: #fff;
   opacity: 0.5;
-  font-size: 16px;
+  font-size: 18px;
   margin-top: 50px;
 }
+.client_info_range {
+  max-width: 250px;
+  margin: 0;
+  font-size: 18px;
+}
 
+.client_info_range input {
+  font-size: 18px !important;
+  color: #000 !important;
+  font-weight: 600;
+  margin-bottom: 0 !important;
+  border: none !important;
+}
 .newProjectBtn {
-  background: #00bcd4;
   border-radius: 5px;
   width: 90%;
   max-width: 240px;
@@ -299,7 +330,6 @@ svg.closeBtn {
 
 .createProj {
   width: 400px;
-  background-color: #fff;
   max-height: 400px;
 }
 
@@ -344,7 +374,7 @@ svg.closeBtn {
 
 .select-wrapper input.select-dropdown:focus,
 .createProj input[type='text']:not(.browser-default):focus:not([readonly]) {
-  border: 1px solid #25a699 !important;
+  border: 1px solid #00bcd4 !important;
 }
 
 .input-field.left {
@@ -392,16 +422,11 @@ svg.closeBtn {
   height: 40px;
 }
 
-.newTaskBtn:focus {
-  outline: none;
-  border-radius: 50%;
-  background-color: green;
-}
-
 .page-title {
   padding: 15px 40px;
   height: 70px;
   box-shadow: 0px 10px 20px rgba(33, 33, 33, 0.1);
+  background-color: #fff;
 }
 
 .formNewTask_top input {
@@ -416,10 +441,14 @@ svg.closeBtn {
   cursor: pointer;
 }
 
+.btnWrapper:hover {
+  cursor: pointer;
+}
 .btnWrapper {
   min-width: 35px;
-  margin-left: 10px;
+  min-height: 35px;
   text-align: center;
+  padding-top: 5px;
 }
 
 .groupInputWrapper input {
@@ -432,6 +461,9 @@ svg.closeBtn {
   margin: 0 5px;
   border: 1px solid rgba(33, 33, 33, 0.15);
 }
+.groupInputWrapper.msg_error {
+  border-color: red !important;
+}
 
 .border-n {
   border: none;
@@ -443,6 +475,7 @@ svg.closeBtn {
 
 .groupInputWrapper-right {
   min-width: 70px;
+  position: relative;
 }
 
 .statusBar {
@@ -455,8 +488,37 @@ svg.closeBtn {
   margin: 0px 30px 10px 5px;
 }
 
-.clients_data {
-  flex-grow: 1;
+h1.projectName {
+  margin: 15px 0 5px 0;
+  font-size: 32px;
+}
+.status_info {
+  flex-grow: 8;
+}
+.daterange {
+  width: 200px;
+  margin-bottom: 0;
+  padding: 0 5px;
+  text-align: center;
+}
+.daterange input {
+  text-align: center;
+  border-radius: 5px !important;
+  margin-bottom: 0 !important;
+  border: 1px solid rgba(33, 33, 33, 0.15) !important;
+  background-color: #fff !important;
+}
+input[type='text']:not(.browser-default):focus:not([readonly]) {
+  box-shadow: none !important;
+}
+bs-daterangepicker-container {
+  left: -210px !important;
+  top: 0 !important;
+}
+.copylink {
+  height: 40px;
+  right: 40px;
+  margin-left: 10px;
 }
 
 .func-buttons {
@@ -474,23 +536,19 @@ svg.closeBtn {
   display: flex;
   padding: 10px 20px;
 }
-
+.client_info_bar {
+  padding: 5px 0px 10px;
+}
 .clients_list.active {
   border-radius: 5px;
   background: #35404d;
 }
 
-.clients_list i {
-  font-size: 23px;
+.clients_list svg:hover {
   cursor: pointer;
 }
-
-.deleteTask:hover,
-.clients_list i:hover {
-  color: red;
-  font-size: 25px;
-  transition: linear 0.1s;
-  cursor: pointer;
+.clients_list svg:hover path {
+  fill: #00bcd4;
 }
 
 .clients_list.active a {
@@ -545,10 +603,6 @@ svg.closeBtn {
   padding: 0 40px;
 }
 
-.taskRow {
-  margin: 10px 0;
-}
-
 .labelTaksDate {
   position: absolute;
   left: 0;
@@ -588,6 +642,49 @@ svg.closeBtn {
   border-radius: 5px !important;
   box-sizing: border-box !important;
   margin: 0 !important;
+}
+.taskRow {
+  margin: 10px 20px;
+  border-top: 1px solid #2121212e;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.task_spended_time {
+  width: 80px;
+  font-size: 16px;
+}
+.groupInputWrapper_client_statistic {
+  border: none;
+}
+.taskRow:nth-of-type(1) {
+  border-top: none !important;
+  margin-top: -10px;
+}
+.day_title {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0px 20px 15px;
+  border-bottom: 1px solid #2121212e;
+}
+.day_date_title {
+  flex-grow: 20;
+}
+.day_total_header {
+  margin-right: 5px;
+}
+.taskRow_wrap {
+  background: #fff;
+  border: 1px solid #2121212e;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+.day_total_time {
+  margin-left: 20px;
+}
+.day_time_wrap {
+  flex-grow: 1;
+  padding-right: 20px;
 }
 
 /* **************************************** */
@@ -763,4 +860,30 @@ input.bs-timepicker-field {
 
 .datepicker-table td.is-selected {
   background-color: transparent !important;
+}
+
+.monthlyReports_btn {
+  border-radius: 5px;
+  max-width: 200px;
+  height: 40px;
+  padding: 10px 15px 0;
+  border: none;
+}
+.client_statistic_user_section {
+  width: 300px;
+  padding: 10px 0;
+}
+.client_statistic_user_icon img {
+  width: 100%;
+}
+.client_statistic_user_icon {
+  width: 20%;
+}
+.client_statistic_user_userName {
+  width: 80%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 15px;
+}
+.monthlyReports_btn:hover {
+  cursor: pointer;
 }

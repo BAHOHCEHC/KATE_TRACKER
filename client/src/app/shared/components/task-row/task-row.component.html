@@ -1,5 +1,5 @@
 <form
-  [formGroup]="form"
+  [formGroup]="formTask"
   #task
   class="formNewTask_top"
   (ngSubmit)="onSubmit()"
@@ -10,11 +10,13 @@
       class="dibl task_inputs"
       formControlName="name"
       type="text"
+      [readonly]="readonlyParam"
       placeholder="Task name"
     />
 
-    <div class="groupInputWrapper groupInputWrapper-left dfl ai">
+    <div class="groupInputWrapper groupInputWrapper-left dfl ai" *ngIf="isNew">
       <input
+        [readonly]="readonlyParam"
         id="dayStart"
         class="dibl task_inputs dayStart"
         formControlName="dayStart"
@@ -23,13 +25,27 @@
         placeholder="Today"
       />
     </div>
-    <div class="groupInputWrapper groupInputWrapper-right dfl ai">
+    <div
+      class="groupInputWrapper groupInputWrapper-right dfl ai"
+      [ngClass]="{
+        msg_error: formTask.get('timeStart').dirty && timeLessError(),
+        groupInputWrapper_client_statistic: readonlyParam
+      }"
+    >
+      <span
+        class="red-text pa error_msg"
+        *ngIf="formTask.get('timeStart').dirty && timeLessError()"
+        >Time is wrong</span
+      >
+
       <timepicker
         [minuteStep]="1"
         class="timepicker"
         formControlName="timeStart"
         [showMeridian]="false"
         [showSpinners]="false"
+        [readonlyInput]="readonlyParam"
+        (ngModelChange)="changed($event)"
         #timepikerStart
       ></timepicker>
     </div>
@@ -51,20 +67,45 @@
       />
     </svg>
 
-    <div class="groupInputWrapper groupInputWrapper-right dfl ai">
+    <div
+      class="groupInputWrapper groupInputWrapper-right dfl ai"
+      [ngClass]="{
+        msg_error: formTask.get('timeEnd').dirty && timeLessError(),
+        groupInputWrapper_client_statistic: readonlyParam
+      }"
+    >
+      <span
+        class="red-text pa error_msg"
+        *ngIf="formTask.get('timeEnd').dirty && timeLessError()"
+        >Time is wrong</span
+      >
       <timepicker
         [minuteStep]="1"
         class="timepicker"
         formControlName="timeEnd"
         [showMeridian]="false"
         [showSpinners]="false"
+        [readonlyInput]="readonlyParam"
+        (ngModelChange)="changed($event)"
         #timepikerEnd
       >
       </timepicker>
     </div>
 
-    <button [disabled]="form.invalid || submitted" class="modal-action dibl newTaskBtn" type="submit">
+    <div class="task_spended_time tac color_black_text" *ngIf="!isNew">
+      {{ taskData.wastedTime | hourPipe }}
+    </div>
+
+    <button
+      class="modal-action dibl newTaskBtn"
+      type="submit"
+      [disabled]="
+        formTask.invalid || submitted || timeLessError() || !isEditNow
+      "
+      *ngIf="!readonlyParam"
+    >
       <svg
+        *ngIf="isNew"
         width="40"
         height="40"
         viewBox="0 0 40 40"
@@ -77,11 +118,70 @@
           fill="white"
         />
       </svg>
-    </button>
-    <div *ngIf="!isNew" class="delete-button" class="btnWrapper">
-      <i class="small material-icons deleteTask" (click)="deleteTask()"
-        >delete</i
+
+      <svg
+        *ngIf="!isNew"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
       >
+        <circle
+          cx="10"
+          cy="10"
+          r="9.25"
+          [attr.stroke]="!isEditNow ? '#BCBCBC' : '#00BCD4'"
+          stroke-width="1.5"
+        />
+        <path
+          d="M8.87999 13L8.35546 13.5361C8.64677 13.8211 9.1124 13.8213 9.40399 13.5366L8.87999 13ZM6.52453 9.64591C6.22847 9.35622 5.75362 9.36139 5.46393 9.65745C5.17424 9.95351 5.17941 10.4284 5.47547 10.718L6.52453 9.64591ZM14.524 8.53658C14.8203 8.24718 14.826 7.77234 14.5366 7.476C14.2472 7.17965 13.7723 7.17402 13.476 7.46342L14.524 8.53658ZM9.40452 12.4639L6.52453 9.64591L5.47547 10.718L8.35546 13.5361L9.40452 12.4639ZM9.40399 13.5366L14.524 8.53658L13.476 7.46342L8.35598 12.4634L9.40399 13.5366Z"
+          [attr.fill]="!isEditNow ? '#BCBCBC' : '#00BCD4'"
+        />
+      </svg>
+    </button>
+    <div
+      *ngIf="!isNew && !readonlyParam"
+      class="delete-button"
+      class="btnWrapper dfl jc"
+    >
+      <svg
+        (click)="deleteTask()"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3.5 6H16.5V17C16.5 18.1046 15.6046 19 14.5 19H5.5C4.39543 19 3.5 18.1046 3.5 17V6Z"
+          stroke="#BCBCBC"
+          stroke-width="1.5"
+        />
+        <path
+          d="M8 9V15"
+          stroke="#BCBCBC"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M12 9V15"
+          stroke="#BCBCBC"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M2 6H18V4.5C18 3.67157 17.3284 3 16.5 3H3.5C2.67157 3 2 3.67157 2 4.5V6Z"
+          stroke="#BCBCBC"
+          stroke-width="1.5"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M8 3H12V2C12 1.44772 11.5523 1 11 1H9C8.44772 1 8 1.44772 8 2V3Z"
+          stroke="#BCBCBC"
+          stroke-width="1.5"
+        />
+      </svg>
     </div>
   </div>
 </form>

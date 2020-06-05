@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+import { GettingAllTasks } from '../store/actions/tasks.action';
+import { AppState } from '../store/app-store.module';
+import { TasksService } from '../shared/services/tasks.service';
 
 @Component({
   selector: 'app-clients-page',
@@ -11,15 +16,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
     `
   ]
 })
-export class ClientsPageComponent implements OnInit, OnDestroy {
-  constructor() {}
-  ngOnInit() {}
-
-  ngOnDestroy() {
-    console.log(this);
-  }
-
-  copyLink() {
-    // console.log(this.id);
+export class ClientsPageComponent {
+  constructor(private taskService: TasksService, private store: Store<AppState>, ) {
+    this.taskService.getAllClientTask().subscribe(res => {
+      this.store.dispatch(new GettingAllTasks(res));
+    })
   }
 }

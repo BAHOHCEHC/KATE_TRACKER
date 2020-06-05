@@ -6,16 +6,22 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { Client, User } from '../../interfaces';
-import { ClientsService } from '../../services/clients-service.service';
-import { Subscription, Observable, Subject } from 'rxjs';
-import { UserService } from '../../services/user.service';
-import { MaterialInstance } from '../../classes/material.service';
-import { MaterialService } from './../../classes/material.service';
+import { Observable, Subject } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+import { AppState } from 'src/app/store/app-store.module';
+import { Store } from '@ngrx/store';
+
+import { LogIn } from 'src/app/store/actions/auth.action';
+import { GetAllClientOfUser, RemoveClient } from 'src/app/store/actions/client.action';
+
+import { Client, User } from '../../interfaces';
+import { ClientsService } from '../../services/clients-service.service';
+import { UserService } from '../../services/user.service';
+import { MaterialInstance } from '../../classes/material.service';
+import { MaterialService } from './../../classes/material.service';
 @Component({
   selector: 'app-site-layout',
   templateUrl: './site-layout.component.html',
@@ -39,7 +45,6 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   deletedClient: Client = null;
   user: User;
   destroy$ = new Subject<undefined>();
-  aSub: Subscription;
 
   show: boolean;
   form: FormGroup;
@@ -53,8 +58,9 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private clientsService: ClientsService,
     private userService: UserService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -67,14 +73,16 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.fethClients();
 
-    this.aSub = this.userService
+    this.userService
       .getUserData(localStorage.getItem('userId'))
-      .subscribe((e: User) => {
-        this.user = e;
-        if (this.user.role === 'admin') {
+      .subscribe((user: User) => {
+        this.user = user;
+        if (user.role === 'admin') {
           this.show = true;
         }
         console.log(this.user);
+
+        this.store.dispatch(new LogIn(user));
       });
   }
   ngAfterViewInit() {
@@ -85,6 +93,9 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   fethClients() {
     this.clients$ = this.clientsService.fetchAll().pipe(
       tap(clients => {
+
+        this.store.dispatch(new GetAllClientOfUser(clients));
+
         clients.forEach(e => {
           this.clientsName.push(e.name.toLowerCase().replace(/\s/g, ''));
         });
@@ -155,6 +166,10 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(({ message }) => {
         MaterialService.toast(message);
       });
+
+    this.store.dispatch(new RemoveClient(this.deletedClient));
+
+
     this.fethClients();
 
     const deletedClient = this.router.url.substring('/clients/'.length);
@@ -172,8 +187,5 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.modal.destroy();
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.aSub) {
-      this.aSub.unsubscribe();
-    }
   }
 }

@@ -9,8 +9,6 @@ import { AuthGuard } from './shared/classes/auth.guard';
 import { ClientsPageComponent } from './clients-page/clients-page.component';
 import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 import { TasksComponent } from './clients-page/tasks/tasks.component';
-import { ClientStatisticComponent } from './shared/layouts/clients-layout/clients-statistic.component';
-import { ClientsViewComponent } from './shared/layouts/clients-layout/clients-view/clients-view.component';
 
 const routes: Routes = [
   {
@@ -18,6 +16,7 @@ const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: 'statistic', loadChildren: './statistic/statistic.module#StatisticModule' },
       { path: 'login', component: LoginPageComponent },
       { path: 'register', component: RegisterPageComponent }
     ]
@@ -43,16 +42,6 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: 'clients-statistic',
-    component: ClientStatisticComponent,
-    children: [
-      {
-        path: ':id',
-        component: ClientsViewComponent
-      }
-    ]
-  }
 ];
 
 @NgModule({
