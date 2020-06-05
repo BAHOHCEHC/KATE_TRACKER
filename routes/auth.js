@@ -12,8 +12,4 @@ router.post("/login", controller.login);
 // get User
 router.post('/:id', controller.getUser);
 
-
-
-
-
 module.exports = router;
