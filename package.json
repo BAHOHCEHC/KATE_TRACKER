@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/BAHOHCEHC/KATE_TRACKER#readme",
   "devDependencies": {
-    "concurrently": "^4.1.1",
-    "nodemon": "^1.19.1"
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
   }
 }
