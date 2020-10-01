@@ -18,6 +18,8 @@ import { map, tap, reduce } from 'rxjs/operators';
   .statusBar {
     padding: 0;
   }
+  svg.reportsImg {
+    margin-right: 10px;
   `],
   providers: [
     { provide: 'Window', useValue: window },
@@ -66,14 +68,14 @@ export class StatisticComponent implements OnInit {
     this.clientName = url[0];
     this.from = url[1];
     this.to = url[2];
-    
+
     this.nickName = url[3];
     this.imageSrc = 'uploads/' + url[4];
-    
-    
+
+
     this.fromFormat = new Date(+this.from);
     this.toFormat = new Date(+this.to);
-    
+
     this.bsRangeValue = [this.fromFormat, this.toFormat];
     this.clientService
       .getByName(this.clientName)
@@ -192,7 +194,6 @@ export class StatisticComponent implements OnInit {
   getPDF() {
     let startPoint = 20;
     let currentPointY = 90;
-    let lineCounter = 0;
     let total = null;
 
     let doc = new jsPDF({
@@ -218,13 +219,13 @@ export class StatisticComponent implements OnInit {
     doc.text(125, startPoint, this.hourPipe.transform(this.totalHours));
     doc.setFontType('normal');
 
-    doc.text(195, startPoint, 'Total payment:');
+    doc.text(180, startPoint, 'Total payment:');
 
     doc.setFontType('bold');
     doc.text(245, startPoint, `${this.totalPayment.toString()} ${this.currency}`);
     doc.setFontType('normal');
 
-    doc.text(320, startPoint, 'Period:');
+    doc.text(310, startPoint, 'Period:');
 
     doc.setFontType('bold');
     let range = moment(this.fromFormat).format('MMMM Do') + ' - ' + moment(this.toFormat).format('MMMM Do');
