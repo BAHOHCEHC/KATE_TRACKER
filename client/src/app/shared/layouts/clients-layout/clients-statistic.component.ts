@@ -67,7 +67,7 @@ export class ClientStatisticComponent implements OnInit {
     this.from = url[1];
     this.to = url[2];
 
-    this.nickName = url[3];
+    this.nickName = url[3] + 'design';
     this.imageSrc = 'uploads/' + url[4];
 
 
