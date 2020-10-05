@@ -228,7 +228,7 @@ export class StatisticComponent implements OnInit {
     doc.text(310, startPoint, 'Period:');
 
     doc.setFontType('bold');
-    let range = moment(this.fromFormat).format('MMMM Do') + ' - ' + moment(this.toFormat).format('MMMM Do');
+    let range = moment(this.fromFormat).format('MMM Do') + ' - ' + moment(this.toFormat).format('MMM Do');
     let textWidth = doc.getTextWidth(range) / 2;
     doc.text(385 - textWidth, startPoint, range);
     doc.setFontType('normal');
