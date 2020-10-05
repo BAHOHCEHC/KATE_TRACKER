@@ -116,6 +116,10 @@
   min-height: 70px;
 }
 
+img.userImage {
+  width: 100px;
+  border-radius: 50%;
+}
 .top_logo svg {
   width: 30px;
 }
