@@ -68,14 +68,14 @@ export class StatisticComponent implements OnInit {
     this.clientName = url[0];
     this.from = url[1];
     this.to = url[2];
-    
+
     this.nickName = url[3] + 'design';
     this.imageSrc = 'uploads/' + url[4];
-    
-    
+
+
     this.fromFormat = new Date(+this.from);
     this.toFormat = new Date(+this.to);
-    
+
     this.bsRangeValue = [this.fromFormat, this.toFormat];
     this.clientService
       .getByName(this.clientName)

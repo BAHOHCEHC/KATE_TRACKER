@@ -141,6 +141,10 @@ img.userImage {
   font-size: 24px;
   margin: 0px 0 0 10px;
 }
+img.userImage {
+  width: 100px;
+  border-radius: 50%;
+}
 
 .form {
   margin-top: 50px;
