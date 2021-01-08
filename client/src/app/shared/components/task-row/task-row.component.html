@@ -28,13 +28,13 @@
     <div
       class="groupInputWrapper groupInputWrapper-right dfl ai"
       [ngClass]="{
-        msg_error: formTask.get('timeStart').dirty && timeLessError(),
+        msg_error: formTask.get('timeStart')?.dirty && timeLessError(),
         groupInputWrapper_client_statistic: readonlyParam
       }"
     >
       <span
         class="red-text pa error_msg"
-        *ngIf="formTask.get('timeStart').dirty && timeLessError()"
+        *ngIf="formTask.get('timeStart')?.dirty && timeLessError()"
         >Time is wrong</span
       >
 
@@ -45,7 +45,7 @@
         [showMeridian]="false"
         [showSpinners]="false"
         [readonlyInput]="readonlyParam"
-        (ngModelChange)="changed($event)"
+        (ngModelChange)="changed()"
         #timepikerStart
       ></timepicker>
     </div>
@@ -70,13 +70,13 @@
     <div
       class="groupInputWrapper groupInputWrapper-right dfl ai"
       [ngClass]="{
-        msg_error: formTask.get('timeEnd').dirty && timeLessError(),
+        msg_error: formTask.get('timeEnd')?.dirty && timeLessError(),
         groupInputWrapper_client_statistic: readonlyParam
       }"
     >
       <span
         class="red-text pa error_msg"
-        *ngIf="formTask.get('timeEnd').dirty && timeLessError()"
+        *ngIf="formTask.get('timeEnd')?.dirty && timeLessError()"
         >Time is wrong</span
       >
       <timepicker
@@ -86,14 +86,14 @@
         [showMeridian]="false"
         [showSpinners]="false"
         [readonlyInput]="readonlyParam"
-        (ngModelChange)="changed($event)"
+        (ngModelChange)="changed()"
         #timepikerEnd
       >
       </timepicker>
     </div>
 
     <div class="task_spended_time tac color_black_text" *ngIf="!isNew">
-      {{ taskData.wastedTime | hourPipe }}
+      <!-- {{ taskData?.wastedTime | hourPipe }} -->
     </div>
 
     <button

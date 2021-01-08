@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+import { ClientsPageComponent } from './clients-page/clients-page.component';
+import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { AuthLayoutComponent } from './shared/layouts/auth-layout/auth-layout.component';
-import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.component';
+import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthGuard } from './shared/classes/auth.guard';
-// ******************************
-import { ClientsPageComponent } from './clients-page/clients-page.component';
-import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
-import { TasksComponent } from './clients-page/tasks/tasks.component';
+import { AuthLayoutComponent } from './shared/layouts/auth-layout/auth-layout.component';
+import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.component';
+
 
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: '',
     component: SiteLayoutComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'clients',
@@ -48,4 +48,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

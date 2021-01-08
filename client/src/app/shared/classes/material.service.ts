@@ -1,6 +1,7 @@
 import { ElementRef } from '@angular/core';
+// import M from "materialize-css"
 
-declare var M;
+declare var M: { toast: (arg0: { html: string; displayLength: number; }) => void; FloatingActionButton: { init: (arg0: any) => void; }; updateTextFields: () => void; Modal: { init: (arg0: any) => MaterialInstance; }; FormSelect: { init: (arg0: any) => MaterialInstance; }; Tooltip: { init: (arg0: any) => MaterialInstance; }; TapTarget: { init: (arg0: any) => MaterialInstance; }; Datepicker: { init: (arg0: any, arg1: { format: string; showClearBtn: boolean; i18n: { weekdaysAbbrev: string[]; done: string; }; onClose: () => void; }) => MaterialDatepicker; }; };
 export interface MaterialInstance {
   open?(): void;
   close?(): void;
@@ -14,7 +15,6 @@ export class MaterialService {
   static toast(message: string) {
     M.toast({ html: message, displayLength: 1000 });
   }
-
   static initializeFloatingButton(ref: ElementRef) {
     M.FloatingActionButton.init(ref.nativeElement);
   }
@@ -42,7 +42,7 @@ export class MaterialService {
       showClearBtn: false,
       i18n: {
         weekdaysAbbrev: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        done	: 'Select'
+        done: 'Select'
       },
       onClose
     });

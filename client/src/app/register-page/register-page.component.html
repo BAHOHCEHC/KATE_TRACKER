@@ -2,20 +2,20 @@
   <div class="form-content">
     <span class="form-title">Create new profile</span>
 
-    <div class="input-field">
+    <!-- <div class="input-field">
       <input (change)="onFileUpload($event)" type="file" class="dn" #input>
       <button [ngClass]="{'defaultImage': !imagePreview}"
         [ngStyle]="{'background': 'no-repeat center center url(' + imagePreview + ')'}" [disabled]="form.disabled"
         type="button" (click)="togleVisibility()" class="imageSrc">
       </button>
-    </div>
+    </div> -->
 
     <div class="input-field">
       <input formControlName="nickName" id="nickName" type="text" placeholder="Nickname"
-        [ngClass]="{'invalid': form.get('nickName').invalid && form.get('nickName').touched}">
-      <span class="helper-text red-text" *ngIf="form.get('nickName').invalid && form.get('nickName').touched">
-        <span *ngIf="form.get('nickName').errors['required']">nickName не должен быть пустым</span>
-      </span>
+        [ngClass]="{'invalid': form.get('nickName')?.invalid && form.get('nickName')?.touched}">
+      <!-- <span class="helper-text red-text" *ngIf="form.get('nickName')?.invalid && form.get('nickName')?.touched">
+        <span *ngIf="form.get('nickName')?.errors['required']">nickName не должен быть пустым</span>
+      </span> -->
     </div>
 
     <div class="input-field">
@@ -27,24 +27,24 @@
 
     <div class="input-field">
       <input formControlName="email" id="email" type="email" placeholder="Email"
-        [ngClass]="{'invalid': form.get('email').invalid && form.get('email').touched}">
-      <span class="helper-text red-text" *ngIf="form.get('email').invalid && form.get('email').touched">
-        <span *ngIf="form.get('email').errors['required']">Email не должен быть пустым</span>
-        <span *ngIf="form.get('email').errors['email']">Введите корректный email адрес</span>
-      </span>
+        [ngClass]="{'invalid': form.get('email')?.invalid && form.get('email')?.touched}">
+      <!-- <span class="helper-text red-text" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+        <span *ngIf="form.get('email')?.errors['required']">Email не должен быть пустым</span>
+        <span *ngIf="form.get('email')?.errors['email']">Введите корректный email адрес</span>
+      </span> -->
     </div>
 
     <div class="input-field">
       <input id="password" type="password" formControlName="password" placeholder="Password"
-        [ngClass]="{'invalid': form.get('password').invalid && form.get('password').touched}">
-      <span class="helper-text red-text" *ngIf="form.get('password').invalid && form.get('password').touched">
-        <span *ngIf="form.get('password').errors['required']">Пароль не должен быть пустым</span>
+        [ngClass]="{'invalid': form.get('password')?.invalid && form.get('password')?.touched}">
+      <!-- <span class="helper-text red-text" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+        <span *ngIf="form.get('password')?.errors['required']">Пароль не должен быть пустым</span>
         <span
-          *ngIf="form.get('password').errors['minlength'] && form.get('password').errors['minlength']['requiredLength']">
-          Пароль должен быть больше {{form.get('password').errors['minlength']['requiredLength']}} символов.
-          Сейчас {{form.get('password').errors['minlength']['actualLength']}}
+          *ngIf="form.get('password')?.errors['minlength'] && form.get('password')?.errors['minlength']['requiredLength']">
+          Пароль должен быть больше {{form.get('password')?.errors['minlength']['requiredLength']}} символов.
+          Сейчас {{form.get('password')?.errors['minlength']['actualLength']}}
         </span>
-      </span>
+      </span> -->
     </div>
   </div>
   <div class="form-action">

@@ -1,10 +1,10 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'dayPipe' })
 export class DayPipe implements PipeTransform {
-  transform(val) {
+  transform(val: moment.MomentInput) {
     return moment(val).format('DD.MM.YYYY, h:mm');
   }
 }

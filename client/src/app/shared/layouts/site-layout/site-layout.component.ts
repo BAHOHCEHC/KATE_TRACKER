@@ -1,27 +1,19 @@
-import {
-  Component,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-
-import { AppState } from 'src/app/store/app-store.module';
-import { Store } from '@ngrx/store';
-
 import { LogIn } from 'src/app/store/actions/auth.action';
 import { GetAllClientOfUser, RemoveClient } from 'src/app/store/actions/client.action';
+// import { AppState } from 'src/app/store/app-store.module';
 
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
+import { MaterialInstance, MaterialService } from '../../classes/material.service';
 import { Client, User } from '../../interfaces';
 import { ClientsService } from '../../services/clients-service.service';
 import { UserService } from '../../services/user.service';
-import { MaterialInstance } from '../../classes/material.service';
-import { MaterialService } from './../../classes/material.service';
+
 @Component({
   selector: 'app-site-layout',
   templateUrl: './site-layout.component.html',
@@ -37,38 +29,39 @@ import { MaterialService } from './../../classes/material.service';
   ]
 })
 export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('modal') modalRef: ElementRef;
-  @ViewChild('select') selectRef: ElementRef;
-  @ViewChild('confirm') confirmRef: ElementRef;
+  @ViewChild('modal', { static: false })
+  modalRef!: ElementRef;
+  @ViewChild('select', { static: false })
+  selectRef!: ElementRef;
+  @ViewChild('confirm', { static: false })
+  confirmRef!: ElementRef;
+
+  readonly form!: FormGroup;
 
   loading = false;
-  deletedClient: Client = null;
-  user: User;
+  deletedClient!: Client;
+  user: User | undefined;
   destroy$ = new Subject<undefined>();
 
-  show: boolean;
-  form: FormGroup;
-  modal: MaterialInstance;
-  select: MaterialInstance;
-  confirm: MaterialInstance;
-  clientsName = [];
+  show: boolean = false;
+  modal!: MaterialInstance;
+  select: MaterialInstance | undefined;
+  confirm: MaterialInstance | undefined;
+  clientsName: string[] = [];
   message = '';
-  clients$: Observable<Client[]>;
+  clients$: Observable<Client[]> | undefined;
 
   constructor(
     private clientsService: ClientsService,
     private userService: UserService,
     private router: Router,
-    private store: Store<AppState>
-  ) { }
+    // private store: Store<AppState>,
+    private fb: FormBuilder,
+  ) {
+    this.form = this.buildForm();
+  }
 
   ngOnInit() {
-    this.form = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      currency: new FormControl(null, [Validators.required]),
-      tarif: new FormControl(10, [Validators.required, Validators.min(10)])
-    });
-
     this.loading = true;
 
     this.fethClients();
@@ -82,37 +75,25 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         console.log(this.user);
 
-        this.store.dispatch(new LogIn(user));
+        // this.store.dispatch(new LogIn(user));
       });
   }
+
   ngAfterViewInit() {
     this.modal = MaterialService.initModal(this.modalRef);
     this.select = MaterialService.initSelect(this.selectRef);
     this.confirm = MaterialService.initModal(this.confirmRef);
   }
-  fethClients() {
-    this.clients$ = this.clientsService.fetchAll().pipe(
-      tap(clients => {
 
-        this.store.dispatch(new GetAllClientOfUser(clients));
-
-        clients.forEach(e => {
-          this.clientsName.push(e.name.toLowerCase().replace(/\s/g, ''));
-        });
-        console.log('****CLIENTS********', this.clientsName);
-      })
-    );
-  }
   addNewProject() {
-    this.form.reset({
-      name: '',
-      currency: 'dollar',
-      tarif: 10
-    });
-    this.modal.open();
+    this.form.reset();
+    if (this.modal?.open) {
+      this.modal.open();
+    }
     MaterialService.updateTextInputs();
   }
-  chekClientExist(name) {
+
+  chekClientExist(name: string): boolean {
     const mutch = this.clientsName.some(item => {
       return name.toLowerCase().replace(/\s/g, '') === item;
     });
@@ -125,17 +106,47 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       return false;
     }
   }
-  resetForm() {
+
+
+  private fethClients() {
+    this.clients$ = this.clientsService.fetchAll().pipe(
+      tap(clients => {
+
+        // this.store.dispatch(new GetAllClientOfUser(clients));
+
+        clients.forEach(client => {
+          return this.clientsName.push(client.name.toLowerCase().replace(/\s/g, ''));
+        });
+
+        console.log('****CLIENTS********', this.clientsName);
+      })
+    );
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      name: ['', [Validators.required]],
+      currency: ['', [Validators.required]],
+      tarif: [10, [Validators.required, Validators.min(10)]],
+    });
+  }
+
+
+  resetForm(): void {
     this.form.reset({
       name: '',
       currency: 'dollar',
       tarif: 10
     });
   }
+
   closeModal() {
-    this.modal.close();
+    if (this.modal?.close) {
+      this.modal.close();
+    }
     this.resetForm();
   }
+
   onSubmit() {
     if (!this.form.value.name) {
       return;
@@ -156,35 +167,54 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.closeModal();
     MaterialService.updateTextInputs();
   }
-  deleteClient(client) {
+
+  deleteClient(client: Client) {
     this.deletedClient = client;
-    this.confirm.open();
-  }
-  confirmDelete() {
-    this.clientsService
-      .delete(this.deletedClient._id)
-      .subscribe(({ message }) => {
-        MaterialService.toast(message);
-      });
-
-    this.store.dispatch(new RemoveClient(this.deletedClient));
-
-
-    this.fethClients();
-
-    const deletedClient = this.router.url.substring('/clients/'.length);
-    if (this.deletedClient.name === deletedClient) {
-      this.router.navigate(['/clients']);
+    if (this.confirm?.open) {
+      this.confirm.open();
     }
-    this.deletedClient = null;
-    this.confirm.close();
   }
+
+  confirmDelete() {
+    const deletedClientId = this.deletedClient ? this.deletedClient._id : '';
+
+    if (deletedClientId) {
+      this.clientsService
+        .delete(deletedClientId)
+        .subscribe(({ message }) => {
+          MaterialService.toast(message);
+        });
+
+      // this.store.dispatch(new RemoveClient(this.deletedClient));
+
+      this.fethClients();
+
+      const deletedClient = this.router.url.substring('/clients/'.length);
+
+      if (this.deletedClient.name === deletedClient) {
+        this.router.navigate(['/clients']);
+      }
+
+      // this.deletedClient = null;
+      if (this.confirm?.close) {
+        this.confirm.close();
+      }
+    }
+
+  }
+
   cancelDelete() {
-    this.confirm.close();
-    this.deletedClient = null;
+    if (this.confirm?.close) {
+      this.confirm.close();
+    }
+    // this.deletedClient = undefined;
   }
+
   ngOnDestroy() {
-    this.modal.destroy();
+    if (this.modal?.destroy) {
+      this.modal.destroy();
+    }
+
     this.destroy$.next();
     this.destroy$.complete();
   }

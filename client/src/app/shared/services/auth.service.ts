@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces';
 import { tap } from 'rxjs/operators';
@@ -8,9 +8,9 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private token = null;
+  private token = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   register(user: User, image?: File): Observable<User> {
     const formData = new FormData();
@@ -27,7 +27,7 @@ export class AuthService {
 
   login(user: User): Observable<User> {
     return this.http.post<User>('/api/auth/login', user).pipe(
-      tap(e => {
+      tap((e: any) => {
         localStorage.setItem('auth-token', e.token);
         localStorage.setItem('userId', e._id);
         this.setToken(e.token);
@@ -35,9 +35,6 @@ export class AuthService {
     );
   }
 
-  setToken(token: string) {
-    this.token = token;
-  }
 
   getToken(): string {
     return this.token;
@@ -45,6 +42,10 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.token;
+  }
+
+  setToken(token: string) {
+    this.token = token;
   }
 
   // logout() {

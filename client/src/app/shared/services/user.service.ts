@@ -11,7 +11,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUserData(id: string): Observable<User> {
+  getUserData(id: string | null): Observable<User> {
     const url = `/api/auth/${id}`;
     const formData = new FormData();
 

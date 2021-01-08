@@ -1,19 +1,27 @@
-import { Task } from './../interfaces';
-import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
+import { Pipe, PipeTransform } from '@angular/core';
+
+import { Task } from '../interfaces';
 
 @Pipe({ name: 'groupTask' })
 export class GroupTaskPipe implements PipeTransform {
     transform(tasks: Task[]): any {
-        const groupsByDay = tasks.reduce((groupsByDay, task) => {
-            const fixDate = new Date(task.startDay);
-            const date = moment(fixDate).format('dddd, d MMM');
-            if (!groupsByDay[date]) {
-                groupsByDay[date] = [];
+        const groupsByDay = tasks.reduce((acc: any, task) => {
+            if (task.startDay) {
+                const fixDate = new Date(task.startDay);
+                const date = moment(fixDate).format('dddd, d MMM');
+
+                if (!acc[date]) {
+                    acc[date] = [];
+                }
+
+                acc[date].push(task);
+
+                return acc;
             }
-            groupsByDay[date].push(task);
-            return groupsByDay;
         }, []);
+
+        return groupsByDay;
     }
 }

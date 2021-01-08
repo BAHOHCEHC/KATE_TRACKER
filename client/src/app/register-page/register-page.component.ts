@@ -5,7 +5,7 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -25,49 +25,52 @@ import { MaterialService } from '../shared/classes/material.service';
   ]
 })
 export class RegisterPageComponent implements OnInit, OnDestroy {
-  @ViewChild('input') inputRef: ElementRef;
-  form: FormGroup;
-  aSub: Subscription;
-  image: File;
+  @ViewChild('input') inputRef: ElementRef | undefined;
+  readonly form: FormGroup;
+
+  aSub$: Subscription | undefined;
+  image: File | undefined;
   imagePreview: any = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder) {
+    this.form = this.buildForm();
+  }
 
-  ngOnInit() {
-    this.form = new FormGroup({
-      imageSrc: new FormControl(null),
-      nickName: new FormControl(null, [Validators.required]),
-      role: new FormControl('spectator', [Validators.required]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(6)
-      ])
+  ngOnInit() { }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      imageSrc: [null, [Validators.required]],
+      nickName: ['', [Validators.required]],
+      role: ['spectator', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: [null, [Validators.required, Validators.minLength(6)]]
     });
   }
 
   ngOnDestroy() {
-    if (this.aSub) {
-      this.aSub.unsubscribe();
+    if (this.aSub$) {
+      this.aSub$.unsubscribe();
     }
   }
 
-  onFileUpload(event: any) {
-    const file = event.target.files[0];
-    this.image = file;
-    this.form.controls.imageSrc.setValue(file);
+  // onFileUpload(event: any) {
+  //   const file = event.target.files[0];
+  //   this.image = file;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
-  }
+  //   this.form.controls.imageSrc.setValue(file);
+
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.imagePreview = reader.result;
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
 
   onSubmit() {
     this.form.disable();
     console.log(this.form);
-    this.aSub = this.auth
+    this.aSub$ = this.auth
       .register(this.form.value, this.form.value.imageSrc)
       .subscribe(
         () => {
@@ -84,7 +87,7 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
       );
   }
 
-  togleVisibility() {
-    this.inputRef.nativeElement.click();
-  }
+  // togleVisibility() {
+  //   this.inputRef.nativeElement.click();
+  // }
 }

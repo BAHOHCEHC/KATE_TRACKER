@@ -1,16 +1,16 @@
 import { Task } from 'src/app/shared/interfaces';
-import * as moment from 'moment';
 
-import { TasksActions, TasksActionTypes } from './../actions/tasks.action';
+import { TasksActions, TasksActionTypes } from '../actions/tasks.action';
 
 export interface TasksState {
     allTasks: Task[];
     currentClientTasks: Task[];
 }
+
 const initialState: TasksState = {
     allTasks: [],
     currentClientTasks: [],
-}
+};
 
 export const tasksReducer: (state: any, action: TasksActions) => TasksState = (
     state = initialState,
@@ -28,4 +28,4 @@ export const tasksReducer: (state: any, action: TasksActions) => TasksState = (
             return { ...state, allTasks: null };
         default: return state;
     }
-}
+};

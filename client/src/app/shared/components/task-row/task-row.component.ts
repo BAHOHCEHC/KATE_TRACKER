@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment';
 import {
   FormGroup,
   FormControl,
@@ -14,7 +15,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { Task, Client } from '../../interfaces';
 import { TasksService } from '../../services/tasks.service';
@@ -24,63 +25,59 @@ import {
 } from '../../classes/material.service';
 
 
-import { Store } from '@ngrx/store';
-import { AppState } from './../../../store/app-store.module';
-import { CreateTask } from 'src/app/store/actions/tasks.action';
+// import { Store } from '@ngrx/store';
+// import { AppState } from './../../../store/app-store.module';
+// import { CreateTask } from 'src/app/store/actions/tasks.action';
+
+const defaultRate = environment.defaultRate;
 
 @Component({
   selector: 'app-task-row',
   templateUrl: './task-row.component.html',
-  styles: [``]
 })
 export class TaskRowComponent implements OnInit, AfterViewInit {
   @Output('updateTasks') taskEmitter = new EventEmitter();
 
-  @Input() taskData: Task;
-  @Input() readonlyParam: boolean;
-  @Input() client: Client;
+  @Input() taskData!: Task;
+  @Input() readonlyParam!: boolean;
+  @Input() client!: Client;
 
-  @ViewChild('dayStart') dayDateStartRef: ElementRef;
+  @ViewChild('dayStart') dayDateStartRef!: ElementRef;
 
-  formTask: FormGroup;
+  formTask!: FormGroup;
   submitted = false;
   isEditNow = false;
 
   isNew = true;
-  start: MaterialDatepicker;
+  start!: MaterialDatepicker;
   currentTime = moment();
   currentTime2 = moment();
 
-  constructor(private taskService: TasksService, private fb: FormBuilder, private store: Store<AppState>) { }
+  constructor(private taskService: TasksService, private fb: FormBuilder,
+    //  private store: Store<AppState>
+     ) { }
+
   ngOnInit() {
     if (this.taskData) {
       this.isNew = false;
     }
     this.initForm();
   }
+
   ngAfterViewInit() {
     if (this.isNew) {
       this.initDatepicker();
       this.setDate();
     }
   }
-  setDate() {
-    if (this.formTask.controls.name.untouched) {
-      const newTaskName = moment(this.start.date).format('LL') + ` Task`;
-      this.formTask.controls['name'].setValue(newTaskName);
-    }
-    if (this.start.date) {
-      this.formTask.controls['dayStart'].setValue(moment(this.start.date).format('DD.MM.YYYY'));
-    } else {
-      this.formTask.controls['dayStart'].setValue(new Date());
-    }
-  }
+
   deleteTask() {
     this.taskService.delete(this.taskData).subscribe(response => {
       this.throwMessage(response.message);
       this.taskEmitter.emit();
     });
   }
+
   onSubmit() {
     this.submitted = true;
     const start = moment(this.formTask.value.timeStart);
@@ -96,6 +93,8 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     }
     const wasteTime = Math.abs(+betweenDifferenceM) / 60;
     const formatTime = betweenDifferenceH + ':' + formatMinute;
+    const startDate = this.start.date ? (this.start.date).toString() : (new Date()).toString();
+
     const task: Task = {
       name: this.formTask.controls['name'].value,
       cost: this.client.tarif,
@@ -104,11 +103,12 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       startTime: this.formTask.controls['timeStart'].value,
       endTime: this.formTask.controls['timeEnd'].value,
       wastedTime: betweenDifferenceM,
-      totalMoney: wasteTime * this.client.tarif,
+      // totalMoney: wasteTime * this.client.tarif,
+      totalMoney: this.client.tarif ? wasteTime * this.client.tarif : wasteTime * defaultRate,
       user: this.client.user,
       formatTime,
       // startDay: this.formTask.controls['dayStart'].value
-      startDay: this.taskData ? this.taskData.startDay : (this.start.date).toString(),
+      startDay: this.taskData ? this.taskData.startDay : startDate,
     };
     if (this.isNew) {
       this.taskService.create(task).subscribe(response => {
@@ -119,7 +119,7 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
         this.formTask.controls['timeEnd'].setValue(moment(new Date()).add(1, 'm').toDate());
       });
     } else {
-      
+
       task._id = this.taskData._id;
       this.taskService.update(task).subscribe(response => {
         this.throwMessage(response.message);
@@ -130,9 +130,7 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     this.taskEmitter.emit();
     this.submitted = false;
   }
-  throwMessage(message) {
-    MaterialService.toast(message);
-  }
+
   timeLessError() {
     const start = moment(this.formTask.value.timeStart);
     const endTime = moment(this.formTask.value.timeEnd);
@@ -140,7 +138,28 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     const betweenDifferenceH = endTime.diff(start, 'hours');
     return ((betweenDifferenceM <= 0) || (betweenDifferenceH < 0));
   }
-  initDatepicker() {
+
+  changed() {
+    this.isEditNow = true;
+  }
+
+  private throwMessage(message: string) {
+    MaterialService.toast(message);
+  }
+
+  private setDate() {
+    if (this.formTask.controls.name.untouched) {
+      const newTaskName = moment(this.start.date).format('LL') + ` Task`;
+      this.formTask.controls['name'].setValue(newTaskName);
+    }
+    if (this.start.date) {
+      this.formTask.controls['dayStart'].setValue(moment(this.start.date).format('DD.MM.YYYY'));
+    } else {
+      this.formTask.controls['dayStart'].setValue(new Date());
+    }
+  }
+
+  private initDatepicker() {
     this.start = MaterialService.initDatepicker(
       this.dayDateStartRef,
       this.setDate.bind(this)
@@ -148,7 +167,7 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     this.start.date = new Date();
   }
 
-  resetForm() {
+  private resetForm() {
     this.submitted = false;
     this.formTask.controls['name'].setValue(moment().format('LL') + ` Task`);
     this.formTask.controls['timeStart'].setValue(new Date());
@@ -156,16 +175,16 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     this.formTask.controls['dayStart'].setValue(new Date());
   }
 
-  initForm() {
+  private initForm() {
     let initName = moment().format('LL') + ` Task`;
     let initTimeStart = new Date();
     let initTimeEnd = new Date();
     let initStartDay = (new Date()).toString();
     if (this.taskData) {
       initName = this.taskData.name;
-      initTimeStart = this.taskData.startTime;
-      initTimeEnd = this.taskData.endTime;
-      initStartDay = this.taskData.startDay;
+      initTimeStart = this.taskData.startTime ? this.taskData.startTime : new Date();
+      initTimeEnd = this.taskData.endTime ? this.taskData.endTime : new Date();
+      initStartDay = this.taskData.startDay ? this.taskData.startDay : (new Date()).toString();
     }
     this.formTask = this.fb.group({
       name: new FormControl(initName, [Validators.required]),
@@ -173,8 +192,5 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       timeEnd: new FormControl(initTimeEnd, [Validators.required]),
       dayStart: new FormControl(initStartDay, Validators.required)
     });
-  }
-  changed(event){
-    this.isEditNow = true;
   }
 }

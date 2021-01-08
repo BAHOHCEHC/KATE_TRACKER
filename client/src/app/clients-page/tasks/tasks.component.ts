@@ -1,55 +1,51 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
-import { takeUntil, map, tap, reduce } from 'rxjs/operators';
-import * as moment from 'moment';
-
+import moment from 'moment';
+import { Observable, Subject } from 'rxjs';
+import { map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { MaterialService } from 'src/app/shared/classes/material.service';
-import { TasksService } from 'src/app/shared/services/tasks.service';
-
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/app-store.module';
-import { GettingAllTasks, CurrentClientTasks } from 'src/app/store/actions/tasks.action';
-import { GetCurrentClient, GetAllClientOfUser } from 'src/app/store/actions/client.action';
-import { LogIn } from 'src/app/store/actions/auth.action';
-
-import { Task, Client, User } from 'src/app/shared/interfaces';
+import { Client, Task, TaskDay } from 'src/app/shared/interfaces';
 import { ClientsService } from 'src/app/shared/services/clients-service.service';
-import { TasksState } from 'src/app/store/reducers/tasks.reducers';
-import { UserService } from 'src/app/shared/services/user.service';
+import { TasksService } from 'src/app/shared/services/tasks.service';
+import { GetAllClientOfUser, GetCurrentClient } from 'src/app/store/actions/client.action';
+import { CurrentClientTasks, GettingAllTasks } from 'src/app/store/actions/tasks.action';
+// import { AppState } from 'src/app/store/app-store.module';
 
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html'
 })
 export class TasksComponent implements OnInit, OnDestroy {
-  tokenId: string;
+  tokenId!: string | null;
 
-  clientName: string;
-  allTasks$: Observable<any[]>;
+  clientName!: string;
+  allTasks$!: Observable<any[]>;
   // allTasksState$: Observable<TasksState>;
   destroy$ = new Subject<undefined>();
-  client: Client;
+  client!: Client;
+  tarif: number = 10;
 
-  statisticParam: string;
+  statisticParam!: string;
   initialDate = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
 
-  totalHours: number;
-  totalPayment: number;
+  totalHours: number = 0;
+  totalPayment: number = 0;
 
   constructor(
     private taskService: TasksService,
     private route: ActivatedRoute,
     private clientService: ClientsService,
-    private store: Store<AppState>,
+    // private store: Store<AppState>,
     // private userService: UserService,
   ) {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.initialDate, this.maxDate];
   }
+
   ngOnInit() {
     this.tokenId = localStorage.getItem('auth-token');
     // const userId = localStorage.getItem('userId');
@@ -60,9 +56,10 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.clientName = params.id;
         this.clientService
           .getByName(this.clientName)
-          .pipe(map(res => res[0]))
+          .pipe(map(res => res))
           .subscribe(client => {
             this.client = client;
+            this.tarif = client.tarif ? client.tarif : 10;
             this.updateTasksList();
           });
       });
@@ -72,68 +69,71 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   updateTasksList() {
     this.taskService.getAllClientTask().subscribe(res => {
-      this.store.dispatch(new GettingAllTasks(res));
+      // this.store.dispatch(new GettingAllTasks(res));
     })
 
     this.allTasks$ = this.taskService.fetch(this.clientName).pipe(
       tap(res => {
         this.totalHours = +res
           .reduce((acc, cur) => {
-            return acc + cur.wastedTime;
+            const time = cur.wastedTime ? cur.wastedTime : 0;
+
+            return acc + time;
           }, 0)
           .toFixed(2);
-        this.store.dispatch(new CurrentClientTasks(res));
+        // this.store.dispatch(new CurrentClientTasks(res));
 
-        this.totalPayment = Math.round(this.totalHours / 60) * this.client.tarif;
+        this.totalPayment = Math.round(this.totalHours / 60) * this.tarif;
 
         this.clientService
           .update(this.client._id, this.totalHours / 60, this.totalPayment)
           .subscribe(res => {
-            this.store.dispatch(new GetCurrentClient(res));
+            // this.store.dispatch(new GetCurrentClient(res));
           });
 
         this.clientService.fetchAll().subscribe(
           (clients) => {
-            this.store.dispatch(new GetAllClientOfUser(clients));
+            // this.store.dispatch(new GetAllClientOfUser(clients));
           });
       }),
-      reduce((acc, tasks) => {
-        tasks.forEach((task: Task) => {
-          const fixDate = new Date(task.startDay);
-          const date = moment(fixDate).format('dddd, D MMM');
-          const exist = acc.find(e => {
-            return e.taskDayDate === date;
-          })
-          if (exist) {
-            exist.tasksInDay.push(task);
-            exist.tasksInDay.sort(function (left, right) {
-              let first = moment.utc(left.endTime).format();
-              let second = moment.utc(right.endTime).format();
-              return moment.utc(first).diff(moment.utc(second))
-            });
-            exist.totalDayHour += task.wastedTime;
-          } else {
-            let obj = {
-              totalDayHour: task.wastedTime,
-              taskDayDate: date,
-              tasksInDay: []
-            }
-            obj.tasksInDay.push(task);
-            acc.push(obj);
-          }
-        })
+      // reduce((acc, tasks) => {
+      // tasks.forEach((task: Task) => {
+      //   const fixDate = new Date(task.startDay);
+      //   const date = moment(fixDate).format('dddd, D MMM');
+      //   const exist = acc.find((e: TaskDay) => {
+      //     return e.taskDayDate === date;
+      //   })
+      //   if (exist) {
+      //     exist.tasksInDay.push(task);
+      //     exist.tasksInDay.sort(function (left, right) {
+      //       let first = moment.utc(left.endTime).format();
+      //       let second = moment.utc(right.endTime).format();
+      //       return moment.utc(first).diff(moment.utc(second))
+      //     });
+      //     exist.totalDayHour += task.wastedTime;
+      //   } else {
+      //     let obj = {
+      //       totalDayHour: task.wastedTime,
+      //       taskDayDate: date,
+      //       tasksInDay: []
+      //     }
+      //     obj.tasksInDay.push(task);
+      //     acc.push(obj);
+      //   }
 
-        //******************FIX deprecation warning*****************/
-        //******************FIX deprecation warning*****************/
-        acc.sort(function (left, right) {
-          let first = moment.utc(left.taskDayDate).format();
-          let second = moment.utc(right.taskDayDate).format();
-          return moment.utc(first).diff(moment.utc(second))
-        });
-        //******************FIX deprecation warning*****************/
-        //******************FIX deprecation warning*****************/
-        return acc.reverse();
-      }, [])
+      // })
+
+      //******************FIX deprecation warning*****************/
+      //******************FIX deprecation warning*****************/
+      // acc.sort(function (left, right) {
+      //   let first = moment.utc(left.taskDayDate).format();
+      //   let second = moment.utc(right.taskDayDate).format();
+      //   return moment.utc(first).diff(moment.utc(second))
+      // });
+      //******************FIX deprecation warning*****************/
+      //******************FIX deprecation warning*****************/
+      //   return acc.reverse();
+      // }, [])
     );
 
   }
@@ -144,24 +144,24 @@ export class TasksComponent implements OnInit, OnDestroy {
     const firsPart = url.substring(0, url.indexOf('/clients/'));
     const from = moment(this.bsRangeValue[0]).startOf('day');
     const to = moment(this.bsRangeValue[1]).endOf('day');
-    let userAdmin = {
-      nickName: null,
-      imageSrc: null
-    }
-    this.store.select('userState').subscribe(({ user }) => {
-      userAdmin = {
-        nickName: user.nickName,
-        imageSrc: user.imageSrc.replace('uploads\\', ''),
-      }
-    })
 
-    const finalurl = firsPart + `/statistic/` + this.client.name + `/${from}/${to}/${userAdmin.nickName}/${userAdmin.imageSrc}`;
+    let finalurl: string;
+
+    // this.store.select('userState').subscribe(({ user }) => {
+    //   const imgSrc = user?.imageSrc ? user?.imageSrc.replace('uploads\\', '') : '';
+    //   const name = user?.nickName ? user?.nickName : '';
+
+    //   finalurl = firsPart + `/statistic/` + this.client.name + `/${from}/${to}/${name}/${imgSrc}`;
+    // })
+
     // const finalurl = firsPart + `/clients-statistic/` + this.client.name + `/${from}/${to}/${userAdmin.nickName}/${userAdmin.imageSrc}`;
 
     document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', finalurl);
+      if (e.clipboardData) {
+        e.clipboardData.setData('text/plain', finalurl);
+      }
       e.preventDefault();
-      document.removeEventListener('copy', null);
+      // document.removeEventListener('copy', undefined);
     });
     document.execCommand('copy');
     MaterialService.toast('Скопированно в буфер');

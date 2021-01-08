@@ -3,7 +3,7 @@ import { ClientActions, ClientActionTypes } from '../actions/client.action';
 
 
 export interface ClientState {
-    currentClient: Client;
+    currentClient: Client | null;
     allClients: Client[];
 }
 const initialState: ClientState = {
@@ -22,7 +22,7 @@ export const clientReducer: (state: any, action: ClientActions) => ClientState =
         case ClientActionTypes.GET_USER_CLIENTS:
             return { ...state, allClients: action.payload };
         case ClientActionTypes.REMOVE_CLIENT:
-            return { ...state, allClients: [...state.allClients.filter(c => c._id !== action.payload._id)] };
+            return { ...state, allClients: [...state.allClients.filter((c: { _id: string | undefined; }) => c._id !== action.payload._id)] };
         default: return state;
     }
 }

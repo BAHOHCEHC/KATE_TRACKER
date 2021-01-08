@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 @Pipe({ name: 'hourPipe' })
 export class HourPipe implements PipeTransform {
-  transform(time) {
+  transform(time: number) {
     let minutes: any = time % 60;
     let hours = (time - minutes) / 60;
     if (minutes < 10) {

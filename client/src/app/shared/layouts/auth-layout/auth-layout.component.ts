@@ -7,19 +7,24 @@ import { User } from '../../interfaces';
   templateUrl: './auth-layout.component.html',
 })
 export class AuthLayoutComponent implements OnInit {
-  show: boolean;
+  show: boolean = false;
+
   constructor(private userService: UserService, ) { }
 
   ngOnInit() {
     this.show = localStorage.getItem('userId') == null || this.check() ? false : true;
   }
   check() {
+    const userData = localStorage.getItem('userId')
+
     return this.userService
-      .getUserData(localStorage.getItem('userId'))
+      .getUserData(userData)
       .subscribe((user: User) => {
         if (user.role === 'admin') {
           return false;
         }
+
+        return true;
       });
   }
 }

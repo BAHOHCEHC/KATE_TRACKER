@@ -9,7 +9,7 @@ import { Message, Task } from '../interfaces';
 export class TasksService {
   constructor(private http: HttpClient) {}
 
-  fetch(clientsName: string): Observable<Task[]> {
+  fetch(clientsName: string | undefined): Observable<Task[]> {
     return this.http.get<Task[]>(`/api/task/${clientsName}`);
   }
 

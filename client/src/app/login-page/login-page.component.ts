@@ -21,8 +21,8 @@ import { MaterialService } from '../shared/classes/material.service';
   ]
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
-  form: FormGroup;
-  aSub: Subscription;
+  form!: FormGroup;
+  aSub!: Subscription;
 
   constructor(
     private auth: AuthService,

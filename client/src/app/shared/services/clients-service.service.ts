@@ -27,7 +27,7 @@ export class ClientsService {
 
   // *******************
   update(
-    id: string,
+    id: string | undefined,
     totalHours: number,
     totalPayment: number
   ): Observable<Client> {

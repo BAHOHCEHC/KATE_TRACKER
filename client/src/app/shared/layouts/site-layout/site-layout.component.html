@@ -22,9 +22,9 @@
 
   <div class="userSection tac color_white_text">
     <div class="userIcon center">
-      <img class="userImage" src="{{ user.imageSrc }}" />
+      <img class="userImage" [src]="user?.imageSrc" />
     </div>
-    <h3 class="userName center">{{ user.nickName + 'design'}}</h3>
+    <h3 class="userName center">{{ user?.nickName + 'design'}}</h3>
     <h4 class="userPosition ">UX/UI designer</h4>
     <button
       class="color_white_text waves-effect waves-light newProjectBtn bg-blue dibl"
@@ -309,23 +309,23 @@
             type="text"
             placeholder="Project Name"
             [ngClass]="{
-              invalid: form.get('name').invalid && form.get('name').touched
+              invalid: form.get('name')?.invalid && form.get('name')?.touched
             }"
           />
-          <span
+          <!-- <span
             class="helper-text red-text"
-            *ngIf="form.get('name').invalid && form.get('name').touched"
+            *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
           >
-            <span *ngIf="form.get('name').errors['required']"
+            <span *ngIf="form.get('name')?.errors['required']"
               >Project Name не может быть пустым</span
             >
           </span>
           <span
             class="helper-text red-text"
-            *ngIf="message && form.get('name').touched"
+            *ngIf="message && form.get('name')?.touched"
           >
             <span *ngIf="message">{{ message }}</span>
-          </span>
+          </span> -->
         </div>
 
         <div class="input-field dibl left">
@@ -351,17 +351,17 @@
             type="number"
             min="10"
             [ngClass]="{
-              invalid: form.get('tarif').invalid && form.get('tarif').touched
+              invalid: form.get('tarif')?.invalid && form.get('tarif')?.touched
             }"
           />
-          <span
+          <!-- <span
             class="helper-text red-text"
-            *ngIf="form.get('tarif').invalid && form.get('tarif').touched"
+            *ngIf="form.get('tarif')?.invalid && form.get('tarif')?.touched"
           >
-            <span *ngIf="form.get('tarif').errors['min']"
+            <span *ngIf="form.get('tarif')?.errors['min']"
               >Введите корректную Hourly Rate</span
             >
-          </span>
+          </span> -->
         </div>
       </div>
       <div class="modal-footer dfl ai jc">
