@@ -1,0 +1,40 @@
+<div class="statusBar">
+  <h1 class="projectName">{{ clientName }}</h1>
+  <div class="client_info_bar dfl ai">
+    <div *ngIf="client" class="dfl status_info">
+      <div class="wrap color_grey_text">
+        Total hours: <span class="fw_b_600 color_black_text">{{ totalHours | hourPipe }}</span>
+      </div>
+      <div class="wrap color_grey_text">
+        Total payment: <span class="fw_b_600 color_black_text">{{ totalPayment }} $</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="allTasks$ | async as allTasks; else loader"
+  class="row allTasks dfl fd_col"
+>
+  <div class="taskRow_wrap" *ngFor="let days of allTasks">
+    <h5 class="day_title dfl">
+      <span class="day_date_title">
+        {{ days.taskDayDate }}
+      </span>
+      <div class="day_time_wrap">
+        <span class="fw_b_600 color_black_text day_total_header">Total:</span>
+        <span class="day_total_time">{{ days.totalDayHour | hourPipe }}</span>
+      </div>
+    </h5>
+    <div class="taskRow" *ngFor="let task of days.tasksInDay">
+      <app-task-row
+        [taskData]="task"
+        [client]="client"
+        [readonlyParam]="true"
+      ></app-task-row>
+    </div>
+  </div>
+</div>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

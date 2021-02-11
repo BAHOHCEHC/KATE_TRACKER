@@ -21,9 +21,10 @@ import { TokenInterceptor } from './shared/classes/token.interceptor';
 
 import { ClientsPageComponent } from './clients-page/clients-page.component';
 import { TasksComponent } from './clients-page/tasks/tasks.component';
-import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
+import { ReportsComponent } from './reports/reports.component';
 import { ClientStatisticComponent } from './shared/layouts/clients-layout/clients-statistic.component';
 import { SharedModule } from './shared/module/shared-module/shared-module.module';
+import { ClientReportsComponent } from './reports/client-reports/client-reports.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { SharedModule } from './shared/module/shared-module/shared-module.module
     RegisterPageComponent,
     ClientsPageComponent,
     TasksComponent,
-    MonthlyReportsComponent,
+    ReportsComponent,
+    ClientReportsComponent,
     ClientStatisticComponent,
     ClientsViewComponent,
   ],

@@ -66,3 +66,17 @@ module.exports.update = async function(req, res) {
 		errorHandler(res, e);
 	}
 };
+
+module.exports.achivetime = async function(req, res) {
+	const updated = {
+		archivedTime: +req.body.archivedTime
+	};
+
+	try {
+		const client = await Client.findOneAndUpdate({ _id: req.params.id }, { $set: updated }, { new: true });
+		
+		res.status(200).json(client);
+	} catch (e) {
+		errorHandler(res, e);
+	}
+};

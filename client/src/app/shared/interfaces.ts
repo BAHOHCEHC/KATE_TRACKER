@@ -14,6 +14,7 @@ export interface Client {
   tarif?: number;
   totalHours?: number;
   totalPayment?: number;
+  archivedTime?: number;
   taskList?: Task[];
   currency?: string;
   _id?: string;

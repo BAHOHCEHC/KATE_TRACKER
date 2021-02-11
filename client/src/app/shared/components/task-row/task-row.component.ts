@@ -12,7 +12,8 @@ import {
   AfterViewInit,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import * as moment from 'moment';
 
@@ -31,7 +32,8 @@ import { CreateTask } from 'src/app/store/actions/tasks.action';
 @Component({
   selector: 'app-task-row',
   templateUrl: './task-row.component.html',
-  styles: [``]
+  styles: [``],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskRowComponent implements OnInit, AfterViewInit {
   @Output('updateTasks') taskEmitter = new EventEmitter();
@@ -52,18 +54,21 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
   currentTime2 = moment();
 
   constructor(private taskService: TasksService, private fb: FormBuilder, private store: Store<AppState>) { }
+  
   ngOnInit() {
     if (this.taskData) {
       this.isNew = false;
     }
     this.initForm();
   }
+
   ngAfterViewInit() {
     if (this.isNew) {
       this.initDatepicker();
       this.setDate();
     }
   }
+
   setDate() {
     if (this.formTask.controls.name.untouched) {
       const newTaskName = moment(this.start.date).format('LL') + ` Task`;
@@ -75,12 +80,14 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       this.formTask.controls['dayStart'].setValue(new Date());
     }
   }
+
   deleteTask() {
     this.taskService.delete(this.taskData).subscribe(response => {
       this.throwMessage(response.message);
       this.taskEmitter.emit();
     });
   }
+
   onSubmit() {
     this.submitted = true;
     const start = moment(this.formTask.value.timeStart);
@@ -130,9 +137,11 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     this.taskEmitter.emit();
     this.submitted = false;
   }
+
   throwMessage(message) {
     MaterialService.toast(message);
   }
+
   timeLessError() {
     const start = moment(this.formTask.value.timeStart);
     const endTime = moment(this.formTask.value.timeEnd);
@@ -174,6 +183,7 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       dayStart: new FormControl(initStartDay, Validators.required)
     });
   }
+  
   changed(event){
     this.isEditNow = true;
   }

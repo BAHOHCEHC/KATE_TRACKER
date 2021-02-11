@@ -7,8 +7,9 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthGuard } from './shared/classes/auth.guard';
 // ******************************
 import { ClientsPageComponent } from './clients-page/clients-page.component';
-import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
+import { ReportsComponent } from './reports/reports.component';
 import { TasksComponent } from './clients-page/tasks/tasks.component';
+import { ClientReportsComponent } from './reports/client-reports/client-reports.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       { path: '', redirectTo: '/login', pathMatch: 'full' },
-      { path: 'statistic', loadChildren: './statistic/statistic.module#StatisticModule' },
+      { path: 'statistic', loadChildren: () => import(`./statistic/statistic.module`).then(m => m.StatisticModule) },
       { path: 'login', component: LoginPageComponent },
       { path: 'register', component: RegisterPageComponent }
     ]
@@ -38,7 +39,11 @@ const routes: Routes = [
       },
       {
         path: 'reports',
-        component: MonthlyReportsComponent
+        component: ReportsComponent,
+      },
+      {
+        path: 'reports/:name',
+        component: ClientReportsComponent,
       }
     ]
   },
@@ -48,4 +53,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

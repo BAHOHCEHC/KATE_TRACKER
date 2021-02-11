@@ -5,5 +5,4 @@ const router = express.Router();
 
 router.get('/:name', passport.authenticate('jwt', { session: true }), controller.getStatisticByName);
 
-
 module.exports = router;

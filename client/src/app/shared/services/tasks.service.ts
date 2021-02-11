@@ -20,6 +20,14 @@ export class TasksService {
   create(task: Task): Observable<Message> {
     return this.http.post<Message>('/api/task', task);
   }
+  
+  archive(tasks: Task[]): Observable<Message> {
+    return this.http.post<Message>('/api/archive', tasks);
+  }
+
+  getArchivedTasks(clientsName: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`/api/archive/${clientsName}`);
+  }
 
   update(task: Task): Observable<Message> {
     return this.http.patch<Message>(`/api/task/${task._id}`, task);

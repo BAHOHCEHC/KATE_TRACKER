@@ -895,3 +895,30 @@ input.bs-timepicker-field {
 .monthlyReports_btn:hover {
   cursor: pointer;
 }
+
+/* *********ReportsPage********** */
+.allClients {
+  margin: 30px;
+}
+.clientRow_wrap {
+  margin: 0 0 10px 0;
+  padding: 15px;
+  border: 1px solid rgba(33, 33, 33, 0.15);
+  border-radius: 15px;
+  text-align: end;
+  align-items: baseline;
+}
+.client_title{
+  margin: 0;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000;
+}
+.day_time_wrap {
+  flex-grow: 1;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+}
+/* *********ReportsPage********** */
