@@ -20,16 +20,14 @@ import { map, tap, reduce } from 'rxjs/operators';
   }
   svg.reportsImg {
     margin-right: 10px;
-  `],
-  providers: [
-    { provide: 'Window', useValue: window },
-  ]
+  `]
 })
 export class StatisticComponent implements OnInit {
   tokenId: string;
   userName: string;
 
   clientName: string;
+  cName: string;
   currency: string;
 
   allTasks$: Observable<TaskDay[]>;
@@ -55,8 +53,7 @@ export class StatisticComponent implements OnInit {
     private taskService: TasksService,
     private clientService: ClientsService,
     private router: Router,
-    private hourPipe: HourPipe,
-    @Inject('Window') private window: Window,
+    private hourPipe: HourPipe
   ) {
 
   }
@@ -66,6 +63,7 @@ export class StatisticComponent implements OnInit {
     const url = this.router.url.substring('/statistic/'.length).split('/');
 
     this.clientName = url[0];
+    this.cName = url[0].replace(/%20/g ,' ');
     this.from = url[1];
     this.to = url[2];
 
