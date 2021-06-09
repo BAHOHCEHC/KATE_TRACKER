@@ -23,15 +23,15 @@ export class TaskEffects {
     //             map(task =>
     //                 new GettingAllTasks(task))
     //         )
+    //     }),
+    //     mergeMap((tasks: Task[]) => {
+    //         debugger
+    //         return [
+    //             {
+    //                 type: TasksActionTypes.GET_ALL_TASKS,
+    //                 payload: tasks
+    //             }
+    //         ];
     //     })
-        // mergeMap((tasks: Task[]) => {
-        //     debugger
-        //     return [
-        //         {
-        //             type: TasksActionTypes.GET_ALL_TASKS,
-        //             payload: tasks
-        //         }
-        //     ];
-        // })
     // )
 }

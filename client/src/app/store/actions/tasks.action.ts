@@ -6,28 +6,23 @@ export enum TasksActionTypes {
     UPDATE_TASK = '[TASK] Update task',
     REMOVE_TASK = '[TASK] Remove task',
     GET_ALL_TASKS = '[TASK] Get all tasks',
-    CURRENT_CLIENT_TASKS = '[TASK] Current client tasks',
 }
 
 export class CreateTask implements Action {
     readonly type = TasksActionTypes.CREATE_TASK;
-    constructor(public payload: Task) { }
+    constructor(public payload: Task[]) { }
 }
 export class GettingAllTasks implements Action {
     readonly type = TasksActionTypes.GET_ALL_TASKS;
     constructor(public payload: Task[]) { }
 }
-export class CurrentClientTasks implements Action {
-    readonly type = TasksActionTypes.CURRENT_CLIENT_TASKS;
-    constructor(public payload: Task[]) { }
-}
 export class UpdateTask implements Action {
     readonly type = TasksActionTypes.UPDATE_TASK;
-    constructor(public payload: Task) { }
+    constructor(public payload: Task[]) { }
 }
 export class RemoveTask implements Action {
     readonly type = TasksActionTypes.REMOVE_TASK;
-    constructor(public payload: Task) { }
+    constructor(public payload: Task[]) { }
 }
 
-export type TasksActions = CreateTask | UpdateTask | GettingAllTasks | CurrentClientTasks | RemoveTask; 
+export type TasksActions = CreateTask | UpdateTask | GettingAllTasks | RemoveTask;

@@ -16,7 +16,7 @@ module.exports.getAll = async function(req, res) {
 module.exports.getByName = async function(req, res) {
 	try {
 		const client = await Client.find({ name: req.params.name });
-		res.status(200).json(client);
+		res.status(200).json(client[0]);
 	} catch (e) {
 		errorHandler(res, e);
 	}

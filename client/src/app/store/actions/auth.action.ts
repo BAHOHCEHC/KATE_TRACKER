@@ -22,6 +22,4 @@ export class Register implements Action {
     constructor(public payload: User) { }
 }
 
-
-
-export type AuthActions = LogIn | LogOut | Register; 
+export type AuthActions = LogIn | LogOut | Register;

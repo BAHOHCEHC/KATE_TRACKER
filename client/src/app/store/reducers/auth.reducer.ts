@@ -6,11 +6,9 @@ export interface AuthState {
 }
 const initialState: AuthState = {
     user: null,
-}
+};
 
-export const authReducer: (state: AuthState, action: AuthActions) => AuthState = (
-    state = initialState,
-    action: AuthActions) => {
+export function authReducer(state: AuthState = initialState, action: AuthActions): AuthState {
     switch (action.type) {
         case AuthActionTypes.LOG_IN:
             return { ...state, user: action.payload };

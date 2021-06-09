@@ -2,7 +2,7 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LogIn } from 'src/app/store/actions/auth.action';
 import { GetAllClientOfUser, RemoveClient } from 'src/app/store/actions/client.action';
-// import { AppState } from 'src/app/store/app-store.module';
+import { AppState } from 'src/app/store/app-store.module';
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -36,17 +36,17 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('confirm', { static: false })
   confirmRef!: ElementRef;
 
-  readonly form!: FormGroup;
+  form!: FormGroup;
 
   loading = false;
   deletedClient!: Client;
   user: User | undefined;
   destroy$ = new Subject<undefined>();
 
-  show: boolean = false;
+  show = false;
   modal!: MaterialInstance;
-  select: MaterialInstance | undefined;
-  confirm: MaterialInstance | undefined;
+  select!: MaterialInstance;
+  confirm!: MaterialInstance;
   clientsName: string[] = [];
   message = '';
   clients$: Observable<Client[]> | undefined;
@@ -55,13 +55,12 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private clientsService: ClientsService,
     private userService: UserService,
     private router: Router,
-    // private store: Store<AppState>,
+    private store: Store<AppState>,
     private fb: FormBuilder,
-  ) {
-    this.form = this.buildForm();
-  }
+  ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.form = this.buildForm();
     this.loading = true;
 
     this.fethClients();
@@ -75,17 +74,17 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         console.log(this.user);
 
-        // this.store.dispatch(new LogIn(user));
+        this.store.dispatch(new LogIn(user));
       });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.modal = MaterialService.initModal(this.modalRef);
     this.select = MaterialService.initSelect(this.selectRef);
     this.confirm = MaterialService.initModal(this.confirmRef);
   }
 
-  addNewProject() {
+  addNewProject(): void {
     this.form.reset();
     if (this.modal?.open) {
       this.modal.open();
@@ -108,11 +107,11 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private fethClients() {
+  private fethClients(): void {
     this.clients$ = this.clientsService.fetchAll().pipe(
       tap(clients => {
 
-        // this.store.dispatch(new GetAllClientOfUser(clients));
+        this.store.dispatch(new GetAllClientOfUser(clients));
 
         clients.forEach(client => {
           return this.clientsName.push(client.name.toLowerCase().replace(/\s/g, ''));
@@ -140,42 +139,43 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  closeModal() {
+  closeModal(): void {
     if (this.modal?.close) {
       this.modal.close();
     }
     this.resetForm();
   }
 
-  onSubmit() {
-    if (!this.form.value.name) {
-      return;
-    }
-    if (this.form.value.name) {
-      if (this.chekClientExist(this.form.value.name)) {
-        return;
-      } else {
-        this.form.enable();
-      }
-    }
-
-    this.form.value.currency = this.selectRef.nativeElement.value;
-    this.clientsService.create(this.form.value).subscribe(client => {
-      this.router.navigate([`/clients/${client.name}`]);
-      this.fethClients();
-    });
-    this.closeModal();
-    MaterialService.updateTextInputs();
+  onSubmit(): void {
+    console.log(this.form);
+    // if (!this.form.value.name) {
+    //   return;
+    // }
+    // if (this.form.value.name) {
+    //   if (this.chekClientExist(this.form.value.name)) {
+    //     return;
+    //   } else {
+    //     this.form.enable();
+    //   }
+    // }
+    //
+    // this.form.value.currency = this.selectRef.nativeElement.value;
+    // this.clientsService.create(this.form.value).subscribe(client => {
+    //   this.router.navigate([`/clients/${client.name}`]);
+    //   this.fethClients();
+    // });
+    // this.closeModal();
+    // MaterialService.updateTextInputs();
   }
 
-  deleteClient(client: Client) {
+  deleteClient(client: Client): void {
     this.deletedClient = client;
     if (this.confirm?.open) {
       this.confirm.open();
     }
   }
 
-  confirmDelete() {
+  confirmDelete(): void {
     const deletedClientId = this.deletedClient ? this.deletedClient._id : '';
 
     if (deletedClientId) {
@@ -203,14 +203,14 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  cancelDelete() {
+  cancelDelete(): void {
     if (this.confirm?.close) {
       this.confirm.close();
     }
     // this.deletedClient = undefined;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.modal?.destroy) {
       this.modal.destroy();
     }

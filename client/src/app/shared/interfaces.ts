@@ -22,7 +22,7 @@ export interface Client {
 export interface TaskDay {
   totalDayHour: string;
   taskDayDate: string;
-  tasksInDay: Task[]
+  tasksInDay: Task[];
 }
 export interface Task {
   name: string;
@@ -31,7 +31,7 @@ export interface Task {
   clientId?: string;
   startTime?: Date;
   endTime?: Date;
-  startDay?: string;
+  startDay?: any;
   wastedTime?: number;
   totalMoney?: number;
   user?: string;

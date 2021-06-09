@@ -32,47 +32,6 @@
     >
       New Project
     </button>
-    <div class="dfl ai jc">
-      <svg
-        class="reportsImg"
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M3 3.75H17V2.25H3V3.75ZM1.75 17V5H0.25V17H1.75ZM10 18.25H3V19.75H10V18.25ZM18.25 5V10H19.75V5H18.25ZM10 19.75H17V18.25H10V19.75ZM19.75 17V10H18.25V17H19.75ZM0.25 17C0.25 18.5188 1.48122 19.75 3 19.75V18.25C2.30964 18.25 1.75 17.6904 1.75 17H0.25ZM17 3.75C17.6904 3.75 18.25 4.30964 18.25 5H19.75C19.75 3.48122 18.5188 2.25 17 2.25V3.75ZM17 19.75C18.5188 19.75 19.75 18.5188 19.75 17H18.25C18.25 17.6904 17.6904 18.25 17 18.25V19.75ZM3 2.25C1.48122 2.25 0.25 3.48122 0.25 5H1.75C1.75 4.30964 2.30964 3.75 3 3.75V2.25Z"
-          fill="white"
-        />
-        <path
-          d="M5 1V5"
-          stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-        <path
-          d="M10 1V5"
-          stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-        <path
-          d="M15 1V5"
-          stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-        <path
-          d="M15 9L11.5 9M15 9L15 12.5M15 9L9.99998 14L8 12L5 15"
-          stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      <a class="reportsLink color_white_text" [routerLink]="'/reports'">Monthly reports</a>
-    </div>
   </div>
 
   <div class="row clients_section">
@@ -312,20 +271,16 @@
               invalid: form.get('name')?.invalid && form.get('name')?.touched
             }"
           />
-          <!-- <span
+           <span
             class="helper-text red-text"
-            *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
-          >
-            <span *ngIf="form.get('name')?.errors['required']"
-              >Project Name не может быть пустым</span
-            >
+            *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+            <span *ngIf="form.get('name')?.errors['required']">Project Name не может быть пустым</span>
           </span>
           <span
             class="helper-text red-text"
-            *ngIf="message && form.get('name')?.touched"
-          >
+            *ngIf="message && form.get('name')?.touched">
             <span *ngIf="message">{{ message }}</span>
-          </span> -->
+          </span>
         </div>
 
         <div class="input-field dibl left">
@@ -350,26 +305,16 @@
             formControlName="tarif"
             type="number"
             min="10"
-            [ngClass]="{
-              invalid: form.get('tarif')?.invalid && form.get('tarif')?.touched
-            }"
-          />
-          <!-- <span
-            class="helper-text red-text"
-            *ngIf="form.get('tarif')?.invalid && form.get('tarif')?.touched"
-          >
-            <span *ngIf="form.get('tarif')?.errors['min']"
-              >Введите корректную Hourly Rate</span
-            >
-          </span> -->
+            [ngClass]="{invalid: form.get('tarif')?.invalid && form.get('tarif')?.touched}"/>
+          <span class="helper-text red-text" *ngIf="form.get('tarif')?.invalid && form.get('tarif')?.touched">
+            <span *ngIf="form.get('tarif')?.errors['min']">Введите корректную Hourly Rate</span>
+          </span>
         </div>
       </div>
       <div class="modal-footer dfl ai jc">
         <button
           type="submit"
-          [disabled]="form.invalid || form.disabled"
-          class="modal-action btn waves-effect createBtn"
-        >
+          class="modal-action btn waves-effect createBtn">
           Create
         </button>
       </div>
@@ -385,14 +330,12 @@
     <div class="dfl">
       <button
         class="color_white_text waves-effect waves-light newProjectBtn bg-blue popup-btn dibl"
-        (click)="confirmDelete()"
-      >
+        (click)="confirmDelete()">
         confirm
       </button>
       <button
         class="color_white_text waves-effect waves-light newProjectBtn bg-blue popup-btn dibl"
-        (click)="cancelDelete()"
-      >
+        (click)="cancelDelete()">
         cancel
       </button>
     </div>

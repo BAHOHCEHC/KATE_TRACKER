@@ -13,10 +13,10 @@ export class ClientsService {
     return this.http.get<Client[]>('/api/clients');
   }
 
-  getByName(name: string): Observable<Client> {
+  getByName(name: string | undefined): Observable<Client> {
     return this.http.get<Client>(`/api/clients/${name}`);
   }
-  
+
   getStatisticsByName(name: string): Observable<Client> {
     return this.http.get<Client>(`/api/statistic/${name}`);
   }

@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { ClientsPageComponent } from './clients-page/clients-page.component';
 import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { MonthlyReportsComponent } from './monthly-reports/monthly-reports.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthGuard } from './shared/classes/auth.guard';
 import { AuthLayoutComponent } from './shared/layouts/auth-layout/auth-layout.component';
@@ -16,7 +15,8 @@ const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       { path: '', redirectTo: '/login', pathMatch: 'full' },
-      { path: 'statistic', loadChildren: './statistic/statistic.module#StatisticModule' },
+      // { path: 'statistic', loadChildren: './statistic/statistic.module#StatisticModule' },
+      { path: 'statistic', loadChildren: () => import('./statistic/statistic.module').then(m => m.StatisticModule) },
       { path: 'login', component: LoginPageComponent },
       { path: 'register', component: RegisterPageComponent }
     ]
@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: '',
     component: SiteLayoutComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'clients',
@@ -35,10 +35,6 @@ const routes: Routes = [
             component: TasksComponent
           }
         ]
-      },
-      {
-        path: 'reports',
-        component: MonthlyReportsComponent
       }
     ]
   },
