@@ -4,8 +4,12 @@
       <div class="client_statistic_user_icon center dibl fl">
         <img class="userImage" src="{{ imageSrc }}" />
       </div>
-      <h3 class="userName client_statistic_user_userName dibl fl">{{ nickName }}</h3>
-      <h4 class="userPosition client_statistic_user_userName dibl fl">UX/UI designer</h4>
+      <h3 class="userName client_statistic_user_userName dibl fl">
+        {{ nickName }}
+      </h3>
+      <h4 class="userPosition client_statistic_user_userName dibl fl">
+        UX/UI designer
+      </h4>
     </div>
     <div class="client_statistic_btn_wrap dfl fd_col jc">
       <a class="bg-blue monthlyReports_btn dfl" (click)="getPDF()">
@@ -61,9 +65,7 @@
         <div class="wrap color_grey_text">{{ client.tarif }} $ / hour</div>
         <div class="wrap color_grey_text">
           Total hours:
-          <span class="fw_b_600 color_black_text">{{
-            totalHours | hourPipe
-          }}</span>
+          <span class="fw_b_600 color_black_text">{{ totalHours | hourPipe }}</span>
         </div>
         <div class="wrap color_grey_text">
           Total payment:
