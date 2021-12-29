@@ -55,7 +55,7 @@
 
 <div class="container bg-grey">
   <div class="statusBar" *ngIf="allTasks$ | async as allTasks; else loader">
-    <h1 class="projectName">{{ clientName }}</h1>
+    <h1 class="projectName">{{ decodedClientName }}</h1>
     <div class="client_info_bar dfl ai">
       <div class="dfl fl_gr-10">
         <div class="wrap color_grey_text">{{ client?.tarif }} $ / hour</div>

@@ -148,24 +148,24 @@ export class SiteLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSubmit(): void {
     console.log(this.form);
-    // if (!this.form.value.name) {
-    //   return;
-    // }
-    // if (this.form.value.name) {
-    //   if (this.chekClientExist(this.form.value.name)) {
-    //     return;
-    //   } else {
-    //     this.form.enable();
-    //   }
-    // }
-    //
-    // this.form.value.currency = this.selectRef.nativeElement.value;
-    // this.clientsService.create(this.form.value).subscribe(client => {
-    //   this.router.navigate([`/clients/${client.name}`]);
-    //   this.fethClients();
-    // });
-    // this.closeModal();
-    // MaterialService.updateTextInputs();
+    if (!this.form.value.name) {
+      return;
+    }
+    if (this.form.value.name) {
+      if (this.chekClientExist(this.form.value.name)) {
+        return;
+      } else {
+        this.form.enable();
+      }
+    }
+    
+    this.form.value.currency = this.selectRef.nativeElement.value;
+    this.clientsService.create(this.form.value).subscribe(client => {
+      this.router.navigate([`/clients/${client.name}`]);
+      this.fethClients();
+    });
+    this.closeModal();
+    MaterialService.updateTextInputs();
   }
 
   deleteClient(client: Client): void {

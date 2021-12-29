@@ -30,6 +30,7 @@ export class StatisticComponent implements OnInit {
   userName: string | null = null;
 
   clientName: string | undefined;
+  decodedClientName: string | undefined;
   currency: string | null = null;
 
   allTasks$: Observable<TaskDay[]> | null = null;
@@ -60,6 +61,7 @@ export class StatisticComponent implements OnInit {
   ) {
     const url = this.router.url.substring('/statistic/'.length).split('/');
     this.clientName = url[0];
+    this.decodedClientName = decodeURI(url[0]);
     this.from = url[1];
     this.to = url[2];
     this.nickName = url[3] + 'design';
