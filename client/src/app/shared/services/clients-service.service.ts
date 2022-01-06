@@ -39,6 +39,16 @@ export class ClientsService {
   }
   // *******************
 
+  archivedTime(
+    id: string | any,
+    archivedTime: number
+  ): Observable<Client> {
+    const formData = {
+      archivedTime
+    };
+    return this.http.patch<Client>(`/api/clients/${id}/achivetime`, formData);
+  }
+
   delete(id: string): Observable<Message> {
     return this.http.delete<Message>(`/api/clients/${id}`);
   }

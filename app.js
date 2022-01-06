@@ -9,6 +9,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const clientsRoutes = require('./routes/clients');
 const taskRoutes = require('./routes/task');
+const archiveRoutes = require('./routes/archivedTasks');
 const statisticRoutes = require('./routes/statistic');
 
 const keys = require('./config/keys');
@@ -38,6 +39,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientsRoutes);
 app.use('/api/statistic', statisticRoutes);
 app.use('/api/task', taskRoutes);
+app.use('/api/archive', archiveRoutes);
 
 
 

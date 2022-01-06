@@ -1,10 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {Observable, Subject} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import moment from 'moment';
 import { jsPDF } from 'jspdf';
 
-import { HourPipe} from '../shared/pipes';
+import { HourPipe } from '../shared/pipes';
 import { Client, Task, TaskDay } from '../shared/interfaces';
 import { TasksService } from '../shared/services/tasks.service';
 import { ClientsService } from '../shared/services/clients-service.service';
@@ -23,7 +23,7 @@ import { roboroBold, robotoNormal } from './fonts';
     }
   `],
   providers: [
-    {provide: 'Window', useValue: window},
+    { provide: 'Window', useValue: window },
   ]
 })
 export class StatisticComponent implements OnInit {
@@ -37,7 +37,7 @@ export class StatisticComponent implements OnInit {
   destroy$ = new Subject<undefined>();
   client: Client | null = null;
 
-  from: any  = new Date();
+  from: any = new Date();
   to: any = new Date();
 
   fromFormat: Date | null = null;
@@ -56,8 +56,7 @@ export class StatisticComponent implements OnInit {
     private taskService: TasksService,
     private clientService: ClientsService,
     private router: Router,
-    private hourPipe: HourPipe,
-    @Inject('Window') private window: Window,
+    private hourPipe: HourPipe
   ) {
     const url = this.router.url.substring('/statistic/'.length).split('/');
     this.clientName = url[0];
@@ -144,7 +143,7 @@ export class StatisticComponent implements OnInit {
             const obj = {
               totalDayHour: task.wastedTime,
               taskDayDate: date,
-              tasksInDay: []
+              tasksInDay: [] as any[]
             };
             // @ts-ignore
             obj.tasksInDay.push(task);
@@ -171,9 +170,9 @@ export class StatisticComponent implements OnInit {
         const arrayFinal: any[] = [];
         res.forEach((day) => {
           const obj = {
-            text: null,
-            period: null,
-            time: null,
+            text: null as any,
+            period: null as any,
+            time: null as any
           };
           // @ts-ignore
           obj.text = day.taskDayDate;
@@ -186,9 +185,9 @@ export class StatisticComponent implements OnInit {
           day.tasksInDay.forEach(task => {
             // tslint:disable-next-line:no-shadowed-variable
             const obj = {
-              text: null,
-              period: null,
-              time: null,
+              text: null as any,
+              period: null as any,
+              time: null as any,
             };
             obj.text = task.name;
             // @ts-ignore
@@ -221,49 +220,49 @@ export class StatisticComponent implements OnInit {
     doc.addFont('Roboto-Regular-normal.ttf', 'Roboto', 'normal');
 
     doc.setFontSize(10);
-    doc.setFont('Roboto' , 'bold');
+    doc.setFont('Roboto', 'bold');
     // @ts-ignore
     doc.text(20, startPoint, this.nickName);
-    doc.setFont('Roboto' , 'normal');
+    doc.setFont('Roboto', 'normal');
     // @ts-ignore
     doc.text(595 - (('UX/UI designer'.length * 14) + 40), startPoint, 'UX/UI designer');
     startPoint += 20;
 
     doc.setFontSize(12);
-    doc.setFont('Roboto' , 'bold');
+    doc.setFont('Roboto', 'bold');
     // @ts-ignore
-    doc.text(20, startPoint, this.clientName);
+    doc.text(20, startPoint, this.decodedClientName);
     startPoint += 20;
 
     doc.setFontSize(10);
-    doc.setFont('Roboto' , 'normal');
+    doc.setFont('Roboto', 'normal');
     // @ts-ignore
     doc.text(20, startPoint, this.client?.tarif + ` ${this.currency} / hour`);
     // @ts-ignore
     doc.text(85, startPoint, 'Total hours:');
 
-    doc.setFont('Roboto' , 'bold');
+    doc.setFont('Roboto', 'bold');
     if (typeof this.totalHours === 'number') {
       // @ts-ignore
       doc.text(125, startPoint, this.hourPipe.transform(this.totalHours));
     }
-    doc.setFont('Roboto' , 'normal');
+    doc.setFont('Roboto', 'normal');
     // @ts-ignore
     doc.text(180, startPoint, 'Total payment:');
 
-    doc.setFont('Roboto' , 'bold');
+    doc.setFont('Roboto', 'bold');
     // @ts-ignore
     doc.text(245, startPoint, `${this.totalPayment?.toString()} ${this.currency}`);
-    doc.setFont('Roboto' , 'normal');
+    doc.setFont('Roboto', 'normal');
     // @ts-ignore
     doc.text(310, startPoint, 'Period:');
 
-    doc.setFont('Roboto' , 'bold');
+    doc.setFont('Roboto', 'bold');
     const range = moment(this.fromFormat).format('MMM Do') + ' - ' + moment(this.toFormat).format('MMM Do');
     let textWidth = doc.getTextWidth(range) / 2;
     // @ts-ignore
     doc.text(385 - textWidth, startPoint, range);
-    doc.setFont('Roboto' , 'normal');
+    doc.setFont('Roboto', 'normal');
 
     this.PDFdataArray.forEach((line, indx) => {
 
@@ -273,7 +272,7 @@ export class StatisticComponent implements OnInit {
 
         currentPointY += 5;
         doc.setFontSize(12);
-        doc.setFont('Roboto' , 'bold');
+        doc.setFont('Roboto', 'bold');
         // @ts-ignore
         doc.text(20, currentPointY, line.text);
         // @ts-ignore
@@ -285,10 +284,10 @@ export class StatisticComponent implements OnInit {
         }
         // @ts-ignore
         doc.text(410 - textWidth, currentPointY, total);
-        doc.setFont('Roboto' , 'normal');
+        doc.setFont('Roboto', 'normal');
       } else {
         doc.setFontSize(10);
-        doc.setFont('Roboto' , 'normal');
+        doc.setFont('Roboto', 'normal');
         // @ts-ignore
         doc.text(20, currentPointY, line.text);
         // @ts-ignore
@@ -309,7 +308,7 @@ export class StatisticComponent implements OnInit {
           doc.line(20, currentPointY - 10, 420, currentPointY - 10);
           currentPointY += 5;
           doc.setFontSize(12);
-          doc.setFont('Roboto' , 'bold');
+          doc.setFont('Roboto', 'bold');
           // @ts-ignore
           doc.text(20, currentPointY, line.text);
           // @ts-ignore
@@ -321,7 +320,7 @@ export class StatisticComponent implements OnInit {
           }
           // @ts-ignore
           doc.text(410 - textWidth, currentPointY, total);
-          doc.setFont('Roboto' , 'normal');
+          doc.setFont('Roboto', 'normal');
         }
       }
 

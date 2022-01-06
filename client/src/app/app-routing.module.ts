@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ClientsPageComponent } from './clients-page/clients-page.component';
-import { TasksComponent } from './clients-page/tasks/tasks.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthGuard } from './shared/classes/auth.guard';
 import { AuthLayoutComponent } from './shared/layouts/auth-layout/auth-layout.component';
 import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.component';
 
+// ******************************
+import { ClientsPageComponent } from './clients-page/clients-page.component';
+import { ReportsComponent } from './reports/reports.component';
+import { TasksComponent } from './clients-page/tasks/tasks.component';
+import { ClientReportsComponent } from './reports/client-reports/client-reports.component';
 
 const routes: Routes = [
   {
@@ -35,6 +38,14 @@ const routes: Routes = [
             component: TasksComponent
           }
         ]
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
+      },
+      {
+        path: 'reports/:name',
+        component: ClientReportsComponent,
       }
     ]
   },

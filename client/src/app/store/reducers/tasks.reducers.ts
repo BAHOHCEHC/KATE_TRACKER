@@ -18,6 +18,8 @@ export const tasksReducer: (state: any, action: TasksActions) => TasksState = (
             return { ...state, allTasks: action.payload };
         case TasksActionTypes.GET_ALL_TASKS:
             return { ...state, allTasks: action.payload };
+        // case TasksActionTypes.CURRENT_CLIENT_TASKS:
+        //     return { ...state, currentClientTasks: action.payload };
         case TasksActionTypes.UPDATE_TASK:
             return { ...state, allTasks: action.payload };
         case TasksActionTypes.REMOVE_TASK:

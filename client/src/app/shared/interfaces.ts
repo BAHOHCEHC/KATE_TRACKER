@@ -14,15 +14,16 @@ export interface Client {
   tarif?: number;
   totalHours?: number;
   totalPayment?: number;
+  archivedTime?: number;
   taskList?: Task[];
   currency?: string;
   _id?: string;
 }
 
 export interface TaskDay {
-  totalDayHour: string;
-  taskDayDate: string;
-  tasksInDay: Task[];
+  totalDayHour?: string;
+  taskDayDate?: string;
+  tasksInDay?: Task[];
 }
 export interface Task {
   name: string;

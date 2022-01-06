@@ -1,6 +1,6 @@
 const Task = require('../models/Task');
 const errorHandler = require('../utils/errorHandler');
-const moment = require('moment');
+// const moment = require('moment');
 
 module.exports.getByClientName = async function(req, res) {	
 	try {
@@ -40,6 +40,10 @@ module.exports.create = async function(req, res) {
 			startDay: req.body.startDay,
 			formatTime: req.body.formatTime
 		}).save();
+		const allTasks = await Task.find({ // clientId в роутах /:clientName'
+			user: req.user.id //из passporta тянем юзера id
+		});
+		allTasks.sort( { "startDay": 1 });
 		res.status(201).json({
 			message: 'Задача была создана!!!'
 		});

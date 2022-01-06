@@ -1,0 +1,25 @@
+<div class="statusBar">
+  <h1 class="projectName">Archives by clients</h1>
+</div>
+
+<div
+  *ngIf="allClients$ | async as allClients; else loader"
+  class="row allClients dfl fd_col"
+>
+  <div class="clientRow_wrap dfl jc-space-between" *ngFor="let client of allClients">
+    <a 
+    [routerLink]="['/reports', client.name]"
+    class="client_title">
+      {{ client.name }}
+    </a>
+
+    <div class="day_time_wrap">
+      <span class="fw_b_600 color_black_text day_total_header">Total:</span>
+      <span class="day_total_time">{{ client.archivedTime.toFixed(2) }}</span>
+    </div>
+  </div>
+</div>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

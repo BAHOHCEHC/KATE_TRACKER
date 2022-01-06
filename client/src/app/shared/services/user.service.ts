@@ -7,7 +7,6 @@ import { User } from '../interfaces';
   providedIn: 'root'
 })
 export class UserService {
-  private token = null;
 
   constructor(private http: HttpClient) {}
 

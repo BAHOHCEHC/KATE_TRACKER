@@ -22,6 +22,10 @@ const clientSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	archivedTime: {
+		type: Number,
+		default: 0
+	},
 	totalPayment: {
 		type: Number,
 		default: 0

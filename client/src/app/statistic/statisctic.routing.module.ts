@@ -9,8 +9,10 @@ const routes: Routes = [
     children: [
       {
         path: ':id/:from/:to/:name/:imgRoute',
+        // path: ':id/:from/:to/:name',
         component: StatisticComponent,
-      }
+      },
+      { path: '', redirectTo: '/statistic'},
     ]
   }
 ];

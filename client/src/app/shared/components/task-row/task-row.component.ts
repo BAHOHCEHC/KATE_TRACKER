@@ -13,7 +13,8 @@ import {
   AfterViewInit,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import moment from 'moment';
 
@@ -71,7 +72,31 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     }
   }
 
-  deleteTask(): void {
+  // setDate() {
+  //   if (this.formTask.controls.name.untouched) {
+  //     const newTaskName = moment(this.start.date).format('LL') + ` Task`;
+  //     this.formTask.controls['name'].setValue(newTaskName);
+  //   }
+  //   if (this.start.date) {
+  //     this.formTask.controls['dayStart'].setValue(moment(this.start.date).format('DD.MM.YYYY'));
+  //   } else {
+  //     this.formTask.controls['dayStart'].setValue(new Date());
+  //   }
+  // }
+
+  private setDate(): void {
+    if (this.formTask.controls.name.untouched) {
+      const newTaskName = moment(this.start.date).format('LL') + ` Task`;
+      this.formTask.controls.name.setValue(newTaskName);
+    }
+    if (this.start.date) {
+      this.formTask.controls.dayStart.setValue(moment(this.start.date).format('DD.MM.YYYY'));
+    } else {
+      this.formTask.controls.dayStart.setValue(new Date());
+    }
+  }
+
+  deleteTask() {
     this.taskService.delete(this.taskData).subscribe(response => {
       this.throwMessage(response.message);
       this.taskEmitter.emit();
@@ -131,7 +156,7 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     this.submitted = false;
   }
 
-  timeLessError(): boolean{
+  timeLessError() {
     const start = moment(this.formTask.value.timeStart);
     const endTime = moment(this.formTask.value.timeEnd);
     const betweenDifferenceM = endTime.diff(start, 'minutes');
@@ -139,24 +164,8 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
     return ((betweenDifferenceM <= 0) || (betweenDifferenceH < 0));
   }
 
-  changed(): void {
-    this.isEditNow = true;
-  }
-
   private throwMessage(message: string): void {
     MaterialService.toast(message);
-  }
-
-  private setDate(): void {
-    if (this.formTask.controls.name.untouched) {
-      const newTaskName = moment(this.start.date).format('LL') + ` Task`;
-      this.formTask.controls.name.setValue(newTaskName);
-    }
-    if (this.start.date) {
-      this.formTask.controls.dayStart.setValue(moment(this.start.date).format('DD.MM.YYYY'));
-    } else {
-      this.formTask.controls.dayStart.setValue(new Date());
-    }
   }
 
   private initDatepicker(): void {
@@ -192,5 +201,9 @@ export class TaskRowComponent implements OnInit, AfterViewInit {
       timeEnd: new FormControl(initTimeEnd, [Validators.required]),
       dayStart: new FormControl(initStartDay, Validators.required)
     });
+  }
+  
+  changed(){
+    this.isEditNow = true;
   }
 }
